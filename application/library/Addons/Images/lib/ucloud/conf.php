@@ -1,0 +1,13 @@
+<?php
+
+global $SDK_VER;
+global $UCLOUD_PROXY_SUFFIX;
+global $UCLOUD_PUBLIC_KEY;
+global $UCLOUD_PRIVATE_KEY;
+
+$SDK_VER = "1.0.5";
+
+$UCLOUD_PROXY_SUFFIX = '.cn-gd.ufileos.com';
+
+$UCLOUD_PUBLIC_KEY = 'm1cb2O3g0IfvLu43pAccnNDzkxjmd0/PNO09wwskmxZI2oex3V2wgQ==';
+$UCLOUD_PRIVATE_KEY = 'e54ea6d2151e77f1ad9589a392137c666ab872dc';

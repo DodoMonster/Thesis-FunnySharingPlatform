@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<title>Nuwa - 登录</title>
+
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<!-- bootstrap & fontawesome -->
+		<link rel="stylesheet" href="/src/libs/ace-v1.3/assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/src/libs/ace-v1.3/assets/css/font-awesome.min.css" />
+
+		<!-- page specific plugin styles -->
+
+		<!-- ace styles -->
+		<link rel="stylesheet" href="/src/libs/ace-v1.3/assets/css/ace-fonts.css" />
+		<link rel="stylesheet" href="/src/libs/ace-v1.3/assets/css/ace.min.css" />
+		<link rel="stylesheet" href="/src/libs/ace-v1.3/assets/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="/src/libs/ace-v1.3/assets/css/ace-rtl.min.css" />
+
+		<!-- <link rel="stylesheet" href="/src/css/app.css" /> -->
+		<!-- <link rel="shortcut icon" href="/favicon.ico"/> -->
+		<link rel="icon" href="http://localhost:8090/favicon.ico" type="image/x-icon" />
+	    <link rel="shortcut icon" href="http://localhost:8090/favicon.ico" type="image/x-icon" />
+		<style>
+			body {
+				background-color: #438eb9;
+				background: url('static/login-bg.jpg')
+			}
+			.login-container {
+				margin-top: 10%;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div class="login-container">
+			<div class="center">
+				<h1>
+					<span class="white" id="id-text2">
+						<i class="fa fa-universal-access" style="margin-right:5px"></i>
+						Nuwa
+					</span>
+				</h1>
+			</div>
+
+			<div class="space-6"></div>
+
+			<div class="position-relative">
+				<div id="login-box" class="login-box visible widget-box no-border">
+					<div class="widget-body">
+						<div class="widget-main">
+							<h4 class="header blue lighter bigger">
+								<i class="ace-icon fa fa-coffee" style="margin-right:5px"></i>
+								请输入账号密码
+							</h4>
+
+							<div class="space-6"></div>
+
+							<form>
+								<fieldset>
+									<label class="block clearfix">
+										<span class="block input-icon input-icon-right">
+											<input name="username" type="text" class="form-control" placeholder="用户名">
+											<i class="ace-icon fa fa-user"></i>
+										</span>
+									</label>
+
+									<label class="block clearfix">
+										<span class="block input-icon input-icon-right">
+											<input name="passwd" type="password" class="form-control" placeholder="密码">
+											<i class="ace-icon fa fa-lock"></i>
+										</span>
+									</label>
+
+									<div class="space"></div>
+
+									<div class="clearfix">
+										<button type="submit" class="width-35 pull-right btn btn-sm btn-primary" id="loginBtn">
+											<i class="ace-icon fa fa-key"></i>
+											<span class="bigger-110">登录</span>
+										</button>
+									</div>
+
+									<div class="space-4"></div>
+								</fieldset>
+							</form>
+
+							<div class="space-6"></div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<script type="text/javascript" src="/static/login.js"></script>
+	</body>
+
+</html>
