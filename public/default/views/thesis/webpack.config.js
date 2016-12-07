@@ -7,7 +7,7 @@ module.exports = {
     },
     output: {
         path: './static',
-        publicPath: '/views/thesis/static/',
+        publicPath: '../public/default/views/thesis/static/',
         filename: 'main.js'
     },
     module: {

@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "Public/static/";
+/******/ 	__webpack_require__.p = "../public/default/views/thesis/static/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -68,7 +68,7 @@
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	var _Index = __webpack_require__(53);
+	var _Index = __webpack_require__(35);
 	
 	var _Index2 = _interopRequireDefault(_Index);
 	
@@ -26109,7 +26109,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\app.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(52)
+	__vue_template__ = __webpack_require__(34)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -26125,7 +26125,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-1f229bc3/app.vue"
+	  var id = "_v-481df583/app.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -26147,7 +26147,7 @@
 	
 	var _header2 = _interopRequireDefault(_header);
 	
-	var _footer = __webpack_require__(49);
+	var _footer = __webpack_require__(31);
 	
 	var _footer2 = _interopRequireDefault(_footer);
 	
@@ -26177,7 +26177,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\header.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(48)
+	__vue_template__ = __webpack_require__(30)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -26193,7 +26193,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-68806eb4/header.vue"
+	  var id = "_v-005bf234/header.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -27231,14 +27231,6 @@
 	    value: true
 	});
 	
-	var _stringify = __webpack_require__(24);
-	
-	var _stringify2 = _interopRequireDefault(_stringify);
-	
-	var _defineProperty2 = __webpack_require__(30);
-	
-	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-	
 	var _events = __webpack_require__(27);
 	
 	var _util = __webpack_require__(28);
@@ -27256,1085 +27248,176 @@
 	exports.default = service;
 	
 	/**
-	 * 通过标签id获取标签的详细信息
+	 * 获取趣事列表
 	 */
 	
-	service.getLabelDetail = function (projId, labelId) {
+	service.getFunnyThingsList = function (page, type) {
 	    return _util2.default.ajax({
-	        url: '/labelManage/getLabel',
+	        url: '/home/getFunnyThingsList',
 	        data: {
-	            projId: projId,
-	            labelId: labelId
-	        }
-	    });
-	};
-	
-	/**
-	 * 切换标签上下线状态
-	 */
-	service.toggleOnline = function (labelId, projId) {
-	    var url = '/labelManage/toggleOnline';
-	    return _util2.default.ajax({
-	        url: url,
-	        method: 'post',
-	        data: {
-	            labelId: labelId,
-	            projId: projId
-	        }
-	    });
-	};
-	
-	/**
-	 *
-	 */
-	service.exportUserDate = function (selectId, deleteId) {
-	    var url = 'useManage/exportUsers';
-	    return _util2.default.ajax({
-	        url: url,
-	        method: 'get',
-	        data: {
-	            include: "3,4",
-	            exclude: deleteId
-	        }
-	    });
-	};
-	
-	/**
-	 * 切换停用状态
-	 */
-	service.toggleAlive = function (labelId, projId) {
-	    var url = '/labelManage/toggleAlive';
-	    return _util2.default.ajax({
-	        url: url,
-	        method: 'post',
-	        data: {
-	            labelId: labelId,
-	            projId: projId
-	        }
-	    });
-	};
-	
-	/**
-	 *删除标签
-	 */
-	service.deleteLabel = function (labelId, projId) {
-	    var url = '/labelManage/deleteLabel';
-	    return _util2.default.ajax({
-	        url: url,
-	        method: 'post',
-	        data: {
-	            labelId: labelId,
-	            projId: projId
-	        }
-	    });
-	};
-	
-	/**
-	 * 获取标签树
-	 */
-	service.fetchLabels = function (projId, search) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/labelList',
-	        data: {
-	            projId: projId,
-	            search: search
-	        }
-	    }, {
-	        loading: true
-	    });
-	};
-	
-	/**
-	 * 获取标签作业
-	 */
-	service.fetchJobs = function (id, flowId, versionId) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/jobList',
-	        data: {
-	            projId: id,
-	            workflowId: flowId,
-	            versionId: versionId
-	        }
-	    }, {
-	        loading: true
-	    });
-	};
-	
-	/**
-	 * 触发标签作业
-	 */
-	service.triggerJob = function (id) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/triggerJob',
-	        method: 'post',
-	        data: {
-	            id: id
-	        }
-	    });
-	};
-	
-	/**
-	 * 触发所有标签作业
-	 */
-	service.triggerJobAll = function () {
-	    return _util2.default.ajax({
-	        url: '/flowManage/triggerAll',
-	        type: 'post'
-	    });
-	};
-	/*
-	 * 标签检索与提数
-	 */
-	service.searchLabel = function (projId, version, include, exclude, relation, page, pageSize) {
-	    return _util2.default.ajax({
-	        url: "/useManage/userQuery",
-	        type: "post",
-	        data: {
-	            projId: projId,
-	            version: version,
-	            include: include,
-	            exclude: exclude,
-	            relation: relation,
 	            page: page,
-	            pageSize: pageSize
+	            type: type
 	        }
 	    });
 	};
 	
 	/**
-	 * 获取事务信息
+	 * 点赞
 	 */
-	service.getTransInfo = function (transId) {
+	service.praiseUp = function (id) {
 	    return _util2.default.ajax({
-	        url: '/flowManage/getTransInfo',
-	        type: 'GET',
+	        url: '/home/praiseUp',
 	        data: {
-	            transId: transId
-	        }
-	    });
-	};
-	
-	/*
-	 * 获取符合条件用户的页码数量
-	 */
-	service.getUserCount = function (pId, vId, include, exclude, relation) {
-	    return _util2.default.ajax({
-	        url: "/useManage/userCount",
-	        type: "post",
-	        data: {
-	            projId: pId,
-	            version: vId,
-	            include: include,
-	            exclude: exclude,
-	            relation: relation
-	        }
-	    });
-	};
-	
-	/*
-	 * 获取echart云需要的数据
-	 */
-	service.wordCloud = function (prjId, version, size) {
-	    return _util2.default.ajax({
-	        url: '/dashboard/wordCloud',
-	        data: {
-	            prjId: prjId,
-	            version: version,
-	            size: size
-	        }
-	    }, {
-	        loading: true
-	    });
-	};
-	
-	/*
-	 * 首页数据表格信息
-	 */
-	service.labelStat = function (id) {
-	    return _util2.default.ajax({
-	        url: '/dashboard/labelStat',
-	        data: {
-	            projId: id
-	        }
-	    });
-	};
-	
-	/*
-	 * 获得数据库表信息
-	 */
-	
-	service.database = function () {
-	    return _jquery2.default.ajax({
-	        url: 'http://orochiplus-dev.datatub.com/bu/job/ajax/getTables?groupName=datatub'
-	    });
-	};
-	
-	/*
-	 * 获取我关注的人群标签
-	 */
-	service.listOwnCrowds = function (projId, keyword, page, pageSize) {
-	    return _util2.default.ajax({
-	        url: '/useManage/listCrowds',
-	        data: {
-	            projId: projId,
-	            keyword: keyword,
-	            page: page,
-	            pageSize: pageSize
-	        }
-	    }, {
-	        loading: true
-	    });
-	};
-	
-	/*
-	 * 获取组员关注的人群标签
-	 */
-	service.listGroupCrowds = function (projId, keyword, creater, page, pageSize) {
-	    return _util2.default.ajax({
-	        url: '/useManage/listGroupCrowds',
-	        data: {
-	            projId: projId,
-	            keyword: keyword,
-	            creater: creater,
-	            page: page,
-	            pageSize: pageSize
-	        }
-	    }, {
-	        loading: true
-	    });
-	};
-	
-	/*
-	 * 保存人群信息
-	 */
-	service.saveInsightCrowd = function (include, exclude, relation, insightInclude, crowdName, projId) {
-	    return _util2.default.ajax({
-	        url: '/useManage/saveInsightCrowd',
-	        type: 'post',
-	        data: (0, _defineProperty3.default)({
-	            projId: projId,
-	            include: include,
-	            exclude: exclude,
-	            relation: relation,
-	            insight_include: insightInclude,
-	            crowd_name: crowdName
-	        }, 'projId', projId)
-	    });
-	};
-	
-	/*
-	 * 通过人群名称查找人群标签信息
-	 */
-	service.selectCrowd = function (name) {
-	    return _util2.default.ajax({
-	        url: '/useManage/selectCrowd',
-	        data: {
-	            crowd_name: name
-	        }
-	    });
-	};
-	
-	/*
-	    获取用于显示echart的人群洞察信息
-	 */
-	service.getLabelsInfo = function (projId, version, include, exclude, relation, name) {
-	    return _util2.default.ajax({
-	        url: '/useManage/getLabelsInfo',
-	        method: 'post',
-	        data: {
-	            projId: projId,
-	            version: version,
-	            include: include,
-	            exclude: exclude,
-	            relation: relation,
-	            insight_include: name
-	        }
-	    });
-	};
-	
-	/*
-	    标签检索页的初始数据
-	*/
-	service.getInitLabel = function () {
-	    return _util2.default.ajax({
-	        url: '/useManage/defaultQuery'
-	    });
-	};
-	
-	/*
-	    取消标签异动状态
-	*/
-	service.canelUnusual = function (labelName) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/canelUnusualStatus',
-	        data: {
-	            labelId: labelName
-	        }
-	    });
-	};
-	
-	/*
-	    触发多个作业标签
-	*/
-	service.triggerJobs = function (data) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/triggerJobs',
-	        method: 'post',
-	        data: {
-	            params: (0, _stringify2.default)(data)
-	        }
-	    });
-	};
-	
-	/*
-	    删除指定洞察人群
-	*/
-	service.deleteCrowd = function (id) {
-	    return _util2.default.ajax({
-	        url: '/useManage/deleteCrowd',
-	        data: {
-	            id: id
-	        }
-	    });
-	};
-	
-	/*
-	    获取用户对某个proj的权限
-	*/
-	service.getProjUserRole = function (id) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/getUserProjRole',
-	        data: {
-	            projId: id
-	        }
-	    });
-	};
-	/*
-	    获取用户组下全部的项目
-	*/
-	service.getProjectList = function (name, page, pageSize) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/listProjs',
-	        data: {
-	            groupName: 'group_name=' + name,
-	            page: page,
-	            pageSize: pageSize
-	        }
-	    });
-	};
-	
-	/*
-	    添加项目
-	 */
-	service.addProject = function (proJSON) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/addProj',
-	        method: 'POST',
-	        data: {
-	            params: (0, _stringify2.default)(proJSON)
-	        }
-	    });
-	};
-	
-	service.getProjectDetailList = function () {
-	    return _util2.default.ajax({
-	        url: '/lib/getProjectDetailList'
-	    });
-	};
-	
-	/*
-	    获取组内全部人员的名称
-	*/
-	service.getAllUsersName = function () {
-	    return _util2.default.ajax({
-	        url: '/labelManage/getAllUsers'
-	    });
-	};
-	
-	/*
-	    切换项目
-	*/
-	service.selectProj = function (id, name) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/selectProj',
-	        data: {
-	            projId: id,
-	            userName: name
-	        }
-	    });
-	};
-	
-	/*
-	    删除项目
-	*/
-	service.deleteProj = function (id) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/deleteProj',
-	        method: 'post',
-	        data: {
-	            projId: id
-	        }
-	    });
-	};
-	
-	/*
-	    项目详情
-	*/
-	
-	service.getProjInfo = function (id, username) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/getProjInfo',
-	        data: {
-	            projId: id,
-	            userName: username
-	        }
-	    });
-	};
-	
-	/*
-	    设置默认项目
-	*/
-	service.setDefalProj = function (id, username) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/setDefaultProj',
-	        method: 'post',
-	        data: {
-	            projId: id
-	        }
-	    });
-	};
-	
-	/*
-	    获取全部库名
-	*/
-	service.getAllSourceDB = function (projId) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/getDefaultSoruce',
-	        method: 'get',
-	        data: {
-	            projId: projId
-	        }
-	    });
-	};
-	
-	/*
-	    获取全部表名
-	*/
-	service.getAllTabel = function (dbName) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/getAllTables',
-	        data: {
-	            dbName: dbName
-	        }
-	    });
-	};
-	
-	/*
-	    获取全部字段
-	*/
-	service.getAllField = function (dbName, tabName) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/getAllFields',
-	        data: {
-	            dbName: dbName,
-	            tableName: tabName
-	        }
-	    });
-	};
-	
-	/*
-	    测试语法
-	*/
-	
-	service.checkHql = function (data) {
-	    var url = '/labelManage/explainHql';
-	    return _util2.default.ajax({
-	        url: url,
-	        method: 'post',
-	        data: {
-	            params: (0, _stringify2.default)(data)
-	        }
-	    });
-	};
-	
-	/*
-	    新建标签
-	*/
-	
-	service.createLabel = function (data, createOrEdit) {
-	    var url = '/labelManage/createLabel'; //默认url为新建标签url
-	    if (createOrEdit) {
-	        //createOrEdit为true则表示为编辑页面
-	        url = '/labelManage/modifyLabel';
-	    }
-	    return _util2.default.ajax({
-	        url: url,
-	        method: 'post',
-	        data: {
-	            params: (0, _stringify2.default)(data)
-	        }
-	    });
-	};
-	
-	/*
-	    更新项目
-	*/
-	service.updateProj = function (params) {
-	    return _util2.default.ajax({
-	        url: '/labelManage/updateProj',
-	        method: 'post',
-	        data: {
-	            params: (0, _stringify2.default)(params)
-	        }
-	    });
-	};
-	
-	// 添加版本
-	service.addVersion = function (params) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/addVersion',
-	        method: 'post',
-	        data: {
-	            params: (0, _stringify2.default)(params)
-	        }
-	    });
-	};
-	
-	// 获取全部版本
-	service.getVerionsList = function (id, page, pageSize) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/listVersions',
-	        data: {
-	            projId: id,
-	            page: page,
-	            pageSize: pageSize
-	        }
-	    });
-	};
-	
-	// 设置默认版本
-	service.setDefault = function (proId, versionId) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/setDefaultVersion',
-	        method: 'post',
-	        data: {
-	            projId: proId,
-	            versionId: versionId
-	        }
-	    });
-	};
-	
-	service.getVersionInfo = function (id) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/getVersionInfo',
-	        data: {
-	            versionId: id
-	        }
-	
-	    });
-	};
-	
-	// 更新版本
-	service.editVersion = function (params) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/updateVersion',
-	        method: 'post',
-	        data: {
-	            params: (0, _stringify2.default)(params)
-	        }
-	    });
-	};
-	
-	// 删除版本
-	service.deleteVersion = function (projId, versionId) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/deleteVersion',
-	        method: 'post',
-	        data: {
-	            projId: projId,
-	            versionId: versionId
+	            things_id: id
 	        }
 	    });
 	};
 	
 	/**
-	 * 保存关注人群
+	 * 踩
 	 */
-	service.savePeopleInfo = function (param) {
-	    param = param || {};
-	    var url = 'useManage/saveInsightCrowd';
+	service.trampDown = function (id) {
 	    return _util2.default.ajax({
-	        url: url,
-	        method: 'post',
-	        data: param
-	    });
-	};
-	
-	// 选择确定的人群信息
-	service.selectCrowd = function (crowd_id) {
-	    return _util2.default.ajax({
-	        url: 'useManage/selectCrowd',
-	        method: 'get',
+	        url: '/home/trampDown',
 	        data: {
-	            crowd_id: crowd_id
-	        }
-	    });
-	};
-	
-	// 标签作业状态
-	// service.getJobStatus = (projId) => {
-	//     return util.ajax({
-	//         url:'/flowManage/jobStatus',
-	//         data:{
-	//             projId:projId
-	//         }
-	//     })
-	// }
-	
-	/**
-	 * [getHistoryJobs 获取作业历史状态]
-	 * @param  {[type]} projId      [项目id]
-	 * @param  {[type]} page        [页数]
-	 * @param  {[type]} pageSize    [每页数目]
-	 * @param  {[type]} workflowId  [工作流id]
-	 * @param  {[type]} triggerUser [触发人]
-	 * @param  {[type]} triggerType [触发类型]
-	 * @param  {[type]} transStatus [触发状态]
-	 * @return {[type]}             [description]
-	 */
-	service.getHistoryJobs = function (projId, page, pageSize, workflowId, triggerUser, triggerType, transStatus) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/historyJobs',
-	        data: {
-	            projId: projId,
-	            page: page,
-	            pageSize: pageSize,
-	            workflowId: workflowId,
-	            triggerUser: triggerUser,
-	            triggerType: triggerType,
-	            transStatus: transStatus
-	        }
-	    }, {
-	        loading: true
-	    });
-	};
-	
-	/**
-	 * [getRunningJobs 获取正在运行的作业]
-	 * @param  {[type]} projId [项目id]
-	 * @return {[type]}        [description]
-	 */
-	service.getRunningJobs = function (projId) {
-	    return _util2.default.ajax({
-	        url: '/flowManage/runningJobs',
-	        data: {
-	            projId: projId
+	            things_id: id
 	        }
 	    });
 	};
 	
 	/**
-	 * [onlineCronJobs 获取在线的周期作业]
-	 * @param  {[type]} projId [项目id]
-	 * @return {[type]}        [description]
+	 * 收藏
 	 */
-	service.onlineCronJobs = function (projId) {
+	service.favorite = function (id) {
 	    return _util2.default.ajax({
-	        url: '/flowManage/onlineCronJobs',
+	        url: '/home/favorite',
 	        data: {
-	            projId: projId
+	            things_id: id
 	        }
 	    });
 	};
 	
-	//停止在线的周期作业
-	service.stopCronJob = function (projId, cronTransId) {
+	/**
+	 * 收藏
+	 */
+	service.favorite = function (id) {
 	    return _util2.default.ajax({
-	        url: '/flowManage/stopCronJob',
+	        url: '/home/favorite',
 	        data: {
-	            projId: projId,
-	            cronTransId: cronTransId
+	            things_id: id
 	        }
 	    });
 	};
 	
-	//获取需审批的操作日志
-	service.getTodoList = function (filter, page, pageSize, projId) {
+	/**
+	 * 获取趣事详情以及评论
+	 */
+	service.getFunnyThingsDetail = function (id) {
 	    return _util2.default.ajax({
-	        url: '/labelManage/listMasterOperatLog',
+	        url: '/home/getFunnyThingsDetail',
 	        data: {
-	            filter: filter,
-	            page: page,
-	            pageSize: pageSize,
-	            projId: projId
+	            things_id: id
 	        }
 	    });
 	};
 	
-	//显示操作日志
-	service.getOperatLog = function (filter, page, pageSize, projId) {
+	/**
+	 * 发表评论
+	 */
+	service.getFunnyThingsDetail = function (data) {
 	    return _util2.default.ajax({
-	        url: '/labelManage/listOperatLog',
+	        url: '/home/getFunnyThingsDetail',
 	        data: {
-	            filter: filter,
-	            page: page,
-	            pageSize: pageSize,
-	            projId: projId
+	            user_id: data.uid,
+	            things_id: data.thingsId,
+	            comment: data.comment
 	        }
 	    });
 	};
 	
-	//拒绝全部操作
-	service.rejectAll = function (id) {
+	/**
+	 * 获取个人详细信息
+	 */
+	service.getPersonalDetail = function (uid) {
 	    return _util2.default.ajax({
-	        url: '/labelManage/rejectAllOperats',
+	        url: '/home/getPersonalDetail',
 	        data: {
-	            projId: id //项目id
+	            user_id: uid
 	        }
 	    });
 	};
 	
-	//通过全部操作
-	service.passAll = function (id) {
+	/**
+	 * 获取我的收藏
+	 */
+	service.getMyFavorite = function (uid) {
 	    return _util2.default.ajax({
-	        url: '/labelManage/passAllOperates',
+	        url: '/home/getMyFavorite',
 	        data: {
-	            projId: id //项目id
+	            user_id: uid
 	        }
 	    });
 	};
 	
-	//拒绝指定操作
-	service.rejectOperat = function (id) {
+	/**
+	 * 获取和我有关评论
+	 */
+	service.getMyComment = function (uid) {
 	    return _util2.default.ajax({
-	        url: '/labelManage/rejectOperat',
+	        url: '/home/getMyComment',
 	        data: {
-	            logId: id //项目id
+	            user_id: uid
 	        }
 	    });
 	};
 	
-	//通过指定操作
-	service.passOperat = function (id) {
+	/**
+	 * 修改资料
+	 */
+	service.editMyData = function (data) {
 	    return _util2.default.ajax({
-	        url: '/labelManage/passOperate',
+	        url: '/home/editMyData',
 	        data: {
-	            logId: id //项目id
+	            user_id: data.uid,
+	            user_name: data.uname,
+	            photo: data.img,
+	            password: data.pwd
 	        }
 	    });
 	};
 	
-	//  直接在这里复制
-	// service.ajaxobj = () => {
-	//     return util.ajax({
-	// url: '',
-	// data:
-	//     })
-	// }
+	/**
+	 * 发表趣事
+	 */
+	service.sendThings = function (data) {
+	    return _util2.default.ajax({
+	        url: '/home/sendThings',
+	        data: {
+	            user_id: data.uid,
+	            content: data.content,
+	            photo: data.img
+	        }
+	    });
+	};
 
 /***/ },
 /* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	exports.__esModule = true;
-	
-	var _defineProperty = __webpack_require__(31);
-	
-	var _defineProperty2 = _interopRequireDefault(_defineProperty);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (obj, key, value) {
-	  if (key in obj) {
-	    (0, _defineProperty2.default)(obj, key, {
-	      value: value,
-	      enumerable: true,
-	      configurable: true,
-	      writable: true
-	    });
-	  } else {
-	    obj[key] = value;
-	  }
-	
-	  return obj;
-	};
-
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(32), __esModule: true };
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(33);
-	var $Object = __webpack_require__(26).Object;
-	module.exports = function defineProperty(it, key, desc){
-	  return $Object.defineProperty(it, key, desc);
-	};
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var $export = __webpack_require__(34);
-	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-	$export($export.S + $export.F * !__webpack_require__(43), 'Object', {defineProperty: __webpack_require__(39).f});
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var global    = __webpack_require__(35)
-	  , core      = __webpack_require__(26)
-	  , ctx       = __webpack_require__(36)
-	  , hide      = __webpack_require__(38)
-	  , PROTOTYPE = 'prototype';
-	
-	var $export = function(type, name, source){
-	  var IS_FORCED = type & $export.F
-	    , IS_GLOBAL = type & $export.G
-	    , IS_STATIC = type & $export.S
-	    , IS_PROTO  = type & $export.P
-	    , IS_BIND   = type & $export.B
-	    , IS_WRAP   = type & $export.W
-	    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
-	    , expProto  = exports[PROTOTYPE]
-	    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
-	    , key, own, out;
-	  if(IS_GLOBAL)source = name;
-	  for(key in source){
-	    // contains in native
-	    own = !IS_FORCED && target && target[key] !== undefined;
-	    if(own && key in exports)continue;
-	    // export native or passed
-	    out = own ? target[key] : source[key];
-	    // prevent global pollution for namespaces
-	    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-	    // bind timers to global for call from export context
-	    : IS_BIND && own ? ctx(out, global)
-	    // wrap global constructors for prevent change them in library
-	    : IS_WRAP && target[key] == out ? (function(C){
-	      var F = function(a, b, c){
-	        if(this instanceof C){
-	          switch(arguments.length){
-	            case 0: return new C;
-	            case 1: return new C(a);
-	            case 2: return new C(a, b);
-	          } return new C(a, b, c);
-	        } return C.apply(this, arguments);
-	      };
-	      F[PROTOTYPE] = C[PROTOTYPE];
-	      return F;
-	    // make static versions for prototype methods
-	    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-	    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-	    if(IS_PROTO){
-	      (exports.virtual || (exports.virtual = {}))[key] = out;
-	      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-	      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
-	    }
-	  }
-	};
-	// type bitmap
-	$export.F = 1;   // forced
-	$export.G = 2;   // global
-	$export.S = 4;   // static
-	$export.P = 8;   // proto
-	$export.B = 16;  // bind
-	$export.W = 32;  // wrap
-	$export.U = 64;  // safe
-	$export.R = 128; // real proto method for `library` 
-	module.exports = $export;
-
-/***/ },
-/* 35 */
-/***/ function(module, exports) {
-
-	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-	var global = module.exports = typeof window != 'undefined' && window.Math == Math
-	  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// optional / simple context binding
-	var aFunction = __webpack_require__(37);
-	module.exports = function(fn, that, length){
-	  aFunction(fn);
-	  if(that === undefined)return fn;
-	  switch(length){
-	    case 1: return function(a){
-	      return fn.call(that, a);
-	    };
-	    case 2: return function(a, b){
-	      return fn.call(that, a, b);
-	    };
-	    case 3: return function(a, b, c){
-	      return fn.call(that, a, b, c);
-	    };
-	  }
-	  return function(/* ...args */){
-	    return fn.apply(that, arguments);
-	  };
-	};
-
-/***/ },
-/* 37 */
-/***/ function(module, exports) {
-
-	module.exports = function(it){
-	  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
-	  return it;
-	};
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var dP         = __webpack_require__(39)
-	  , createDesc = __webpack_require__(47);
-	module.exports = __webpack_require__(43) ? function(object, key, value){
-	  return dP.f(object, key, createDesc(1, value));
-	} : function(object, key, value){
-	  object[key] = value;
-	  return object;
-	};
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var anObject       = __webpack_require__(40)
-	  , IE8_DOM_DEFINE = __webpack_require__(42)
-	  , toPrimitive    = __webpack_require__(46)
-	  , dP             = Object.defineProperty;
-	
-	exports.f = __webpack_require__(43) ? Object.defineProperty : function defineProperty(O, P, Attributes){
-	  anObject(O);
-	  P = toPrimitive(P, true);
-	  anObject(Attributes);
-	  if(IE8_DOM_DEFINE)try {
-	    return dP(O, P, Attributes);
-	  } catch(e){ /* empty */ }
-	  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
-	  if('value' in Attributes)O[P] = Attributes.value;
-	  return O;
-	};
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(41);
-	module.exports = function(it){
-	  if(!isObject(it))throw TypeError(it + ' is not an object!');
-	  return it;
-	};
-
-/***/ },
-/* 41 */
-/***/ function(module, exports) {
-
-	module.exports = function(it){
-	  return typeof it === 'object' ? it !== null : typeof it === 'function';
-	};
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = !__webpack_require__(43) && !__webpack_require__(44)(function(){
-	  return Object.defineProperty(__webpack_require__(45)('div'), 'a', {get: function(){ return 7; }}).a != 7;
-	});
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(44)(function(){
-	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
-	});
-
-/***/ },
-/* 44 */
-/***/ function(module, exports) {
-
-	module.exports = function(exec){
-	  try {
-	    return !!exec();
-	  } catch(e){
-	    return true;
-	  }
-	};
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(41)
-	  , document = __webpack_require__(35).document
-	  // in old IE typeof document.createElement is 'object'
-	  , is = isObject(document) && isObject(document.createElement);
-	module.exports = function(it){
-	  return is ? document.createElement(it) : {};
-	};
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(41);
-	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-	// and the second argument - flag - preferred type is a string
-	module.exports = function(it, S){
-	  if(!isObject(it))return it;
-	  var fn, val;
-	  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-	  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
-	  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-	  throw TypeError("Can't convert object to primitive value");
-	};
-
-/***/ },
-/* 47 */
-/***/ function(module, exports) {
-
-	module.exports = function(bitmap, value){
-	  return {
-	    enumerable  : !(bitmap & 1),
-	    configurable: !(bitmap & 2),
-	    writable    : !(bitmap & 4),
-	    value       : value
-	  };
-	};
-
-/***/ },
-/* 48 */
 /***/ function(module, exports) {
 
 	module.exports = "<header>\r\n    <div id=\"header\" class=\"row clearfix\">\r\n        <div id=\"logo\">\r\n            <a href=\"./index.php#!/index\"></a>\r\n        </div>\r\n        <ul id=\"nav\" class=\"menu-bar menu clearfix\">\r\n            <li id=\"highlight\">\r\n                <a href=\"/funnySharePlatform/index.php#!/index\" >热门</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/fresh\">新鲜</a>\r\n            </li>\r\n           \r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/word\">文字</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/img\">图片</a>\r\n            </li>         \r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/add\">投稿</a>\r\n            </li>\r\n        </ul>\r\n\r\n        <div id=\"loginBtn\">\r\n            <a href=\"javascript:;\" @click=\"showLoginBox()\">登录/注册</a>\r\n        </div>\r\n    </div>\r\n</header>\r\n";
 
 /***/ },
-/* 49 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(50)
+	__vue_script__ = __webpack_require__(32)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\footer.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(51)
+	__vue_template__ = __webpack_require__(33)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -28350,7 +27433,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-aae53698/footer.vue"
+	  var id = "_v-42c0ba18/footer.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -28359,7 +27442,7 @@
 	})()}
 
 /***/ },
-/* 50 */
+/* 32 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28376,24 +27459,24 @@
 	};
 
 /***/ },
-/* 51 */
+/* 33 */
 /***/ function(module, exports) {
 
 	module.exports = "<footer>\r\n    <p>SCAU Copyright ©  2016-华南农业大学.All rights reserved. </p>\r\n</footer>\r\n";
 
 /***/ },
-/* 52 */
+/* 34 */
 /***/ function(module, exports) {
 
 	module.exports = "<app-header></app-header>\r\n\r\n<router-view></router-view>\r\n\r\n<app-footer></app-footer>\r\n";
 
 /***/ },
-/* 53 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(54)
+	__vue_script__ = __webpack_require__(36)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
@@ -28414,7 +27497,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-29ffb1ba/Index.vue"
+	  var id = "_v-32542ffa/Index.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -28423,7 +27506,7 @@
 	})()}
 
 /***/ },
-/* 54 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28440,6 +27523,10 @@
 	
 	var _index2 = _interopRequireDefault(_index);
 	
+	var _service = __webpack_require__(29);
+	
+	var _service2 = _interopRequireDefault(_service);
+	
 	var _login = __webpack_require__(55);
 	
 	var _login2 = _interopRequireDefault(_login);
@@ -28454,10 +27541,19 @@
 		data: function data() {
 			return {
 				showLoginForm: false,
-				store: _index2.default
+				store: _index2.default,
+				funnyThingsList: [],
+				page: {
+					cur: 1,
+					totalNum: 0,
+					totalPage: 0
+				}
 			};
 		},
-		ready: function ready() {},
+		ready: function ready() {
+			var self = this;
+			self.getFunnyThingsList(self.page);
+		},
 	
 	
 		methods: {
@@ -28467,7 +27563,54 @@
 	
 			closeLoginBox: function closeLoginBox() {
 				_index2.default.showLoginForm = false;
+			},
+	
+			getFunnyThingsList: function getFunnyThingsList() {
+				var self = this;
+				_service2.default.getFunnyThingsList(self.page).done(function (res) {
+					self.funnyThingsList = res.data.list;
+					self.page.totalNum = res.data.totalNum;
+					self.page.totalPage = res.data.totalPage;
+				}).fail(function (res) {
+					util.dialog.alert({
+						msg: [res.msg]
+					});
+				});
+			},
+	
+			praiseUp: function praiseUp(id) {
+				var self = this;
+				_service2.default.praiseUp().done(function (res) {
+					alert('点赞成功！');
+				}).fail(function (res) {
+					util.dialog.alert({
+						msg: [res.msg]
+					});
+				});
+			},
+	
+			trampDown: function trampDown(id) {
+				var self = this;
+				_service2.default.trampDown().done(function (res) {
+					alert('踩成功！');
+				}).fail(function (res) {
+					util.dialog.alert({
+						msg: [res.msg]
+					});
+				});
+			},
+	
+			favorite: function favorite(id) {
+				var self = this;
+				_service2.default.trampDown().done(function (res) {
+					alert('收藏成功');
+				}).fail(function (res) {
+					util.dialog.alert({
+						msg: [res.msg]
+					});
+				});
 			}
+	
 		},
 	
 		watch: {
@@ -28477,15 +27620,40 @@
 				} else {
 					_index2.default.showLoginForm = false;
 				}
+			},
+			'page.cur': function pageCur(newVal, oldVal) {
+				var self = this;
+				self.page.cur = newVal;
+				self.getFunnyThingsList(self.page);
 			}
+	
 		},
 	
 		components: {
 			LoginBox: _login2.default
 		}
+	
 	};
 
 /***/ },
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
 /* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28512,7 +27680,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-3921bf60/login.vue"
+	  var id = "_v-92a28dc0/login.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -28598,7 +27766,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-aeb1d3ee/Add.vue"
+	  var id = "_v-2c862449/Add.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -28663,7 +27831,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-151c54c7/Comment.vue"
+	  var id = "_v-5a4a4307/Comment.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -28721,7 +27889,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-18025252/Edit.vue"
+	  var id = "_v-10050c12/Edit.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -28779,7 +27947,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-16e1e392/UserHome.vue"
+	  var id = "_v-7771bd52/UserHome.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {

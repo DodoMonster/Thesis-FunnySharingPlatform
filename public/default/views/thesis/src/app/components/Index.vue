@@ -3,6 +3,7 @@
 <script>
 	import vue from 'vue';
 	import store from '../../store/index.js';
+	import service from '../../service/service.js';
 	import LoginBox from './common/login.vue';
 
 	export default {
@@ -45,7 +46,7 @@
 					self.page.totalPage = res.data.totalPage;
 				}).fail(function(res){
 					util.dialog.alert({
-						msg:[res.msg];
+						msg:[res.msg],
 					});
 				});
 			},
@@ -57,7 +58,7 @@
 					alert('点赞成功！');
 				}).fail(function(res){
 					util.dialog.alert({
-						msg:[res.msg];
+						msg:[res.msg],
 					});
 				});
 			},
@@ -69,7 +70,7 @@
 					alert('踩成功！');
 				}).fail(function(res){
 					util.dialog.alert({
-						msg:[res.msg];
+						msg:[res.msg]
 					});
 				});
 			},
@@ -81,7 +82,7 @@
 					alert('收藏成功');
 				}).fail(function(res){
 					util.dialog.alert({
-						msg:[res.msg];
+						msg:[res.msg]
 					});
 				});
 			}
@@ -95,19 +96,18 @@
 				}else{
 					store.showLoginForm = false;
 				}
+			},
+			'page.cur':function(newVal,oldVal){
+				let self = this;
+				self.page.cur = newVal;
+				self.getFunnyThingsList(self.page);
 			}
+
 		},
 
 		components:{
 			LoginBox : LoginBox,
 		},
 
-		watch:{
-			'page.cur':function(newVal,oldVal){
-				let self = this;
-				self.page.cur = newVal;
-				self.getFunnyThingsList(self.page);
-			}
-		}
 	};
 </script>
