@@ -4,7 +4,7 @@ const vendors = [
     "vue",
     "jquery",
     "vue-router",
-    "es6-promise"
+    "hdp-vue-components"
 ];
 
 module.exports = {

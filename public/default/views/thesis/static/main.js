@@ -58,33 +58,29 @@
 	
 	var _vueRouter2 = _interopRequireDefault(_vueRouter);
 	
-	var _vueValidator = __webpack_require__(5);
+	__webpack_require__(5);
 	
-	var _vueValidator2 = _interopRequireDefault(_vueValidator);
-	
-	__webpack_require__(6);
-	
-	var _app = __webpack_require__(19);
+	var _app = __webpack_require__(18);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	var _Index = __webpack_require__(35);
+	var _Index = __webpack_require__(31);
 	
 	var _Index2 = _interopRequireDefault(_Index);
 	
-	var _Add = __webpack_require__(59);
+	var _Add = __webpack_require__(38);
 	
 	var _Add2 = _interopRequireDefault(_Add);
 	
-	var _Comment = __webpack_require__(62);
+	var _Comment = __webpack_require__(41);
 	
 	var _Comment2 = _interopRequireDefault(_Comment);
 	
-	var _Edit = __webpack_require__(65);
+	var _Edit = __webpack_require__(44);
 	
 	var _Edit2 = _interopRequireDefault(_Edit);
 	
-	var _UserHome = __webpack_require__(68);
+	var _UserHome = __webpack_require__(47);
 	
 	var _UserHome2 = _interopRequireDefault(_UserHome);
 	
@@ -23085,2628 +23081,13 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {/*!
-	 * vue-validator v2.1.7
-	 * (c) 2016 kazuya kawaguchi
-	 * Released under the MIT License.
-	 */
-	'use strict';
-	
-	var babelHelpers = {};
-	babelHelpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-	  return typeof obj;
-	} : function (obj) {
-	  return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-	};
-	
-	babelHelpers.classCallCheck = function (instance, Constructor) {
-	  if (!(instance instanceof Constructor)) {
-	    throw new TypeError("Cannot call a class as a function");
-	  }
-	};
-	
-	babelHelpers.createClass = function () {
-	  function defineProperties(target, props) {
-	    for (var i = 0; i < props.length; i++) {
-	      var descriptor = props[i];
-	      descriptor.enumerable = descriptor.enumerable || false;
-	      descriptor.configurable = true;
-	      if ("value" in descriptor) descriptor.writable = true;
-	      Object.defineProperty(target, descriptor.key, descriptor);
-	    }
-	  }
-	
-	  return function (Constructor, protoProps, staticProps) {
-	    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-	    if (staticProps) defineProperties(Constructor, staticProps);
-	    return Constructor;
-	  };
-	}();
-	
-	babelHelpers.inherits = function (subClass, superClass) {
-	  if (typeof superClass !== "function" && superClass !== null) {
-	    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-	  }
-	
-	  subClass.prototype = Object.create(superClass && superClass.prototype, {
-	    constructor: {
-	      value: subClass,
-	      enumerable: false,
-	      writable: true,
-	      configurable: true
-	    }
-	  });
-	  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-	};
-	
-	babelHelpers.possibleConstructorReturn = function (self, call) {
-	  if (!self) {
-	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	  }
-	
-	  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-	};
-	
-	babelHelpers;
-	/**
-	 * Utilties
-	 */
-	
-	// export default for holding the Vue reference
-	var exports$1 = {};
-	/**
-	 * warn
-	 *
-	 * @param {String} msg
-	 * @param {Error} [err]
-	 *
-	 */
-	
-	function warn(msg, err) {
-	  if (window.console) {
-	    console.warn('[vue-validator] ' + msg);
-	    if (err) {
-	      console.warn(err.stack);
-	    }
-	  }
-	}
-	
-	/**
-	 * empty
-	 *
-	 * @param {Array|Object} target
-	 * @return {Boolean}
-	 */
-	
-	function empty(target) {
-	  if (target === null || target === undefined) {
-	    return true;
-	  }
-	
-	  if (Array.isArray(target)) {
-	    if (target.length > 0) {
-	      return false;
-	    }
-	    if (target.length === 0) {
-	      return true;
-	    }
-	  } else if (exports$1.Vue.util.isPlainObject(target)) {
-	    for (var key in target) {
-	      if (exports$1.Vue.util.hasOwn(target, key)) {
-	        return false;
-	      }
-	    }
-	  }
-	
-	  return true;
-	}
-	
-	/**
-	 * each
-	 *
-	 * @param {Array|Object} target
-	 * @param {Function} iterator
-	 * @param {Object} [context]
-	 */
-	
-	function each(target, iterator, context) {
-	  if (Array.isArray(target)) {
-	    for (var i = 0; i < target.length; i++) {
-	      iterator.call(context || target[i], target[i], i);
-	    }
-	  } else if (exports$1.Vue.util.isPlainObject(target)) {
-	    var hasOwn = exports$1.Vue.util.hasOwn;
-	    for (var key in target) {
-	      if (hasOwn(target, key)) {
-	        iterator.call(context || target[key], target[key], key);
-	      }
-	    }
-	  }
-	}
-	
-	/**
-	 * pull
-	 *
-	 * @param {Array} arr
-	 * @param {Object} item
-	 * @return {Object|null}
-	 */
-	
-	function pull(arr, item) {
-	  var index = exports$1.Vue.util.indexOf(arr, item);
-	  return ~index ? arr.splice(index, 1) : null;
-	}
-	
-	/**
-	 * trigger
-	 *
-	 * @param {Element} el
-	 * @param {String} event
-	 * @param {Object} [args]
-	 */
-	
-	function trigger(el, event, args) {
-	  var e = document.createEvent('HTMLEvents');
-	  e.initEvent(event, true, false);
-	
-	  if (args) {
-	    for (var prop in args) {
-	      e[prop] = args[prop];
-	    }
-	  }
-	
-	  // Due to Firefox bug, events fired on disabled
-	  // non-attached form controls can throw errors
-	  try {
-	    el.dispatchEvent(e);
-	  } catch (e) {}
-	}
-	
-	/**
-	 * Forgiving check for a promise
-	 *
-	 * @param {Object} p
-	 * @return {Boolean}
-	 */
-	
-	function isPromise(p) {
-	  return p && typeof p.then === 'function';
-	}
-	
-	/**
-	 * Togging classes
-	 *
-	 * @param {Element} el
-	 * @param {String} key
-	 * @param {Function} fn
-	 */
-	
-	function toggleClasses(el, key, fn) {
-	  key = key.trim();
-	  if (key.indexOf(' ') === -1) {
-	    fn(el, key);
-	    return;
-	  }
-	
-	  var keys = key.split(/\s+/);
-	  for (var i = 0, l = keys.length; i < l; i++) {
-	    fn(el, keys[i]);
-	  }
-	}
-	
-	/**
-	 * Fundamental validate functions
-	 */
-	
-	/**
-	 * required
-	 *
-	 * This function validate whether the value has been filled out.
-	 *
-	 * @param {*} val
-	 * @return {Boolean}
-	 */
-	
-	function required(val) {
-	  if (Array.isArray(val)) {
-	    if (val.length !== 0) {
-	      var valid = true;
-	      for (var i = 0, l = val.length; i < l; i++) {
-	        valid = required(val[i]);
-	        if (!valid) {
-	          break;
-	        }
-	      }
-	      return valid;
-	    } else {
-	      return false;
-	    }
-	  } else if (typeof val === 'number' || typeof val === 'function') {
-	    return true;
-	  } else if (typeof val === 'boolean') {
-	    return val;
-	  } else if (typeof val === 'string') {
-	    return val.length > 0;
-	  } else if (val !== null && (typeof val === 'undefined' ? 'undefined' : babelHelpers.typeof(val)) === 'object') {
-	    return Object.keys(val).length > 0;
-	  } else if (val === null || val === undefined) {
-	    return false;
-	  }
-	}
-	
-	/**
-	 * pattern
-	 *
-	 * This function validate whether the value matches the regex pattern
-	 *
-	 * @param val
-	 * @param {String} pat
-	 * @return {Boolean}
-	 */
-	
-	function pattern(val, pat) {
-	  if (typeof pat !== 'string') {
-	    return false;
-	  }
-	
-	  var match = pat.match(new RegExp('^/(.*?)/([gimy]*)$'));
-	  if (!match) {
-	    return false;
-	  }
-	
-	  return new RegExp(match[1], match[2]).test(val);
-	}
-	
-	/**
-	 * minlength
-	 *
-	 * This function validate whether the minimum length.
-	 *
-	 * @param {String|Array} val
-	 * @param {String|Number} min
-	 * @return {Boolean}
-	 */
-	
-	function minlength(val, min) {
-	  if (typeof val === 'string') {
-	    return isInteger(min, 10) && val.length >= parseInt(min, 10);
-	  } else if (Array.isArray(val)) {
-	    return val.length >= parseInt(min, 10);
-	  } else {
-	    return false;
-	  }
-	}
-	
-	/**
-	 * maxlength
-	 *
-	 * This function validate whether the maximum length.
-	 *
-	 * @param {String|Array} val
-	 * @param {String|Number} max
-	 * @return {Boolean}
-	 */
-	
-	function maxlength(val, max) {
-	  if (typeof val === 'string') {
-	    return isInteger(max, 10) && val.length <= parseInt(max, 10);
-	  } else if (Array.isArray(val)) {
-	    return val.length <= parseInt(max, 10);
-	  } else {
-	    return false;
-	  }
-	}
-	
-	/**
-	 * min
-	 *
-	 * This function validate whether the minimum value of the numberable value.
-	 *
-	 * @param {*} val
-	 * @param {*} arg minimum
-	 * @return {Boolean}
-	 */
-	
-	function min(val, arg) {
-	  return !isNaN(+val) && !isNaN(+arg) && +val >= +arg;
-	}
-	
-	/**
-	 * max
-	 *
-	 * This function validate whether the maximum value of the numberable value.
-	 *
-	 * @param {*} val
-	 * @param {*} arg maximum
-	 * @return {Boolean}
-	 */
-	
-	function max(val, arg) {
-	  return !isNaN(+val) && !isNaN(+arg) && +val <= +arg;
-	}
-	
-	/**
-	 * isInteger
-	 *
-	 * This function check whether the value of the string is integer.
-	 *
-	 * @param {String} val
-	 * @return {Boolean}
-	 * @private
-	 */
-	
-	function isInteger(val) {
-	  return (/^(-?[1-9]\d*|0)$/.test(val)
-	  );
-	}
-	
-	var validators = Object.freeze({
-	  required: required,
-	  pattern: pattern,
-	  minlength: minlength,
-	  maxlength: maxlength,
-	  min: min,
-	  max: max
-	});
-	
-	function Asset (Vue) {
-	  var extend = Vue.util.extend;
-	
-	  // set global validators asset
-	  var assets = Object.create(null);
-	  extend(assets, validators);
-	  Vue.options.validators = assets;
-	
-	  // set option merge strategy
-	  var strats = Vue.config.optionMergeStrategies;
-	  if (strats) {
-	    strats.validators = function (parent, child) {
-	      if (!child) {
-	        return parent;
-	      }
-	      if (!parent) {
-	        return child;
-	      }
-	      var ret = Object.create(null);
-	      extend(ret, parent);
-	      for (var key in child) {
-	        ret[key] = child[key];
-	      }
-	      return ret;
-	    };
-	  }
-	
-	  /**
-	   * Register or retrieve a global validator definition.
-	   *
-	   * @param {String} id
-	   * @param {Function} definition
-	   */
-	
-	  Vue.validator = function (id, definition) {
-	    if (!definition) {
-	      return Vue.options['validators'][id];
-	    } else {
-	      Vue.options['validators'][id] = definition;
-	    }
-	  };
-	}
-	
-	function Override (Vue) {
-	  // override _init
-	  var init = Vue.prototype._init;
-	  Vue.prototype._init = function (options) {
-	    if (!this._validatorMaps) {
-	      this._validatorMaps = Object.create(null);
-	    }
-	    init.call(this, options);
-	  };
-	
-	  // override _destroy
-	  var destroy = Vue.prototype._destroy;
-	  Vue.prototype._destroy = function () {
-	    destroy.apply(this, arguments);
-	    this._validatorMaps = null;
-	  };
-	}
-	
-	var VALIDATE_UPDATE = '__vue-validator-validate-update__';
-	var PRIORITY_VALIDATE = 4096;
-	var PRIORITY_VALIDATE_CLASS = 32;
-	var REGEX_FILTER = /[^|]\|[^|]/;
-	var REGEX_VALIDATE_DIRECTIVE = /^v-validate(?:$|:(.*)$)/;
-	var REGEX_EVENT = /^v-on:|^@/;
-	
-	var classId = 0; // ID for validation class
-	
-	
-	function ValidateClass (Vue) {
-	  var vIf = Vue.directive('if');
-	  var FragmentFactory = Vue.FragmentFactory;
-	  var _Vue$util = Vue.util;
-	  var toArray = _Vue$util.toArray;
-	  var replace = _Vue$util.replace;
-	  var createAnchor = _Vue$util.createAnchor;
-	
-	  /**
-	   * `v-validate-class` directive
-	   */
-	
-	  Vue.directive('validate-class', {
-	    terminal: true,
-	    priority: vIf.priority + PRIORITY_VALIDATE_CLASS,
-	
-	    bind: function bind() {
-	      var _this = this;
-	
-	      var id = String(classId++);
-	      this.setClassIds(this.el, id);
-	
-	      this.vm.$on(VALIDATE_UPDATE, this.cb = function (classIds, validation, results) {
-	        if (classIds.indexOf(id) > -1) {
-	          validation.updateClasses(results, _this.frag.node);
-	        }
-	      });
-	
-	      this.setupFragment();
-	    },
-	    unbind: function unbind() {
-	      this.vm.$off(VALIDATE_UPDATE, this.cb);
-	      this.teardownFragment();
-	    },
-	    setClassIds: function setClassIds(el, id) {
-	      var childNodes = toArray(el.childNodes);
-	      for (var i = 0, l = childNodes.length; i < l; i++) {
-	        var element = childNodes[i];
-	        if (element.nodeType === 1) {
-	          var hasAttrs = element.hasAttributes();
-	          var attrs = hasAttrs && toArray(element.attributes);
-	          for (var k = 0, _l = attrs.length; k < _l; k++) {
-	            var attr = attrs[k];
-	            if (attr.name.match(REGEX_VALIDATE_DIRECTIVE)) {
-	              var existingId = element.getAttribute(VALIDATE_UPDATE);
-	              var value = existingId ? existingId + ',' + id : id;
-	              element.setAttribute(VALIDATE_UPDATE, value);
-	            }
-	          }
-	        }
-	
-	        if (element.hasChildNodes()) {
-	          this.setClassIds(element, id);
-	        }
-	      }
-	    },
-	    setupFragment: function setupFragment() {
-	      this.anchor = createAnchor('v-validate-class');
-	      replace(this.el, this.anchor);
-	
-	      this.factory = new FragmentFactory(this.vm, this.el);
-	      this.frag = this.factory.create(this._host, this._scope, this._frag);
-	      this.frag.before(this.anchor);
-	    },
-	    teardownFragment: function teardownFragment() {
-	      if (this.frag) {
-	        this.frag.remove();
-	        this.frag = null;
-	        this.factory = null;
-	      }
-	
-	      replace(this.anchor, this.el);
-	      this.anchor = null;
-	    }
-	  });
-	}
-	
-	function Validate (Vue) {
-	  var FragmentFactory = Vue.FragmentFactory;
-	  var parseDirective = Vue.parsers.directive.parseDirective;
-	  var _Vue$util = Vue.util;
-	  var inBrowser = _Vue$util.inBrowser;
-	  var bind = _Vue$util.bind;
-	  var on = _Vue$util.on;
-	  var off = _Vue$util.off;
-	  var createAnchor = _Vue$util.createAnchor;
-	  var replace = _Vue$util.replace;
-	  var camelize = _Vue$util.camelize;
-	  var isPlainObject = _Vue$util.isPlainObject;
-	
-	  // Test for IE10/11 textarea placeholder clone bug
-	
-	  function checkTextareaCloneBug() {
-	    if (inBrowser) {
-	      var t = document.createElement('textarea');
-	      t.placeholder = 't';
-	      return t.cloneNode(true).value === 't';
-	    } else {
-	      return false;
-	    }
-	  }
-	  var hasTextareaCloneBug = checkTextareaCloneBug();
-	
-	  /**
-	   * `v-validate` directive
-	   */
-	
-	  Vue.directive('validate', {
-	    deep: true,
-	    terminal: true,
-	    priority: PRIORITY_VALIDATE,
-	    params: ['group', 'field', 'detect-blur', 'detect-change', 'initial', 'classes'],
-	
-	    paramWatchers: {
-	      detectBlur: function detectBlur(val, old) {
-	        if (this._invalid) {
-	          return;
-	        }
-	        this.validation.detectBlur = this.isDetectBlur(val);
-	        this.validator.validate(this.field);
-	      },
-	      detectChange: function detectChange(val, old) {
-	        if (this._invalid) {
-	          return;
-	        }
-	        this.validation.detectChange = this.isDetectChange(val);
-	        this.validator.validate(this.field);
-	      }
-	    },
-	
-	    bind: function bind() {
-	      var el = this.el;
-	
-	      if (process.env.NODE_ENV !== 'production' && el.__vue__) {
-	        warn('v-validate="' + this.expression + '" cannot be used on an instance root element.');
-	        this._invalid = true;
-	        return;
-	      }
-	
-	      if (process.env.NODE_ENV !== 'production' && (el.hasAttribute('v-if') || el.hasAttribute('v-for'))) {
-	        warn('v-validate cannot be used `v-if` or `v-for` build-in terminal directive ' + 'on an element. these is wrapped with `<template>` or other tags: ' + '(e.g. <validator name="validator">' + '<template v-if="hidden">' + '<input type="text" v-validate:field1="[\'required\']">' + '</template>' + '</validator>).');
-	        this._invalid = true;
-	        return;
-	      }
-	
-	      if (process.env.NODE_ENV !== 'production' && !(this.arg || this.params.field)) {
-	        warn('you need specify field name for v-validate directive.');
-	        this._invalid = true;
-	        return;
-	      }
-	
-	      var validatorName = this.vm.$options._validator;
-	      if (process.env.NODE_ENV !== 'production' && !validatorName) {
-	        warn('you need to wrap the elements to be validated in a <validator> element: ' + '(e.g. <validator name="validator">' + '<input type="text" v-validate:field1="[\'required\']">' + '</validator>).');
-	        this._invalid = true;
-	        return;
-	      }
-	
-	      var raw = el.getAttribute('v-model');
-	
-	      var _parseModelRaw = this.parseModelRaw(raw);
-	
-	      var model = _parseModelRaw.model;
-	      var filters = _parseModelRaw.filters;
-	
-	      this.model = model;
-	
-	      this.setupFragment();
-	      this.setupValidate(validatorName, model, filters);
-	      this.listen();
-	    },
-	    update: function update(value, old) {
-	      if (!value || this._invalid) {
-	        return;
-	      }
-	
-	      if (isPlainObject(value) || old && isPlainObject(old)) {
-	        this.handleObject(value, old, this.params.initial);
-	      } else if (Array.isArray(value) || old && Array.isArray(old)) {
-	        this.handleArray(value, old, this.params.initial);
-	      }
-	
-	      var options = { field: this.field };
-	      if (this.frag) {
-	        options.el = this.frag.node;
-	      }
-	      this.validator.validate(options);
-	    },
-	    unbind: function unbind() {
-	      if (this._invalid) {
-	        return;
-	      }
-	
-	      this.unlisten();
-	      this.teardownValidate();
-	      this.teardownFragment();
-	
-	      this.model = null;
-	    },
-	    parseModelRaw: function parseModelRaw(raw) {
-	      if (REGEX_FILTER.test(raw)) {
-	        var parsed = parseDirective(raw);
-	        return { model: parsed.expression, filters: parsed.filters };
-	      } else {
-	        return { model: raw };
-	      }
-	    },
-	    setupValidate: function setupValidate(name, model, filters) {
-	      var params = this.params;
-	      var validator = this.validator = this.vm._validatorMaps[name];
-	
-	      this.field = camelize(this.arg ? this.arg : params.field);
-	
-	      this.validation = validator.manageValidation(this.field, model, this.vm, this.getElementFrom(this.frag), this._scope, filters, params.initial, this.isDetectBlur(params.detectBlur), this.isDetectChange(params.detectChange));
-	
-	      isPlainObject(params.classes) && this.validation.setValidationClasses(params.classes);
-	
-	      params.group && validator.addGroupValidation(params.group, this.field);
-	    },
-	    listen: function listen() {
-	      var model = this.model;
-	      var validation = this.validation;
-	      var el = this.getElementFrom(this.frag);
-	
-	      this.onBlur = bind(validation.listener, validation);
-	      on(el, 'blur', this.onBlur);
-	      if ((el.type === 'radio' || el.tagName === 'SELECT') && !model) {
-	        this.onChange = bind(validation.listener, validation);
-	        on(el, 'change', this.onChange);
-	      } else if (el.type === 'checkbox') {
-	        if (!model) {
-	          this.onChange = bind(validation.listener, validation);
-	          on(el, 'change', this.onChange);
-	        } else {
-	          this.onClick = bind(validation.listener, validation);
-	          on(el, 'click', this.onClick);
-	        }
-	      } else {
-	        if (!model) {
-	          this.onInput = bind(validation.listener, validation);
-	          on(el, 'input', this.onInput);
-	        }
-	      }
-	    },
-	    unlisten: function unlisten() {
-	      var el = this.getElementFrom(this.frag);
-	
-	      if (this.onInput) {
-	        off(el, 'input', this.onInput);
-	        this.onInput = null;
-	      }
-	
-	      if (this.onClick) {
-	        off(el, 'click', this.onClick);
-	        this.onClick = null;
-	      }
-	
-	      if (this.onChange) {
-	        off(el, 'change', this.onChange);
-	        this.onChange = null;
-	      }
-	
-	      if (this.onBlur) {
-	        off(el, 'blur', this.onBlur);
-	        this.onBlur = null;
-	      }
-	    },
-	    teardownValidate: function teardownValidate() {
-	      if (this.validator && this.validation) {
-	        var el = this.getElementFrom(this.frag);
-	
-	        this.params.group && this.validator.removeGroupValidation(this.params.group, this.field);
-	
-	        this.validator.unmanageValidation(this.field, el);
-	
-	        this.validator = null;
-	        this.validation = null;
-	        this.field = null;
-	      }
-	    },
-	    setupFragment: function setupFragment() {
-	      this.anchor = createAnchor('v-validate');
-	      replace(this.el, this.anchor);
-	
-	      this.factory = new FragmentFactory(this.vm, this.shimNode(this.el));
-	      this.frag = this.factory.create(this._host, this._scope, this._frag);
-	      this.frag.before(this.anchor);
-	    },
-	    teardownFragment: function teardownFragment() {
-	      if (this.frag) {
-	        this.frag.remove();
-	        this.frag = null;
-	        this.factory = null;
-	      }
-	
-	      replace(this.anchor, this.el);
-	      this.anchor = null;
-	    },
-	    handleArray: function handleArray(value, old, initial) {
-	      var _this = this;
-	
-	      old && this.validation.resetValidation();
-	
-	      each(value, function (val) {
-	        _this.validation.setValidation(val, undefined, undefined, initial);
-	      });
-	    },
-	    handleObject: function handleObject(value, old, initial) {
-	      var _this2 = this;
-	
-	      old && this.validation.resetValidation();
-	
-	      each(value, function (val, key) {
-	        if (isPlainObject(val)) {
-	          if ('rule' in val) {
-	            var msg = 'message' in val ? val.message : null;
-	            var init = 'initial' in val ? val.initial : null;
-	            _this2.validation.setValidation(key, val.rule, msg, init || initial);
-	          }
-	        } else {
-	          _this2.validation.setValidation(key, val, undefined, initial);
-	        }
-	      });
-	    },
-	    isDetectBlur: function isDetectBlur(detectBlur) {
-	      return detectBlur === undefined || detectBlur === 'on' || detectBlur === true;
-	    },
-	    isDetectChange: function isDetectChange(detectChange) {
-	      return detectChange === undefined || detectChange === 'on' || detectChange === true;
-	    },
-	    isInitialNoopValidation: function isInitialNoopValidation(initial) {
-	      return initial === 'off' || initial === false;
-	    },
-	    shimNode: function shimNode(node) {
-	      var ret = node;
-	      if (hasTextareaCloneBug) {
-	        if (node.tagName === 'TEXTAREA') {
-	          ret = node.cloneNode(true);
-	          ret.value = node.value;
-	          var i = ret.childNodes.length;
-	          while (i--) {
-	            ret.removeChild(ret.childNodes[i]);
-	          }
-	        }
-	      }
-	      return ret;
-	    },
-	    getElementFrom: function getElementFrom(frag) {
-	      return frag.single ? frag.node : frag.node.nextSibling;
-	    }
-	  });
-	}
-	
-	/**
-	 * BaseValidation class
-	 */
-	
-	var BaseValidation = function () {
-	  function BaseValidation(field, model, vm, el, scope, validator, filters, detectBlur, detectChange) {
-	    babelHelpers.classCallCheck(this, BaseValidation);
-	
-	    this.field = field;
-	    this.touched = false;
-	    this.dirty = false;
-	    this.modified = false;
-	
-	    this._modified = false;
-	    this._model = model;
-	    this._filters = filters;
-	    this._validator = validator;
-	    this._vm = vm;
-	    this._el = el;
-	    this._forScope = scope;
-	    this._init = this._getValue(el);
-	    this._validators = {};
-	    this._detectBlur = detectBlur;
-	    this._detectChange = detectChange;
-	    this._classes = {};
-	  }
-	
-	  BaseValidation.prototype.manageElement = function manageElement(el, initial) {
-	    var _this = this;
-	
-	    var scope = this._getScope();
-	    var model = this._model;
-	
-	    this._initial = initial;
-	
-	    var classIds = el.getAttribute(VALIDATE_UPDATE);
-	    if (classIds) {
-	      el.removeAttribute(VALIDATE_UPDATE);
-	      this._classIds = classIds.split(',');
-	    }
-	
-	    if (model) {
-	      el.value = this._evalModel(model, this._filters);
-	      this._unwatch = scope.$watch(model, function (val, old) {
-	        if (val !== old) {
-	          if (_this.guardValidate(el, 'input')) {
-	            return;
-	          }
-	
-	          _this.handleValidate(el, { noopable: _this._initial });
-	          if (_this._initial) {
-	            _this._initial = null;
-	          }
-	        }
-	      }, { deep: true });
-	    }
-	  };
-	
-	  BaseValidation.prototype.unmanageElement = function unmanageElement(el) {
-	    this._unwatch && this._unwatch();
-	  };
-	
-	  BaseValidation.prototype.resetValidation = function resetValidation() {
-	    var _this2 = this;
-	
-	    var keys = Object.keys(this._validators);
-	    each(keys, function (key, index) {
-	      _this2._validators[key] = null;
-	      delete _this2._validators[key];
-	    });
-	  };
-	
-	  BaseValidation.prototype.resetValidationNoopable = function resetValidationNoopable() {
-	    each(this._validators, function (descriptor, key) {
-	      if (descriptor.initial && !descriptor._isNoopable) {
-	        descriptor._isNoopable = true;
-	      }
-	    });
-	  };
-	
-	  BaseValidation.prototype.setValidation = function setValidation(name, arg, msg, initial) {
-	    var validator = this._validators[name];
-	    if (!validator) {
-	      validator = this._validators[name] = {};
-	      validator.name = name;
-	    }
-	
-	    validator.arg = arg;
-	    if (msg) {
-	      validator.msg = msg;
-	    }
-	
-	    if (initial) {
-	      validator.initial = initial;
-	      validator._isNoopable = true;
-	    }
-	  };
-	
-	  BaseValidation.prototype.setValidationClasses = function setValidationClasses(classes) {
-	    var _this3 = this;
-	
-	    each(classes, function (value, key) {
-	      _this3._classes[key] = value;
-	    });
-	  };
-	
-	  BaseValidation.prototype.willUpdateFlags = function willUpdateFlags() {
-	    var touched = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
-	
-	    touched && this.willUpdateTouched(this._el, 'blur');
-	    this.willUpdateDirty(this._el);
-	    this.willUpdateModified(this._el);
-	  };
-	
-	  BaseValidation.prototype.willUpdateTouched = function willUpdateTouched(el, type) {
-	    if (type && type === 'blur') {
-	      this.touched = true;
-	      this._fireEvent(el, 'touched');
-	    }
-	  };
-	
-	  BaseValidation.prototype.willUpdateDirty = function willUpdateDirty(el) {
-	    if (!this.dirty && this._checkModified(el)) {
-	      this.dirty = true;
-	      this._fireEvent(el, 'dirty');
-	    }
-	  };
-	
-	  BaseValidation.prototype.willUpdateModified = function willUpdateModified(el) {
-	    this.modified = this._checkModified(el);
-	    if (this._modified !== this.modified) {
-	      this._fireEvent(el, 'modified', { modified: this.modified });
-	      this._modified = this.modified;
-	    }
-	  };
-	
-	  BaseValidation.prototype.listener = function listener(e) {
-	    if (this.guardValidate(e.target, e.type)) {
-	      return;
-	    }
-	
-	    this.handleValidate(e.target, { type: e.type });
-	  };
-	
-	  BaseValidation.prototype.handleValidate = function handleValidate(el) {
-	    var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	
-	    var _ref$type = _ref.type;
-	    var type = _ref$type === undefined ? null : _ref$type;
-	    var _ref$noopable = _ref.noopable;
-	    var noopable = _ref$noopable === undefined ? false : _ref$noopable;
-	
-	    this.willUpdateTouched(el, type);
-	    this.willUpdateDirty(el);
-	    this.willUpdateModified(el);
-	
-	    this._validator.validate({ field: this.field, el: el, noopable: noopable });
-	  };
-	
-	  BaseValidation.prototype.validate = function validate(cb) {
-	    var _this4 = this;
-	
-	    var noopable = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
-	    var el = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
-	
-	    var _ = exports$1.Vue.util;
-	
-	    var results = {};
-	    var errors = [];
-	    var valid = true;
-	
-	    this._runValidators(function (descriptor, name, done) {
-	      var asset = _this4._resolveValidator(name);
-	      var validator = null;
-	      var msg = null;
-	
-	      if (_.isPlainObject(asset)) {
-	        if (asset.check && typeof asset.check === 'function') {
-	          validator = asset.check;
-	        }
-	        if (asset.message) {
-	          msg = asset.message;
-	        }
-	      } else if (typeof asset === 'function') {
-	        validator = asset;
-	      }
-	
-	      if (descriptor.msg) {
-	        msg = descriptor.msg;
-	      }
-	
-	      if (noopable) {
-	        results[name] = false;
-	        return done();
-	      }
-	
-	      if (descriptor._isNoopable) {
-	        results[name] = false;
-	        descriptor._isNoopable = null;
-	        return done();
-	      }
-	
-	      if (validator) {
-	        var value = _this4._getValue(_this4._el);
-	        _this4._invokeValidator(_this4._vm, validator, value, descriptor.arg, function (ret, err) {
-	          if (!ret) {
-	            valid = false;
-	            if (err) {
-	              // async error message
-	              errors.push({ validator: name, message: err });
-	              results[name] = err;
-	            } else if (msg) {
-	              var error = { validator: name };
-	              error.message = typeof msg === 'function' ? msg.call(_this4._vm, _this4.field, descriptor.arg) : msg;
-	              errors.push(error);
-	              results[name] = error.message;
-	            } else {
-	              results[name] = !ret;
-	            }
-	          } else {
-	            results[name] = !ret;
-	          }
-	
-	          done();
-	        });
-	      } else {
-	        done();
-	      }
-	    }, function () {
-	      // finished
-	      _this4._fireEvent(_this4._el, valid ? 'valid' : 'invalid');
-	
-	      var props = {
-	        valid: valid,
-	        invalid: !valid,
-	        touched: _this4.touched,
-	        untouched: !_this4.touched,
-	        dirty: _this4.dirty,
-	        pristine: !_this4.dirty,
-	        modified: _this4.modified
-	      };
-	      if (!empty(errors)) {
-	        props.errors = errors;
-	      }
-	      _.extend(results, props);
-	
-	      _this4.willUpdateClasses(results, el);
-	
-	      cb(results);
-	    });
-	  };
-	
-	  BaseValidation.prototype.resetFlags = function resetFlags() {
-	    this.touched = false;
-	    this.dirty = false;
-	    this.modified = false;
-	    this._modified = false;
-	  };
-	
-	  BaseValidation.prototype.reset = function reset() {
-	    this.resetValidationNoopable();
-	    this.resetFlags();
-	    this._init = this._getValue(this._el);
-	  };
-	
-	  BaseValidation.prototype.willUpdateClasses = function willUpdateClasses(results) {
-	    var _this5 = this;
-	
-	    var el = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	
-	    if (this._checkClassIds(el)) {
-	      (function () {
-	        var classIds = _this5._getClassIds(el);
-	        _this5.vm.$nextTick(function () {
-	          _this5.vm.$emit(VALIDATE_UPDATE, classIds, _this5, results);
-	        });
-	      })();
-	    } else {
-	      this.updateClasses(results);
-	    }
-	  };
-	
-	  BaseValidation.prototype.updateClasses = function updateClasses(results) {
-	    var el = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	
-	    this._updateClasses(el || this._el, results);
-	  };
-	
-	  BaseValidation.prototype.guardValidate = function guardValidate(el, type) {
-	    if (type && type === 'blur' && !this.detectBlur) {
-	      return true;
-	    }
-	
-	    if (type && type === 'input' && !this.detectChange) {
-	      return true;
-	    }
-	
-	    if (type && type === 'change' && !this.detectChange) {
-	      return true;
-	    }
-	
-	    if (type && type === 'click' && !this.detectChange) {
-	      return true;
-	    }
-	
-	    return false;
-	  };
-	
-	  BaseValidation.prototype._getValue = function _getValue(el) {
-	    return el.value;
-	  };
-	
-	  BaseValidation.prototype._getScope = function _getScope() {
-	    return this._forScope || this._vm;
-	  };
-	
-	  BaseValidation.prototype._getClassIds = function _getClassIds(el) {
-	    return this._classIds;
-	  };
-	
-	  BaseValidation.prototype._checkModified = function _checkModified(target) {
-	    return this._init !== this._getValue(target);
-	  };
-	
-	  BaseValidation.prototype._checkClassIds = function _checkClassIds(el) {
-	    return this._getClassIds(el);
-	  };
-	
-	  BaseValidation.prototype._fireEvent = function _fireEvent(el, type, args) {
-	    trigger(el, type, args);
-	  };
-	
-	  BaseValidation.prototype._evalModel = function _evalModel(model, filters) {
-	    var scope = this._getScope();
-	
-	    var val = null;
-	    if (filters) {
-	      val = scope.$get(model);
-	      return filters ? this._applyFilters(val, null, filters) : val;
-	    } else {
-	      val = scope.$get(model);
-	      return val === undefined || val === null ? '' : val;
-	    }
-	  };
-	
-	  BaseValidation.prototype._updateClasses = function _updateClasses(el, results) {
-	    this._toggleValid(el, results.valid);
-	    this._toggleTouched(el, results.touched);
-	    this._togglePristine(el, results.pristine);
-	    this._toggleModfied(el, results.modified);
-	  };
-	
-	  BaseValidation.prototype._toggleValid = function _toggleValid(el, valid) {
-	    var _util$Vue$util = exports$1.Vue.util;
-	    var addClass = _util$Vue$util.addClass;
-	    var removeClass = _util$Vue$util.removeClass;
-	
-	    var validClass = this._classes.valid || 'valid';
-	    var invalidClass = this._classes.invalid || 'invalid';
-	
-	    if (valid) {
-	      toggleClasses(el, validClass, addClass);
-	      toggleClasses(el, invalidClass, removeClass);
-	    } else {
-	      toggleClasses(el, validClass, removeClass);
-	      toggleClasses(el, invalidClass, addClass);
-	    }
-	  };
-	
-	  BaseValidation.prototype._toggleTouched = function _toggleTouched(el, touched) {
-	    var _util$Vue$util2 = exports$1.Vue.util;
-	    var addClass = _util$Vue$util2.addClass;
-	    var removeClass = _util$Vue$util2.removeClass;
-	
-	    var touchedClass = this._classes.touched || 'touched';
-	    var untouchedClass = this._classes.untouched || 'untouched';
-	
-	    if (touched) {
-	      toggleClasses(el, touchedClass, addClass);
-	      toggleClasses(el, untouchedClass, removeClass);
-	    } else {
-	      toggleClasses(el, touchedClass, removeClass);
-	      toggleClasses(el, untouchedClass, addClass);
-	    }
-	  };
-	
-	  BaseValidation.prototype._togglePristine = function _togglePristine(el, pristine) {
-	    var _util$Vue$util3 = exports$1.Vue.util;
-	    var addClass = _util$Vue$util3.addClass;
-	    var removeClass = _util$Vue$util3.removeClass;
-	
-	    var pristineClass = this._classes.pristine || 'pristine';
-	    var dirtyClass = this._classes.dirty || 'dirty';
-	
-	    if (pristine) {
-	      toggleClasses(el, pristineClass, addClass);
-	      toggleClasses(el, dirtyClass, removeClass);
-	    } else {
-	      toggleClasses(el, pristineClass, removeClass);
-	      toggleClasses(el, dirtyClass, addClass);
-	    }
-	  };
-	
-	  BaseValidation.prototype._toggleModfied = function _toggleModfied(el, modified) {
-	    var _util$Vue$util4 = exports$1.Vue.util;
-	    var addClass = _util$Vue$util4.addClass;
-	    var removeClass = _util$Vue$util4.removeClass;
-	
-	    var modifiedClass = this._classes.modified || 'modified';
-	
-	    if (modified) {
-	      toggleClasses(el, modifiedClass, addClass);
-	    } else {
-	      toggleClasses(el, modifiedClass, removeClass);
-	    }
-	  };
-	
-	  BaseValidation.prototype._applyFilters = function _applyFilters(value, oldValue, filters, write) {
-	    var resolveAsset = exports$1.Vue.util.resolveAsset;
-	    var scope = this._getScope();
-	
-	    var filter = void 0,
-	        fn = void 0,
-	        args = void 0,
-	        arg = void 0,
-	        offset = void 0,
-	        i = void 0,
-	        l = void 0,
-	        j = void 0,
-	        k = void 0;
-	    for (i = 0, l = filters.length; i < l; i++) {
-	      filter = filters[i];
-	      fn = resolveAsset(this._vm.$options, 'filters', filter.name);
-	      if (!fn) {
-	        continue;
-	      }
-	
-	      fn = write ? fn.write : fn.read || fn;
-	      if (typeof fn !== 'function') {
-	        continue;
-	      }
-	
-	      args = write ? [value, oldValue] : [value];
-	      offset = write ? 2 : 1;
-	      if (filter.args) {
-	        for (j = 0, k = filter.args.length; j < k; j++) {
-	          arg = filter.args[j];
-	          args[j + offset] = arg.dynamic ? scope.$get(arg.value) : arg.value;
-	        }
-	      }
-	
-	      value = fn.apply(this._vm, args);
-	    }
-	
-	    return value;
-	  };
-	
-	  BaseValidation.prototype._runValidators = function _runValidators(fn, cb) {
-	    var validators = this._validators;
-	    var length = Object.keys(validators).length;
-	
-	    var count = 0;
-	    each(validators, function (descriptor, name) {
-	      fn(descriptor, name, function () {
-	        ++count;
-	        count >= length && cb();
-	      });
-	    });
-	  };
-	
-	  BaseValidation.prototype._invokeValidator = function _invokeValidator(vm, validator, val, arg, cb) {
-	    var future = validator.call(this, val, arg);
-	    if (typeof future === 'function') {
-	      // function 
-	      future(function () {
-	        // resolve
-	        cb(true);
-	      }, function (msg) {
-	        // reject
-	        cb(false, msg);
-	      });
-	    } else if (isPromise(future)) {
-	      // promise
-	      future.then(function () {
-	        // resolve
-	        cb(true);
-	      }, function (msg) {
-	        // reject
-	        cb(false, msg);
-	      }).catch(function (err) {
-	        cb(false, err.message);
-	      });
-	    } else {
-	      // sync
-	      cb(future);
-	    }
-	  };
-	
-	  BaseValidation.prototype._resolveValidator = function _resolveValidator(name) {
-	    var resolveAsset = exports$1.Vue.util.resolveAsset;
-	    return resolveAsset(this._vm.$options, 'validators', name);
-	  };
-	
-	  babelHelpers.createClass(BaseValidation, [{
-	    key: 'vm',
-	    get: function get() {
-	      return this._vm;
-	    }
-	  }, {
-	    key: 'el',
-	    get: function get() {
-	      return this._el;
-	    }
-	  }, {
-	    key: 'detectChange',
-	    get: function get() {
-	      return this._detectChange;
-	    },
-	    set: function set(val) {
-	      this._detectChange = val;
-	    }
-	  }, {
-	    key: 'detectBlur',
-	    get: function get() {
-	      return this._detectBlur;
-	    },
-	    set: function set(val) {
-	      this._detectBlur = val;
-	    }
-	  }]);
-	  return BaseValidation;
-	}();
-	
-	/**
-	 * CheckboxValidation class
-	 */
-	
-	var CheckboxValidation = function (_BaseValidation) {
-	  babelHelpers.inherits(CheckboxValidation, _BaseValidation);
-	
-	  function CheckboxValidation(field, model, vm, el, scope, validator, filters, detectBlur, detectChange) {
-	    babelHelpers.classCallCheck(this, CheckboxValidation);
-	
-	    var _this = babelHelpers.possibleConstructorReturn(this, _BaseValidation.call(this, field, model, vm, el, scope, validator, filters, detectBlur, detectChange));
-	
-	    _this._inits = [];
-	    return _this;
-	  }
-	
-	  CheckboxValidation.prototype.manageElement = function manageElement(el, initial) {
-	    var _this2 = this;
-	
-	    var scope = this._getScope();
-	    var item = this._addItem(el, initial);
-	
-	    var model = item.model = this._model;
-	    if (model) {
-	      var value = this._evalModel(model, this._filters);
-	      if (Array.isArray(value)) {
-	        this._setChecked(value, item.el);
-	        item.unwatch = scope.$watch(model, function (val, old) {
-	          if (val !== old) {
-	            if (_this2.guardValidate(item.el, 'change')) {
-	              return;
-	            }
-	
-	            _this2.handleValidate(item.el, { noopable: item.initial });
-	            if (item.initial) {
-	              item.initial = null;
-	            }
-	          }
-	        });
-	      } else {
-	        el.checked = value || false;
-	        this._init = el.checked;
-	        item.init = el.checked;
-	        item.value = el.value;
-	        item.unwatch = scope.$watch(model, function (val, old) {
-	          if (val !== old) {
-	            if (_this2.guardValidate(el, 'change')) {
-	              return;
-	            }
-	
-	            _this2.handleValidate(el, { noopable: item.initial });
-	            if (item.initial) {
-	              item.initial = null;
-	            }
-	          }
-	        });
-	      }
-	    } else {
-	      var options = { field: this.field, noopable: initial };
-	      if (this._checkClassIds(el)) {
-	        options.el = el;
-	      }
-	      this._validator.validate(options);
-	    }
-	  };
-	
-	  CheckboxValidation.prototype.unmanageElement = function unmanageElement(el) {
-	    var found = -1;
-	    each(this._inits, function (item, index) {
-	      if (item.el === el) {
-	        found = index;
-	        if (item.unwatch && item.model) {
-	          item.unwatch();
-	          item.unwatch = null;
-	          item.model = null;
-	        }
-	      }
-	    });
-	    if (found === -1) {
-	      return;
-	    }
-	
-	    this._inits.splice(found, 1);
-	    this._validator.validate({ field: this.field });
-	  };
-	
-	  CheckboxValidation.prototype.willUpdateFlags = function willUpdateFlags() {
-	    var _this3 = this;
-	
-	    var touched = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
-	
-	    each(this._inits, function (item, index) {
-	      touched && _this3.willUpdateTouched(item.el, 'blur');
-	      _this3.willUpdateDirty(item.el);
-	      _this3.willUpdateModified(item.el);
-	    });
-	  };
-	
-	  CheckboxValidation.prototype.reset = function reset() {
-	    this.resetValidationNoopable();
-	    this.resetFlags();
-	    each(this._inits, function (item, index) {
-	      item.init = item.el.checked;
-	      item.value = item.el.value;
-	    });
-	  };
-	
-	  CheckboxValidation.prototype.updateClasses = function updateClasses(results) {
-	    var _this4 = this;
-	
-	    var el = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	
-	    if (el) {
-	      // for another element
-	      this._updateClasses(el, results);
-	    } else {
-	      each(this._inits, function (item, index) {
-	        _this4._updateClasses(item.el, results);
-	      });
-	    }
-	  };
-	
-	  CheckboxValidation.prototype._addItem = function _addItem(el, initial) {
-	    var item = {
-	      el: el,
-	      init: el.checked,
-	      value: el.value,
-	      initial: initial
-	    };
-	
-	    var classIds = el.getAttribute(VALIDATE_UPDATE);
-	    if (classIds) {
-	      el.removeAttribute(VALIDATE_UPDATE);
-	      item.classIds = classIds.split(',');
-	    }
-	
-	    this._inits.push(item);
-	    return item;
-	  };
-	
-	  CheckboxValidation.prototype._setChecked = function _setChecked(values, el) {
-	    for (var i = 0, l = values.length; i < l; i++) {
-	      var value = values[i];
-	      if (!el.disabled && el.value === value && !el.checked) {
-	        el.checked = true;
-	      }
-	    }
-	  };
-	
-	  CheckboxValidation.prototype._getValue = function _getValue(el) {
-	    var _this5 = this;
-	
-	    if (!this._inits || this._inits.length === 0) {
-	      return el.checked;
-	    } else {
-	      var _ret = function () {
-	        var vals = [];
-	        each(_this5._inits, function (item, index) {
-	          item.el.checked && vals.push(item.el.value);
-	        });
-	        return {
-	          v: vals
-	        };
-	      }();
-	
-	      if ((typeof _ret === 'undefined' ? 'undefined' : babelHelpers.typeof(_ret)) === "object") return _ret.v;
-	    }
-	  };
-	
-	  CheckboxValidation.prototype._getClassIds = function _getClassIds(el) {
-	    var classIds = void 0;
-	    each(this._inits, function (item, index) {
-	      if (item.el === el) {
-	        classIds = item.classIds;
-	      }
-	    });
-	    return classIds;
-	  };
-	
-	  CheckboxValidation.prototype._checkModified = function _checkModified(target) {
-	    var _this6 = this;
-	
-	    if (this._inits.length === 0) {
-	      return this._init !== target.checked;
-	    } else {
-	      var _ret2 = function () {
-	        var modified = false;
-	        each(_this6._inits, function (item, index) {
-	          if (!modified) {
-	            modified = item.init !== item.el.checked;
-	          }
-	        });
-	        return {
-	          v: modified
-	        };
-	      }();
-	
-	      if ((typeof _ret2 === 'undefined' ? 'undefined' : babelHelpers.typeof(_ret2)) === "object") return _ret2.v;
-	    }
-	  };
-	
-	  return CheckboxValidation;
-	}(BaseValidation);
-	
-	/**
-	 * RadioValidation class
-	 */
-	
-	var RadioValidation = function (_BaseValidation) {
-	  babelHelpers.inherits(RadioValidation, _BaseValidation);
-	
-	  function RadioValidation(field, model, vm, el, scope, validator, filters, detectBlur, detectChange) {
-	    babelHelpers.classCallCheck(this, RadioValidation);
-	
-	    var _this = babelHelpers.possibleConstructorReturn(this, _BaseValidation.call(this, field, model, vm, el, scope, validator, filters, detectBlur, detectChange));
-	
-	    _this._inits = [];
-	    return _this;
-	  }
-	
-	  RadioValidation.prototype.manageElement = function manageElement(el, initial) {
-	    var _this2 = this;
-	
-	    var scope = this._getScope();
-	    var item = this._addItem(el, initial);
-	
-	    var model = item.model = this._model;
-	    if (model) {
-	      var value = this._evalModel(model, this._filters);
-	      this._setChecked(value, el, item);
-	      item.unwatch = scope.$watch(model, function (val, old) {
-	        if (val !== old) {
-	          if (_this2.guardValidate(item.el, 'change')) {
-	            return;
-	          }
-	
-	          _this2.handleValidate(el, { noopable: item.initial });
-	          if (item.initial) {
-	            item.initial = null;
-	          }
-	        }
-	      });
-	    } else {
-	      var options = { field: this.field, noopable: initial };
-	      if (this._checkClassIds(el)) {
-	        options.el = el;
-	      }
-	      this._validator.validate(options);
-	    }
-	  };
-	
-	  RadioValidation.prototype.unmanageElement = function unmanageElement(el) {
-	    var found = -1;
-	    each(this._inits, function (item, index) {
-	      if (item.el === el) {
-	        found = index;
-	      }
-	    });
-	    if (found === -1) {
-	      return;
-	    }
-	
-	    this._inits.splice(found, 1);
-	    this._validator.validate({ field: this.field });
-	  };
-	
-	  RadioValidation.prototype.willUpdateFlags = function willUpdateFlags() {
-	    var _this3 = this;
-	
-	    var touched = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
-	
-	    each(this._inits, function (item, index) {
-	      touched && _this3.willUpdateTouched(item.el, 'blur');
-	      _this3.willUpdateDirty(item.el);
-	      _this3.willUpdateModified(item.el);
-	    });
-	  };
-	
-	  RadioValidation.prototype.reset = function reset() {
-	    this.resetValidationNoopable();
-	    this.resetFlags();
-	    each(this._inits, function (item, index) {
-	      item.init = item.el.checked;
-	      item.value = item.el.value;
-	    });
-	  };
-	
-	  RadioValidation.prototype.updateClasses = function updateClasses(results) {
-	    var _this4 = this;
-	
-	    var el = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	
-	    if (el) {
-	      // for another element
-	      this._updateClasses(el, results);
-	    } else {
-	      each(this._inits, function (item, index) {
-	        _this4._updateClasses(item.el, results);
-	      });
-	    }
-	  };
-	
-	  RadioValidation.prototype._addItem = function _addItem(el, initial) {
-	    var item = {
-	      el: el,
-	      init: el.checked,
-	      value: el.value,
-	      initial: initial
-	    };
-	
-	    var classIds = el.getAttribute(VALIDATE_UPDATE);
-	    if (classIds) {
-	      el.removeAttribute(VALIDATE_UPDATE);
-	      item.classIds = classIds.split(',');
-	    }
-	
-	    this._inits.push(item);
-	    return item;
-	  };
-	
-	  RadioValidation.prototype._setChecked = function _setChecked(value, el, item) {
-	    if (el.value === value) {
-	      el.checked = true;
-	      this._init = el.checked;
-	      item.init = el.checked;
-	      item.value = value;
-	    }
-	  };
-	
-	  RadioValidation.prototype._getValue = function _getValue(el) {
-	    var _this5 = this;
-	
-	    if (!this._inits || this._inits.length === 0) {
-	      return el.checked;
-	    } else {
-	      var _ret = function () {
-	        var vals = [];
-	        each(_this5._inits, function (item, index) {
-	          item.el.checked && vals.push(item.el.value);
-	        });
-	        return {
-	          v: vals
-	        };
-	      }();
-	
-	      if ((typeof _ret === 'undefined' ? 'undefined' : babelHelpers.typeof(_ret)) === "object") return _ret.v;
-	    }
-	  };
-	
-	  RadioValidation.prototype._getClassIds = function _getClassIds(el) {
-	    var classIds = void 0;
-	    each(this._inits, function (item, index) {
-	      if (item.el === el) {
-	        classIds = item.classIds;
-	      }
-	    });
-	    return classIds;
-	  };
-	
-	  RadioValidation.prototype._checkModified = function _checkModified(target) {
-	    var _this6 = this;
-	
-	    if (this._inits.length === 0) {
-	      return this._init !== target.checked;
-	    } else {
-	      var _ret2 = function () {
-	        var modified = false;
-	        each(_this6._inits, function (item, index) {
-	          if (!modified) {
-	            modified = item.init !== item.el.checked;
-	          }
-	        });
-	        return {
-	          v: modified
-	        };
-	      }();
-	
-	      if ((typeof _ret2 === 'undefined' ? 'undefined' : babelHelpers.typeof(_ret2)) === "object") return _ret2.v;
-	    }
-	  };
-	
-	  return RadioValidation;
-	}(BaseValidation);
-	
-	/**
-	 * SelectValidation class
-	 */
-	
-	var SelectValidation = function (_BaseValidation) {
-	  babelHelpers.inherits(SelectValidation, _BaseValidation);
-	
-	  function SelectValidation(field, model, vm, el, scope, validator, filters, detectBlur, detectChange) {
-	    babelHelpers.classCallCheck(this, SelectValidation);
-	
-	    var _this = babelHelpers.possibleConstructorReturn(this, _BaseValidation.call(this, field, model, vm, el, scope, validator, filters, detectBlur, detectChange));
-	
-	    _this._multiple = _this._el.hasAttribute('multiple');
-	    return _this;
-	  }
-	
-	  SelectValidation.prototype.manageElement = function manageElement(el, initial) {
-	    var _this2 = this;
-	
-	    var scope = this._getScope();
-	    var model = this._model;
-	
-	    this._initial = initial;
-	
-	    var classIds = el.getAttribute(VALIDATE_UPDATE);
-	    if (classIds) {
-	      el.removeAttribute(VALIDATE_UPDATE);
-	      this._classIds = classIds.split(',');
-	    }
-	
-	    if (model) {
-	      var value = this._evalModel(model, this._filters);
-	      var values = !Array.isArray(value) ? [value] : value;
-	      this._setOption(values, el);
-	      this._unwatch = scope.$watch(model, function (val, old) {
-	        var values1 = !Array.isArray(val) ? [val] : val;
-	        var values2 = !Array.isArray(old) ? [old] : old;
-	        if (values1.slice().sort().toString() !== values2.slice().sort().toString()) {
-	          if (_this2.guardValidate(el, 'change')) {
-	            return;
-	          }
-	
-	          _this2.handleValidate(el, { noopable: _this2._initial });
-	          if (_this2._initial) {
-	            _this2._initial = null;
-	          }
-	        }
-	      });
-	    }
-	  };
-	
-	  SelectValidation.prototype.unmanageElement = function unmanageElement(el) {
-	    this._unwatch && this._unwatch();
-	  };
-	
-	  SelectValidation.prototype._getValue = function _getValue(el) {
-	    var ret = [];
-	
-	    for (var i = 0, l = el.options.length; i < l; i++) {
-	      var option = el.options[i];
-	      if (!option.disabled && option.selected) {
-	        ret.push(option.value);
-	      }
-	    }
-	
-	    return ret;
-	  };
-	
-	  SelectValidation.prototype._setOption = function _setOption(values, el) {
-	    for (var i = 0, l = values.length; i < l; i++) {
-	      var value = values[i];
-	      for (var j = 0, m = el.options.length; j < m; j++) {
-	        var option = el.options[j];
-	        if (!option.disabled && option.value === value && (!option.hasAttribute('selected') || !option.selected)) {
-	          option.selected = true;
-	        }
-	      }
-	    }
-	  };
-	
-	  SelectValidation.prototype._checkModified = function _checkModified(target) {
-	    var values = this._getValue(target).slice().sort();
-	    if (this._init.length !== values.length) {
-	      return true;
-	    } else {
-	      var inits = this._init.slice().sort();
-	      return inits.toString() !== values.toString();
-	    }
-	  };
-	
-	  return SelectValidation;
-	}(BaseValidation);
-	
-	/**
-	 * Validator class
-	 */
-	
-	var Validator$1 = function () {
-	  function Validator(name, dir, groups, classes) {
-	    var _this = this;
-	
-	    babelHelpers.classCallCheck(this, Validator);
-	
-	    this.name = name;
-	
-	    this._scope = {};
-	    this._dir = dir;
-	    this._validations = {};
-	    this._checkboxValidations = {};
-	    this._radioValidations = {};
-	    this._groups = groups;
-	    this._groupValidations = {};
-	    this._events = {};
-	    this._modified = false;
-	    this._classes = classes;
-	
-	    each(groups, function (group) {
-	      _this._groupValidations[group] = [];
-	    });
-	  }
-	
-	  Validator.prototype.enableReactive = function enableReactive() {
-	    var vm = this._dir.vm;
-	
-	    // define the validation scope
-	    exports$1.Vue.util.defineReactive(vm, this.name, this._scope);
-	    vm._validatorMaps[this.name] = this;
-	
-	    // define the validation resetting meta method to vue instance
-	    this._defineResetValidation();
-	
-	    // define the validate manually meta method to vue instance
-	    this._defineValidate();
-	
-	    // define manually the validation errors
-	    this._defineSetValidationErrors();
-	  };
-	
-	  Validator.prototype.disableReactive = function disableReactive() {
-	    var vm = this._dir.vm;
-	    vm.$setValidationErrors = null;
-	    delete vm['$setValidationErrors'];
-	    vm.$validate = null;
-	    delete vm['$validate'];
-	    vm.$resetValidation = null;
-	    delete vm['$resetValidation'];
-	    vm._validatorMaps[this.name] = null;
-	    delete vm._validatorMaps[this.name];
-	    vm[this.name] = null;
-	    delete vm[this.name];
-	  };
-	
-	  Validator.prototype.registerEvents = function registerEvents() {
-	    var isSimplePath = exports$1.Vue.parsers.expression.isSimplePath;
-	
-	    var attrs = this._dir.el.attributes;
-	    for (var i = 0, l = attrs.length; i < l; i++) {
-	      var event = attrs[i].name;
-	      if (REGEX_EVENT.test(event)) {
-	        var value = attrs[i].value;
-	        if (isSimplePath(value)) {
-	          value += '.apply(this, $arguments)';
-	        }
-	        event = event.replace(REGEX_EVENT, '');
-	        this._events[this._getEventName(event)] = this._dir.vm.$eval(value, true);
-	      }
-	    }
-	  };
-	
-	  Validator.prototype.unregisterEvents = function unregisterEvents() {
-	    var _this2 = this;
-	
-	    each(this._events, function (handler, event) {
-	      _this2._events[event] = null;
-	      delete _this2._events[event];
-	    });
-	  };
-	
-	  Validator.prototype.manageValidation = function manageValidation(field, model, vm, el, scope, filters, initial, detectBlur, detectChange) {
-	    var validation = null;
-	
-	    if (el.tagName === 'SELECT') {
-	      validation = this._manageSelectValidation(field, model, vm, el, scope, filters, initial, detectBlur, detectChange);
-	    } else if (el.type === 'checkbox') {
-	      validation = this._manageCheckboxValidation(field, model, vm, el, scope, filters, initial, detectBlur, detectChange);
-	    } else if (el.type === 'radio') {
-	      validation = this._manageRadioValidation(field, model, vm, el, scope, filters, initial, detectBlur, detectChange);
-	    } else {
-	      validation = this._manageBaseValidation(field, model, vm, el, scope, filters, initial, detectBlur, detectChange);
-	    }
-	
-	    validation.setValidationClasses(this._classes);
-	
-	    return validation;
-	  };
-	
-	  Validator.prototype.unmanageValidation = function unmanageValidation(field, el) {
-	    if (el.type === 'checkbox') {
-	      this._unmanageCheckboxValidation(field, el);
-	    } else if (el.type === 'radio') {
-	      this._unmanageRadioValidation(field, el);
-	    } else if (el.tagName === 'SELECT') {
-	      this._unmanageSelectValidation(field, el);
-	    } else {
-	      this._unmanageBaseValidation(field, el);
-	    }
-	  };
-	
-	  Validator.prototype.addGroupValidation = function addGroupValidation(group, field) {
-	    var indexOf = exports$1.Vue.util.indexOf;
-	
-	    var validation = this._getValidationFrom(field);
-	    var validations = this._groupValidations[group];
-	
-	    validations && !~indexOf(validations, validation) && validations.push(validation);
-	  };
-	
-	  Validator.prototype.removeGroupValidation = function removeGroupValidation(group, field) {
-	    var validation = this._getValidationFrom(field);
-	    var validations = this._groupValidations[group];
-	
-	    validations && pull(validations, validation);
-	  };
-	
-	  Validator.prototype.validate = function validate() {
-	    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	    var _ref$el = _ref.el;
-	    var el = _ref$el === undefined ? null : _ref$el;
-	    var _ref$field = _ref.field;
-	    var field = _ref$field === undefined ? null : _ref$field;
-	    var _ref$touched = _ref.touched;
-	    var touched = _ref$touched === undefined ? false : _ref$touched;
-	    var _ref$noopable = _ref.noopable;
-	    var noopable = _ref$noopable === undefined ? false : _ref$noopable;
-	    var _ref$cb = _ref.cb;
-	    var cb = _ref$cb === undefined ? null : _ref$cb;
-	
-	    if (!field) {
-	      // all
-	      each(this.validations, function (validation, key) {
-	        validation.willUpdateFlags(touched);
-	      });
-	      this._validates(cb);
-	    } else {
-	      // each field
-	      this._validate(field, touched, noopable, el, cb);
-	    }
-	  };
-	
-	  Validator.prototype.setupScope = function setupScope() {
-	    var _this3 = this;
-	
-	    this._defineProperties(function () {
-	      return _this3.validations;
-	    }, function () {
-	      return _this3._scope;
-	    });
-	
-	    each(this._groups, function (name) {
-	      var validations = _this3._groupValidations[name];
-	      var group = {};
-	      exports$1.Vue.set(_this3._scope, name, group);
-	      _this3._defineProperties(function () {
-	        return validations;
-	      }, function () {
-	        return group;
-	      });
-	    });
-	  };
-	
-	  Validator.prototype.waitFor = function waitFor(cb) {
-	    var method = '$activateValidator';
-	    var vm = this._dir.vm;
-	
-	    vm[method] = function () {
-	      cb();
-	      vm[method] = null;
-	    };
-	  };
-	
-	  Validator.prototype._defineResetValidation = function _defineResetValidation() {
-	    var _this4 = this;
-	
-	    this._dir.vm.$resetValidation = function (cb) {
-	      _this4._resetValidation(cb);
-	    };
-	  };
-	
-	  Validator.prototype._defineValidate = function _defineValidate() {
-	    var _this5 = this;
-	
-	    this._dir.vm.$validate = function () {
-	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	        args[_key] = arguments[_key];
-	      }
-	
-	      var field = null;
-	      var touched = false;
-	      var cb = null;
-	
-	      each(args, function (arg, index) {
-	        if (typeof arg === 'string') {
-	          field = arg;
-	        } else if (typeof arg === 'boolean') {
-	          touched = arg;
-	        } else if (typeof arg === 'function') {
-	          cb = arg;
-	        }
-	      });
-	
-	      _this5.validate({ field: field, touched: touched, cb: cb });
-	    };
-	  };
-	
-	  Validator.prototype._defineSetValidationErrors = function _defineSetValidationErrors() {
-	    var _this6 = this;
-	
-	    this._dir.vm.$setValidationErrors = function (errors) {
-	      _this6._setValidationErrors(errors);
-	    };
-	  };
-	
-	  Validator.prototype._validate = function _validate(field) {
-	    var touched = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
-	    var noopable = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-	
-	    var _this7 = this;
-	
-	    var el = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
-	    var cb = arguments.length <= 4 || arguments[4] === undefined ? null : arguments[4];
-	
-	    var scope = this._scope;
-	
-	    var validation = this._getValidationFrom(field);
-	    if (validation) {
-	      validation.willUpdateFlags(touched);
-	      validation.validate(function (results) {
-	        exports$1.Vue.set(scope, field, results);
-	        _this7._fireEvents();
-	        cb && cb();
-	      }, noopable, el);
-	    }
-	  };
-	
-	  Validator.prototype._validates = function _validates(cb) {
-	    var _this8 = this;
-	
-	    var scope = this._scope;
-	
-	    this._runValidates(function (validation, key, done) {
-	      validation.validate(function (results) {
-	        exports$1.Vue.set(scope, key, results);
-	        done();
-	      });
-	    }, function () {
-	      // finished
-	      _this8._fireEvents();
-	      cb && cb();
-	    });
-	  };
-	
-	  Validator.prototype._getValidationFrom = function _getValidationFrom(field) {
-	    return this._validations[field] || this._checkboxValidations[field] && this._checkboxValidations[field].validation || this._radioValidations[field] && this._radioValidations[field].validation;
-	  };
-	
-	  Validator.prototype._resetValidation = function _resetValidation(cb) {
-	    each(this.validations, function (validation, key) {
-	      validation.reset();
-	    });
-	    this._validates(cb);
-	  };
-	
-	  Validator.prototype._setValidationErrors = function _setValidationErrors(errors) {
-	    var _this9 = this;
-	
-	    var extend = exports$1.Vue.util.extend;
-	
-	    // make tempolaly errors
-	
-	    var temp = {};
-	    each(errors, function (error, index) {
-	      if (!temp[error.field]) {
-	        temp[error.field] = [];
-	      }
-	      temp[error.field].push(error);
-	    });
-	
-	    // set errors
-	    each(temp, function (values, field) {
-	      var results = _this9._scope[field];
-	      var newResults = {};
-	
-	      each(values, function (error) {
-	        if (error.validator) {
-	          results[error.validator] = error.message;
-	        }
-	      });
-	
-	      results.valid = false;
-	      results.invalid = true;
-	      results.errors = values;
-	      extend(newResults, results);
-	
-	      var validation = _this9._getValidationFrom(field);
-	      validation.willUpdateClasses(newResults, validation.el);
-	
-	      exports$1.Vue.set(_this9._scope, field, newResults);
-	    });
-	  };
-	
-	  Validator.prototype._manageBaseValidation = function _manageBaseValidation(field, model, vm, el, scope, filters, initial, detectBlur, detectChange) {
-	    var validation = this._validations[field] = new BaseValidation(field, model, vm, el, scope, this, filters, detectBlur, detectChange);
-	    validation.manageElement(el, initial);
-	    return validation;
-	  };
-	
-	  Validator.prototype._unmanageBaseValidation = function _unmanageBaseValidation(field, el) {
-	    var validation = this._validations[field];
-	    if (validation) {
-	      validation.unmanageElement(el);
-	      exports$1.Vue.delete(this._scope, field);
-	      this._validations[field] = null;
-	      delete this._validations[field];
-	    }
-	  };
-	
-	  Validator.prototype._manageCheckboxValidation = function _manageCheckboxValidation(field, model, vm, el, scope, filters, initial, detectBlur, detectChange) {
-	    var validationSet = this._checkboxValidations[field];
-	    if (!validationSet) {
-	      var validation = new CheckboxValidation(field, model, vm, el, scope, this, filters, detectBlur, detectChange);
-	      validationSet = { validation: validation, elements: 0 };
-	      this._checkboxValidations[field] = validationSet;
-	    }
-	
-	    validationSet.elements++;
-	    validationSet.validation.manageElement(el, initial);
-	    return validationSet.validation;
-	  };
-	
-	  Validator.prototype._unmanageCheckboxValidation = function _unmanageCheckboxValidation(field, el) {
-	    var validationSet = this._checkboxValidations[field];
-	    if (validationSet) {
-	      validationSet.elements--;
-	      validationSet.validation.unmanageElement(el);
-	      if (validationSet.elements === 0) {
-	        exports$1.Vue.delete(this._scope, field);
-	        this._checkboxValidations[field] = null;
-	        delete this._checkboxValidations[field];
-	      }
-	    }
-	  };
-	
-	  Validator.prototype._manageRadioValidation = function _manageRadioValidation(field, model, vm, el, scope, filters, initial, detectBlur, detectChange) {
-	    var validationSet = this._radioValidations[field];
-	    if (!validationSet) {
-	      var validation = new RadioValidation(field, model, vm, el, scope, this, filters, detectBlur, detectChange);
-	      validationSet = { validation: validation, elements: 0 };
-	      this._radioValidations[field] = validationSet;
-	    }
-	
-	    validationSet.elements++;
-	    validationSet.validation.manageElement(el, initial);
-	    return validationSet.validation;
-	  };
-	
-	  Validator.prototype._unmanageRadioValidation = function _unmanageRadioValidation(field, el) {
-	    var validationSet = this._radioValidations[field];
-	    if (validationSet) {
-	      validationSet.elements--;
-	      validationSet.validation.unmanageElement(el);
-	      if (validationSet.elements === 0) {
-	        exports$1.Vue.delete(this._scope, field);
-	        this._radioValidations[field] = null;
-	        delete this._radioValidations[field];
-	      }
-	    }
-	  };
-	
-	  Validator.prototype._manageSelectValidation = function _manageSelectValidation(field, model, vm, el, scope, filters, initial, detectBlur, detectChange) {
-	    var validation = this._validations[field] = new SelectValidation(field, model, vm, el, scope, this, filters, detectBlur, detectChange);
-	    validation.manageElement(el, initial);
-	    return validation;
-	  };
-	
-	  Validator.prototype._unmanageSelectValidation = function _unmanageSelectValidation(field, el) {
-	    var validation = this._validations[field];
-	    if (validation) {
-	      validation.unmanageElement(el);
-	      exports$1.Vue.delete(this._scope, field);
-	      this._validations[field] = null;
-	      delete this._validations[field];
-	    }
-	  };
-	
-	  Validator.prototype._fireEvent = function _fireEvent(type) {
-	    for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-	      args[_key2 - 1] = arguments[_key2];
-	    }
-	
-	    var handler = this._events[this._getEventName(type)];
-	    handler && this._dir.vm.$nextTick(function () {
-	      handler.apply(null, args);
-	    });
-	  };
-	
-	  Validator.prototype._fireEvents = function _fireEvents() {
-	    var scope = this._scope;
-	
-	    scope.touched && this._fireEvent('touched');
-	    scope.dirty && this._fireEvent('dirty');
-	
-	    if (this._modified !== scope.modified) {
-	      this._fireEvent('modified', scope.modified);
-	      this._modified = scope.modified;
-	    }
-	
-	    var valid = scope.valid;
-	    this._fireEvent(valid ? 'valid' : 'invalid');
-	  };
-	
-	  Validator.prototype._getEventName = function _getEventName(type) {
-	    return this.name + ':' + type;
-	  };
-	
-	  Validator.prototype._defineProperties = function _defineProperties(validationsGetter, targetGetter) {
-	    var _this10 = this;
-	
-	    var bind = exports$1.Vue.util.bind;
-	
-	    each({
-	      valid: { fn: this._defineValid, arg: validationsGetter },
-	      invalid: { fn: this._defineInvalid, arg: targetGetter },
-	      touched: { fn: this._defineTouched, arg: validationsGetter },
-	      untouched: { fn: this._defineUntouched, arg: targetGetter },
-	      modified: { fn: this._defineModified, arg: validationsGetter },
-	      dirty: { fn: this._defineDirty, arg: validationsGetter },
-	      pristine: { fn: this._definePristine, arg: targetGetter },
-	      errors: { fn: this._defineErrors, arg: validationsGetter }
-	    }, function (descriptor, name) {
-	      Object.defineProperty(targetGetter(), name, {
-	        enumerable: true,
-	        configurable: true,
-	        get: function get() {
-	          return bind(descriptor.fn, _this10)(descriptor.arg);
-	        }
-	      });
-	    });
-	  };
-	
-	  Validator.prototype._runValidates = function _runValidates(fn, cb) {
-	    var length = Object.keys(this.validations).length;
-	
-	    var count = 0;
-	    each(this.validations, function (validation, key) {
-	      fn(validation, key, function () {
-	        ++count;
-	        count >= length && cb();
-	      });
-	    });
-	  };
-	
-	  Validator.prototype._walkValidations = function _walkValidations(validations, property, condition) {
-	    var _this11 = this;
-	
-	    var hasOwn = exports$1.Vue.util.hasOwn;
-	    var ret = condition;
-	
-	    each(validations, function (validation, key) {
-	      if (ret === !condition) {
-	        return;
-	      }
-	      if (hasOwn(_this11._scope, validation.field)) {
-	        var target = _this11._scope[validation.field];
-	        if (target && target[property] === !condition) {
-	          ret = !condition;
-	        }
-	      }
-	    });
-	
-	    return ret;
-	  };
-	
-	  Validator.prototype._defineValid = function _defineValid(validationsGetter) {
-	    return this._walkValidations(validationsGetter(), 'valid', true);
-	  };
-	
-	  Validator.prototype._defineInvalid = function _defineInvalid(scopeGetter) {
-	    return !scopeGetter().valid;
-	  };
-	
-	  Validator.prototype._defineTouched = function _defineTouched(validationsGetter) {
-	    return this._walkValidations(validationsGetter(), 'touched', false);
-	  };
-	
-	  Validator.prototype._defineUntouched = function _defineUntouched(scopeGetter) {
-	    return !scopeGetter().touched;
-	  };
-	
-	  Validator.prototype._defineModified = function _defineModified(validationsGetter) {
-	    return this._walkValidations(validationsGetter(), 'modified', false);
-	  };
-	
-	  Validator.prototype._defineDirty = function _defineDirty(validationsGetter) {
-	    return this._walkValidations(validationsGetter(), 'dirty', false);
-	  };
-	
-	  Validator.prototype._definePristine = function _definePristine(scopeGetter) {
-	    return !scopeGetter().dirty;
-	  };
-	
-	  Validator.prototype._defineErrors = function _defineErrors(validationsGetter) {
-	    var _this12 = this;
-	
-	    var hasOwn = exports$1.Vue.util.hasOwn;
-	    var isPlainObject = exports$1.Vue.util.isPlainObject;
-	    var errors = [];
-	
-	    each(validationsGetter(), function (validation, key) {
-	      if (hasOwn(_this12._scope, validation.field)) {
-	        var target = _this12._scope[validation.field];
-	        if (target && !empty(target.errors)) {
-	          each(target.errors, function (err, index) {
-	            var error = { field: validation.field };
-	            if (isPlainObject(err)) {
-	              if (err.validator) {
-	                error.validator = err.validator;
-	              }
-	              error.message = err.message;
-	            } else if (typeof err === 'string') {
-	              error.message = err;
-	            }
-	            errors.push(error);
-	          });
-	        }
-	      }
-	    });
-	
-	    return empty(errors) ? undefined : errors.sort(function (a, b) {
-	      return a.field < b.field ? -1 : 1;
-	    });
-	  };
-	
-	  babelHelpers.createClass(Validator, [{
-	    key: 'validations',
-	    get: function get() {
-	      var extend = exports$1.Vue.util.extend;
-	
-	      var ret = {};
-	      extend(ret, this._validations);
-	
-	      each(this._checkboxValidations, function (dataset, key) {
-	        ret[key] = dataset.validation;
-	      });
-	
-	      each(this._radioValidations, function (dataset, key) {
-	        ret[key] = dataset.validation;
-	      });
-	
-	      return ret;
-	    }
-	  }]);
-	  return Validator;
-	}();
-	
-	function Validator (Vue) {
-	  var FragmentFactory = Vue.FragmentFactory;
-	  var vIf = Vue.directive('if');
-	  var _Vue$util = Vue.util;
-	  var isArray = _Vue$util.isArray;
-	  var isPlainObject = _Vue$util.isPlainObject;
-	  var createAnchor = _Vue$util.createAnchor;
-	  var replace = _Vue$util.replace;
-	  var extend = _Vue$util.extend;
-	  var camelize = _Vue$util.camelize;
-	
-	  /**
-	   * `validator` element directive
-	   */
-	
-	  Vue.elementDirective('validator', {
-	    params: ['name', 'groups', 'lazy', 'classes'],
-	
-	    bind: function bind() {
-	      var params = this.params;
-	
-	      if (process.env.NODE_ENV !== 'production' && !params.name) {
-	        warn('validator element requires a \'name\' attribute: ' + '(e.g. <validator name="validator1">...</validator>)');
-	        return;
-	      }
-	
-	      this.validatorName = '$' + camelize(params.name);
-	      if (!this.vm._validatorMaps) {
-	        throw new Error('Invalid validator management error');
-	      }
-	
-	      var classes = {};
-	      if (isPlainObject(this.params.classes)) {
-	        classes = this.params.classes;
-	      }
-	
-	      this.setupValidator(classes);
-	      this.setupFragment(params.lazy);
-	    },
-	    unbind: function unbind() {
-	      this.teardownFragment();
-	      this.teardownValidator();
-	    },
-	    getGroups: function getGroups() {
-	      var params = this.params;
-	      var groups = [];
-	
-	      if (params.groups) {
-	        if (isArray(params.groups)) {
-	          groups = params.groups;
-	        } else if (!isPlainObject(params.groups) && typeof params.groups === 'string') {
-	          groups.push(params.groups);
-	        }
-	      }
-	
-	      return groups;
-	    },
-	    setupValidator: function setupValidator(classes) {
-	      var validator = this.validator = new Validator$1(this.validatorName, this, this.getGroups(), classes);
-	      validator.enableReactive();
-	      validator.setupScope();
-	      validator.registerEvents();
-	    },
-	    teardownValidator: function teardownValidator() {
-	      this.validator.unregisterEvents();
-	      this.validator.disableReactive();
-	
-	      if (this.validatorName) {
-	        this.validatorName = null;
-	        this.validator = null;
-	      }
-	    },
-	    setupFragment: function setupFragment(lazy) {
-	      var _this = this;
-	
-	      var vm = this.vm;
-	
-	      this.validator.waitFor(function () {
-	        _this.anchor = createAnchor('vue-validator');
-	        replace(_this.el, _this.anchor);
-	        extend(vm.$options, { _validator: _this.validatorName });
-	        _this.factory = new FragmentFactory(vm, _this.el.innerHTML);
-	        vIf.insert.call(_this);
-	      });
-	
-	      !lazy && vm.$activateValidator();
-	    },
-	    teardownFragment: function teardownFragment() {
-	      vIf.unbind.call(this);
-	    }
-	  });
-	}
-	
-	function ValidatorError (Vue) {
-	  /**
-	   * ValidatorError component
-	   */
-	
-	  var error = {
-	    name: 'validator-error',
-	
-	    props: {
-	      field: {
-	        type: String,
-	        required: true
-	      },
-	      validator: {
-	        type: String
-	      },
-	      message: {
-	        type: String,
-	        required: true
-	      },
-	      partial: {
-	        type: String,
-	        default: 'validator-error-default'
-	      }
-	    },
-	
-	    template: '<div><partial :name="partial"></partial></div>',
-	
-	    partials: {}
-	  };
-	
-	  // only use ValidatorError component
-	  error.partials['validator-error-default'] = '<p>{{field}}: {{message}}</p>';
-	
-	  return error;
-	}
-	
-	function Errors (Vue) {
-	  var _ = Vue.util;
-	  var error = ValidatorError(Vue); // import ValidatorError component
-	
-	  /**
-	   * ValidatorErrors component
-	   */
-	
-	  var errors = {
-	    name: 'validator-errors',
-	
-	    props: {
-	      validation: {
-	        type: Object,
-	        required: true
-	      },
-	      group: {
-	        type: String,
-	        default: null
-	      },
-	      field: {
-	        type: String,
-	        default: null
-	      },
-	      component: {
-	        type: String,
-	        default: 'validator-error'
-	      }
-	    },
-	
-	    computed: {
-	      errors: function errors() {
-	        var _this = this;
-	
-	        if (this.group !== null) {
-	          return this.validation[this.group].errors;
-	        } else if (this.field !== null) {
-	          var target = this.validation[this.field];
-	          if (!target.errors) {
-	            return;
-	          }
-	
-	          return target.errors.map(function (error) {
-	            var err = { field: _this.field };
-	            if (_.isPlainObject(error)) {
-	              if (error.validator) {
-	                err.validator = error.validator;
-	              }
-	              err.message = error.message;
-	            } else if (typeof error === 'string') {
-	              err.message = error;
-	            }
-	            return err;
-	          });
-	        } else {
-	          return this.validation.errors;
-	        }
-	      }
-	    },
-	
-	    template: '<template v-for="error in errors">' + '<component :is="component" :partial="partial" :field="error.field" :validator="error.validator" :message="error.message">' + '</component>' + '</template>',
-	
-	    components: {}
-	  };
-	
-	  // define 'partial' prop
-	  errors.props['partial'] = error.props['partial'];
-	
-	  // only use ValidatorErrors component
-	  errors.components[error.name] = error;
-	
-	  // install ValidatorErrors component
-	  Vue.component(errors.name, errors);
-	
-	  return errors;
-	}
-	
-	/**
-	 * plugin
-	 *
-	 * @param {Function} Vue
-	 * @param {Object} options
-	 */
-	
-	function plugin(Vue) {
-	  var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	
-	  if (plugin.installed) {
-	    warn('already installed.');
-	    return;
-	  }
-	
-	  exports$1.Vue = Vue;
-	  Asset(Vue);
-	  Errors(Vue);
-	
-	  Override(Vue);
-	  Validator(Vue);
-	  ValidateClass(Vue);
-	  Validate(Vue);
-	}
-	
-	plugin.version = '2.1.7';
-	
-	if (typeof window !== 'undefined' && window.Vue) {
-	  window.Vue.use(plugin);
-	}
-	
-	module.exports = plugin;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(7);
+	var content = __webpack_require__(6);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(18)(content, {});
+	var update = __webpack_require__(17)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -25723,21 +23104,21 @@
 	}
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(8)();
+	exports = module.exports = __webpack_require__(7)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n/*color*/\n/* width&height*/\n/* start reset 样式 */\nhtml, body, h1, h2, h3, h4, h5, h6,\ndiv, dl, dt, dd, ul, ol, li, p, blockquote,\npre, hr, figure, table, caption, th, td,\nform, fieldset, legend, input, button,\ntextarea, menu {\n  margin: 0;\n  padding: 0; }\n\nheader, footer, section, article,\naside, nav, hgroup, address, figure,\nfigcaption, menu, details {\n  display: block; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\ncaption, th {\n  text-align: left;\n  font-weight: normal; }\n\nhtml, body, fieldset, img, iframe, abbr {\n  border: 0; }\n\ni, cite, em, var, address, dfn {\n  font-style: normal; }\n\n[hidefocus], summary {\n  outline: 0; }\n\nli {\n  list-style: none; }\n\nh1, h2, h3, h4, h5, h6, small {\n  font-size: 100%; }\n\nsup, sub {\n  font-size: 83%; }\n\npre, code, kbd, samp {\n  font-family: inherit; }\n\nq:before, q:after {\n  content: none; }\n\ntextarea {\n  overflow: auto;\n  resize: none; }\n\nlabel, summary {\n  cursor: default;\n  font-weight: normal; }\n\na, button {\n  cursor: pointer; }\n\nbutton {\n  border: none;\n  overflow: visible;\n  width: auto;\n  cursor: pointer; }\n\nh1, h2, h3, h4, h5, h6, em, strong, b {\n  font-weight: 400; }\n\ndel, ins, u, s, a, a:hover {\n  text-decoration: none; }\n\ntextarea, input {\n  resize: none; }\n\ninput[type=file] {\n  display: inline; }\n\nbody, textarea, input,\nbutton, select, keygen,\nlegend {\n  font: 12px/1.14 arial,\\5b8b\\4f53;\n  color: #333;\n  outline: 0;\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #fff;\n  font-family: PingHei,\"PingFang SC\",\"Helvetica Neue\",Helvetica,STHeitiSC-Light,\"Microsoft YaHei\",Arial,sans-serif;\n  font-size: 14px;\n  font-weight: 400;\n  color: #333;\n  background: #f7f7f7; }\n\nbody a {\n  color: #9b8878; }\n\n/*a,a:hover{\n  color:#333;\n}*/\nul, li {\n  list-style: none; }\n\n/* end reset 样式*/\n/*color*/\n/* width&height*/\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-w {\n  background: #FFF; }\n\n.p-xl {\n  padding: 30px; }\n\n.mb-l {\n  margin-bottom: 20px; }\n\n.mt-l {\n  margin-top: 20px; }\n\n.post-readme {\n  color: #666; }\n\n.wx250 {\n  width: 250px; }\n\n.wx600 {\n  width: 600px; }\n\n.wx578 {\n  width: 578px; }\n\n.f-r {\n  float: right; }\n\n.f-l {\n  float: left; }\n\n.p-m {\n  padding: 10px; }\n\n.b-f-g {\n  border: 1px solid #ccc; }\n\n.b-lg {\n  background: #f9f9f9; }\n\n.c-lg, a.c-lg {\n  color: #999; }\n\n.mb-m {\n  margin-bottom: 10px; }\n\n.mt-r1 {\n  margin-top: -1px; }\n\n.br-s {\n  border-radius: 2px; }\n\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-g {\n  background: #7BB03E; }\n\n.bsi-l {\n  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1); }\n\n.fs-s {\n  font-size: 14px;\n  line-height: 18px; }\n\n.p-xl {\n  padding: 30px; }\n\n.ptb-m {\n  padding-top: 10px;\n  padding-bottom: 10px; }\n\n.c-w, .fcdb a:hover, a.c-w, a:hover.c-w {\n  color: #fff; }\n\n.mt-r3 {\n  margin-top: -3px; }\n\n.br-s {\n  border-radius: 2px; }\n\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-g {\n  background: #7BB03E; }\n\nheader {\n  background: #ffd52b;\n  height: 82px;\n  width: 100%; }\n\n#header,\n#content-block {\n  width: 70%;\n  min-width: 960px;\n  margin: 0 auto; }\n\n#header #logo,\n#header #nav {\n  float: left; }\n\n#header #logo a {\n  display: inline-block;\n  height: 79px;\n  width: 207px;\n  text-indent: -9px;\n  background-image: url(" + __webpack_require__(9) + ");\n  background-position: 0 0; }\n\n#header #nav {\n  margin: 0 10px; }\n\n.menu a {\n  float: left;\n  margin-right: 1px;\n  padding: 0 14px;\n  text-align: center;\n  line-height: 82px;\n  display: block;\n  font-size: 16.5px;\n  color: #7A4624;\n  height: 78px; }\n\n#nav li {\n  float: left;\n  margin-right: 1px;\n  padding: 0 14px;\n  text-align: center;\n  line-height: 82px;\n  display: inline-block;\n  font-size: 16.5px;\n  color: #7A4624;\n  height: 78px;\n  border-bottom: 4px solid #ffd52b; }\n\n#nav #highlight {\n  background: #ffe36f;\n  border-bottom-color: #7a4624; }\n\n#loginBtn {\n  float: right;\n  height: 82px;\n  line-height: 82px;\n  text-align: right; }\n\n#loginBtn a {\n  color: #7A4624;\n  font-size: 16.5px;\n  cursor: pointer; }\n\n#login-box {\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.7);\n  clear: both;\n  overflow: hidden;\n  position: fixed;\n  top: 0;\n  left: 0; }\n\n/* end header 样式*/\n/* start content 样式*/\n.funny-things {\n  background-color: #fff;\n  padding: 10px 20px;\n  margin: 20px auto 20px auto; }\n\n.author a, .author span {\n  float: left;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 35px; }\n\n.author h2 {\n  color: #9b8878;\n  font-weight: 400; }\n\n.author img {\n  width: 35px;\n  height: 35px;\n  border-radius: 35px;\n  margin-right: 10px; }\n\n.funny-things .contentHerf {\n  display: block; }\n\n.funny-things .funny-content {\n  margin-bottom: 10px;\n  font-size: 16px;\n  line-height: 1.8;\n  word-wrap: break-word;\n  color: #333; }\n\n.stats {\n  font-size: 12px;\n  margin: 20px 0 10px; }\n\n.stats, .stats a {\n  color: #999; }\n\n.stats-buttons {\n  font-size: 12px;\n  height: 35px;\n  float: left; }\n\n.stats-buttons ul {\n  margin-top: 5px;\n  margin-left: 8px; }\n\n.stats-buttons ul li {\n  float: left;\n  margin-right: 20px;\n  text-align: center; }\n\n.stats-buttons .up a {\n  background-image: none !important; }\n\n.stats-buttons ul li a {\n  display: block;\n  text-align: center; }\n\n.stats-buttons a i {\n  width: 30px;\n  height: 30px;\n  background-repeat: no-repeat;\n  display: block;\n  font-size: 24px;\n  -webkit-text-stroke-width: .2px;\n  color: #b5b5b5; }\n\n.stats-buttons .up a i {\n  background-image: url(" + __webpack_require__(10) + "); }\n\n.stats-buttons .down a i {\n  background-image: url(" + __webpack_require__(11) + "); }\n\n.stats-buttons .comments a i {\n  background-image: url(" + __webpack_require__(12) + "); }\n\n.single-share {\n  float: right;\n  margin-top: 3px; }\n\n.single-share a {\n  display: inline-block;\n  width: 24px;\n  height: 24px;\n  margin-left: 10px;\n  text-indent: -9999px;\n  background-image: url(" + __webpack_require__(9) + ");\n  background-repeat: no-repeat;\n  cursor: pointer; }\n\n.single-share .share-wechat {\n  background-position: 0 -79px; }\n\n.single-share .share-qq {\n  background-position: 0 -151px; }\n\n.single-share .share-qzone {\n  background-position: 0 -127px; }\n\n.single-share .share-weibo {\n  background-position: 0 -103px; }\n\n/* end content 样式*/\n/* start footer 样式*/\nfooter {\n  width: 960px;\n  padding: 20px 0;\n  margin: 0 auto;\n  text-align: center;\n  border-top: 1px solid #efefef; }\n\n/* end footer 样式*/\n/* start comments 样式*/\n.comments-wrap {\n  margin-bottom: 20px;\n  background-color: #fff;\n  padding: 10px 20px 0;\n  clear: both; }\n\n.comments-title {\n  color: #333;\n  font-size: 18px;\n  padding: 10px 0;\n  margin-bottom: 0; }\n\n.comments-wrap .comment-area {\n  position: relative; }\n\n.comments-wrap .comment-input {\n  width: 840px;\n  padding: 5px 50px 10px 5px;\n  height: 20px;\n  box-shadow: none;\n  border: 0;\n  background-color: #fff; }\n\n.comments-wrap .comment-submit {\n  background-color: #ffa015;\n  line-height: 31px;\n  padding: 0 5px;\n  height: 31px;\n  display: block;\n  width: 55px;\n  text-align: center;\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  margin-bottom: 5px;\n  z-index: 999;\n  color: #fff; }\n\n.comments-wrap .comment-limit-tips {\n  position: absolute;\n  left: 850px;\n  bottom: 10px;\n  z-index: 999; }\n\n.comments-wrap .comment-limit-tips strong {\n  color: #0099ff;\n  font-weight: bold; }\n\n.comment-block {\n  word-break: break-all;\n  padding: 10px 0; }\n\n.comment-block, .comment-wrap {\n  border-top: 1px solid #f4f2ef; }\n\n.comment-block .avatars {\n  float: left;\n  width: 45px;\n  vertical-align: top; }\n\n.comment-block .avatars img {\n  width: 35px;\n  height: 35px;\n  border-radius: 35px; }\n\n.comment-block .replay {\n  width: 440px;\n  float: left; }\n\n.comment-block .user-login {\n  color: #9B8878; }\n\n.comment-block .anomynous,\n.comment-block .hostname,\n.comment-block .manager,\n.comment-block .user-login {\n  margin: 0 10px 0 0;\n  display: block; }\n\n.comment-block .replay .body {\n  color: #404040;\n  line-height: 1.6;\n  word-wrap: break-word; }\n\n.comments-list .report {\n  float: right;\n  color: #ccc;\n  font-size: 12px; }\n\n/* end comments 样式*/\n/*start login 样式*/\n/*.sigin-box{\r\n    left: 50%;\r\n    margin-left: -205px;\r\n    z-index: 1002;\r\n    position: absolute;\r\n    top: 40px;\r\n    margin-top: 0px;\r\n    display: block;\r\n}*/\n.signin-box {\n  /*display: none;*/\n  left: 50%;\n  margin-left: -205px;\n  z-index: 1002;\n  position: absolute;\n  top: 40px;\n  margin-top: 0px;\n  display: block;\n  height: 500px;\n  background: #fff;\n  color: #333;\n  font-size: 14px;\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);\n  border-radius: 3px; }\n\n.sigin-left {\n  float: left;\n  margin: 44px 55px 0; }\n\n.signin-account, .signin-form {\n  margin-bottom: 14px;\n  width: 300px; }\n\n.signin-account {\n  border-bottom: 1px solid #f2f2f2; }\n\n.social-signin-heading {\n  margin-bottom: 22px;\n  color: #5e5e5e;\n  font-size: 15px; }\n\n.signin-account .social-btn {\n  display: block;\n  text-align: center;\n  width: 300px;\n  height: 40px;\n  line-height: 40px;\n  font-size: 16px;\n  color: #fff;\n  border-radius: 3px; }\n\n.social-wechat {\n  background: url(" + __webpack_require__(13) + ") 0 -2px no-repeat #62CF69;\n  margin-bottom: 10px; }\n\n.social-weibo {\n  background: url(" + __webpack_require__(14) + ") 0 -2px no-repeat #e24f48;\n  margin-bottom: 10px; }\n\n.social-qq {\n  background: url(" + __webpack_require__(15) + ") 0 -2px no-repeat #2fa2d7;\n  margin-bottom: 20px; }\n\n.user-setting .social-email {\n  background: url(" + __webpack_require__(16) + ") no-repeat; }\n\n.signin-account, .signin-form {\n  margin-bottom: 14px;\n  width: 300px; }\n\n.signin-section {\n  border: 1px solid #e6e6e6;\n  margin-bottom: 17px;\n  padding: 1px; }\n\n.signin-error {\n  display: none;\n  margin: 0 0 10px;\n  color: red; }\n\n.signin-form button, .signin-form input {\n  font-size: 18px; }\n\n.form-input {\n  color: #d2d2d2;\n  font-size: 14px !important;\n  padding: 11px !important;\n  display: block;\n  margin-top: -1px;\n  border: 0 !important;\n  border-top: 1px solid #e6e6e6 !important;\n  background-color: #fff;\n  margin-right: 0;\n  width: 296px !important; }\n\n.form-input-first {\n  border-top: 0 !important; }\n\n.form-submit {\n  background-color: #fbbf2f;\n  font-weight: 700;\n  color: #fff;\n  padding: 8px 0;\n  border-radius: 2px !important;\n  text-align: center;\n  display: block;\n  width: 100%;\n  font-size: 16px; }\n\n.signin-foot {\n  width: 300px;\n  font-size: 14px;\n  border-top: 0;\n  padding: 0;\n  text-align: left; }\n\n.signin-foot a {\n  color: #d3d3d3;\n  padding: 0 !important;\n  margin-right: 15px;\n  text-decoration: underline; }\n\n.signin-foot a.fetch-password {\n  padding-right: 15px; }\n\n.signin-foot a:hover {\n  background-color: transparent;\n  color: #999; }\n\n/*end login 样式*/\n/* start 个人主页 样式*/\n.user-main {\n  width: 980px;\n  margin: 0 auto;\n  color: #666; }\n\n.user-header {\n  margin: 0 0 20px; }\n\n.user-header .user-header-avatar {\n  position: absolute;\n  margin: 32px 0 0 30px; }\n\n.user-header .user-header-cover {\n  height: 220px;\n  background-image: url(" + __webpack_require__(17) + "); }\n\n.user-header .user-header-cover h2 {\n  padding: 150px 0 0 320px;\n  font-size: 34px;\n  color: #fff;\n  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); }\n\n.user-header .user-header-menu {\n  border: 1px solid #dedede;\n  background: #fff;\n  padding-left: 320px; }\n\n.user-header .user-header-menu li, .user-toolbar button {\n  display: inline-block; }\n\n.user-header .user-header-menu .active {\n  box-shadow: 0 -4px 0 #794627 inset; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-header .user-header-menu a {\n  display: block;\n  padding: 20px;\n  font-size: 16px; }\n\n.user-main .user-col-right {\n  float: right;\n  width: 700px; }\n\n.user-main .user-col-left {\n  float: left;\n  width: 260px; }\n\n.user-main .user-block {\n  margin: 0 0 20px;\n  border: 1px solid #dedede;\n  background: #fff;\n  position: relative; }\n\n.user-follow h3, .user-follow ul, .user-statis h3, .user-statis ul {\n  padding: 14px 20px; }\n\n.user-comment-info, .user-follow h3, .user-setting h3, .user-statis h3 {\n  border-bottom: 1px solid #e8e8e8; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-follow h3, .user-follow ul, .user-statis h3, .user-statis ul {\n  padding: 14px 20px; }\n\n.user-statis ul li {\n  line-height: 2; }\n\n.user-statis span {\n  display: inline-block;\n  width: 80px; }\n\n.user-date {\n  color: #d6d6d6; }\n\n.user-date .user-date-month {\n  position: absolute;\n  margin: 12px 0 0 19px;\n  font-size: 35px; }\n\n.user-date .user-date-break {\n  position: absolute;\n  margin: 14px 0 0 56px;\n  font-size: 38px; }\n\n.user-date .user-date-day {\n  position: absolute;\n  margin: 32px 0 0 70px;\n  font-size: 24px; }\n\n.user-indent {\n  margin-left: 100px;\n  padding-bottom: 6px; }\n\n.user-comment li, .user-feed li {\n  margin: 14px 20px; }\n\n.user-comment-info {\n  padding: 6px 0 14px; }\n\n.user-comment-info, .user-follow h3, .user-setting h3, .user-statis h3 {\n  border-bottom: 1px solid #e8e8e8; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-comment-quote {\n  background: #f7f7f7; }\n\n.user-comment-quote ul {\n  padding: 1px; }\n\n.user-comment li, .user-feed li {\n  margin: 14px 20px; }\n\n.user-article-avatar a {\n  vertical-align: middle;\n  display: inline-block; }\n\n.user-article-avatar img {\n  vertical-align: middle;\n  margin-right: 10px; }\n\n.user-article-avatar img, .user-follow ul li img {\n  width: 60px;\n  height: 60px;\n  border-radius: 60px; }\n\n.user-article-text {\n  line-height: 1.6;\n  word-wrap: break-word; }\n\n.user-article-text a, .user-article-text a:hover {\n  color: #666; }\n\n.user-article-stat, .user-article-stat a {\n  color: #949494; }\n\n/* end 个人主页 样式*/\n/* start 编辑资料 样式*/\n.user-setting h3 {\n  padding: 14px 20px; }\n\n.user-setting input {\n  font-size: 14px;\n  padding: 2px; }\n\n.user-setting li {\n  margin: 14px 20px; }\n\n.user-setting .user-setting-avatar {\n  display: block;\n  width: 210px;\n  height: 210px; }\n\n.user-setting .social-email,\n.user-setting .social-email:hover,\n.user-setting .social-qq,\n.user-setting .social-qq:hover,\n.user-setting .social-wechat,\n.user-setting .social-wechat:hover,\n.user-setting .social-weibo,\n.user-setting .social-weibo:hover {\n  display: inline-block;\n  width: 266px;\n  height: 40px;\n  line-height: 40px;\n  text-indent: 70px;\n  color: #fff;\n  margin: 0; }\n\n.user-setting .user-setting-inputlable {\n  width: 100px;\n  display: inline-block; }\n\n/* end 编辑资料 样式*/\n/* start 投稿 样式*/\n.post-readme h3 {\n  font-size: 16px;\n  padding: 0 0 20px; }\n\n.post-readme ol li {\n  padding: 20px 0;\n  border-top: 1px solid #efefef;\n  list-style-position: inside;\n  list-style-type: decimal;\n  line-height: 140%; }\n\n/* end 投稿 样式*/\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n/*color*/\n/* width&height*/\n/* start reset 样式 */\nhtml, body, h1, h2, h3, h4, h5, h6,\ndiv, dl, dt, dd, ul, ol, li, p, blockquote,\npre, hr, figure, table, caption, th, td,\nform, fieldset, legend, input, button,\ntextarea, menu {\n  margin: 0;\n  padding: 0; }\n\nheader, footer, section, article,\naside, nav, hgroup, address, figure,\nfigcaption, menu, details {\n  display: block; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\ncaption, th {\n  text-align: left;\n  font-weight: normal; }\n\nhtml, body, fieldset, img, iframe, abbr {\n  border: 0; }\n\ni, cite, em, var, address, dfn {\n  font-style: normal; }\n\n[hidefocus], summary {\n  outline: 0; }\n\nli {\n  list-style: none; }\n\nh1, h2, h3, h4, h5, h6, small {\n  font-size: 100%; }\n\nsup, sub {\n  font-size: 83%; }\n\npre, code, kbd, samp {\n  font-family: inherit; }\n\nq:before, q:after {\n  content: none; }\n\ntextarea {\n  overflow: auto;\n  resize: none; }\n\nlabel, summary {\n  cursor: default;\n  font-weight: normal; }\n\na, button {\n  cursor: pointer; }\n\nbutton {\n  border: none;\n  overflow: visible;\n  width: auto;\n  cursor: pointer; }\n\nh1, h2, h3, h4, h5, h6, em, strong, b {\n  font-weight: 400; }\n\ndel, ins, u, s, a, a:hover {\n  text-decoration: none; }\n\ntextarea, input {\n  resize: none; }\n\ninput[type=file] {\n  display: inline; }\n\nbody, textarea, input,\nbutton, select, keygen,\nlegend {\n  font: 12px/1.14 arial,\\5b8b\\4f53;\n  color: #333;\n  outline: 0;\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #fff;\n  font-family: PingHei,\"PingFang SC\",\"Helvetica Neue\",Helvetica,STHeitiSC-Light,\"Microsoft YaHei\",Arial,sans-serif;\n  font-size: 14px;\n  font-weight: 400;\n  color: #333;\n  background: #f7f7f7; }\n\nbody a {\n  color: #9b8878; }\n\n/*a,a:hover{\n  color:#333;\n}*/\nul, li {\n  list-style: none; }\n\n/* end reset 样式*/\n/*color*/\n/* width&height*/\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-w {\n  background: #FFF; }\n\n.p-xl {\n  padding: 30px; }\n\n.mb-l {\n  margin-bottom: 20px; }\n\n.mt-l {\n  margin-top: 20px; }\n\n.post-readme {\n  color: #666; }\n\n.wx250 {\n  width: 250px; }\n\n.wx600 {\n  width: 600px; }\n\n.wx578 {\n  width: 578px; }\n\n.f-r {\n  float: right; }\n\n.f-l {\n  float: left; }\n\n.p-m {\n  padding: 10px; }\n\n.b-f-g {\n  border: 1px solid #ccc; }\n\n.b-lg {\n  background: #f9f9f9; }\n\n.c-lg, a.c-lg {\n  color: #999; }\n\n.mb-m {\n  margin-bottom: 10px; }\n\n.mt-r1 {\n  margin-top: -1px; }\n\n.br-s {\n  border-radius: 2px; }\n\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-g {\n  background: #7BB03E; }\n\n.bsi-l {\n  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1); }\n\n.fs-s {\n  font-size: 14px;\n  line-height: 18px; }\n\n.p-xl {\n  padding: 30px; }\n\n.ptb-m {\n  padding-top: 10px;\n  padding-bottom: 10px; }\n\n.c-w, .fcdb a:hover, a.c-w, a:hover.c-w {\n  color: #fff; }\n\n.mt-r3 {\n  margin-top: -3px; }\n\n.br-s {\n  border-radius: 2px; }\n\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-g {\n  background: #7BB03E; }\n\nheader {\n  background: #ffd52b;\n  height: 82px;\n  width: 100%; }\n\n#header,\n#content-block {\n  width: 70%;\n  min-width: 960px;\n  margin: 0 auto; }\n\n#header #logo,\n#header #nav {\n  float: left; }\n\n#header #logo a {\n  display: inline-block;\n  height: 79px;\n  width: 207px;\n  text-indent: -9px;\n  background-image: url(" + __webpack_require__(8) + ");\n  background-position: 0 0; }\n\n#header #nav {\n  margin: 0 10px; }\n\n.menu a {\n  float: left;\n  margin-right: 1px;\n  padding: 0 14px;\n  text-align: center;\n  line-height: 82px;\n  display: block;\n  font-size: 16.5px;\n  color: #7A4624;\n  height: 78px; }\n\n#nav li {\n  float: left;\n  margin-right: 1px;\n  padding: 0 14px;\n  text-align: center;\n  line-height: 82px;\n  display: inline-block;\n  font-size: 16.5px;\n  color: #7A4624;\n  height: 78px;\n  border-bottom: 4px solid #ffd52b; }\n\n#nav #highlight {\n  background: #ffe36f;\n  border-bottom-color: #7a4624; }\n\n#loginBtn {\n  float: right;\n  height: 82px;\n  line-height: 82px;\n  text-align: right; }\n\n#loginBtn a {\n  color: #7A4624;\n  font-size: 16.5px;\n  cursor: pointer; }\n\n#login-box {\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.7);\n  clear: both;\n  overflow: hidden;\n  position: fixed;\n  top: 0;\n  left: 0; }\n\n/* end header 样式*/\n/* start content 样式*/\n.funny-things {\n  background-color: #fff;\n  padding: 10px 20px;\n  margin: 20px auto 20px auto; }\n\n.author a, .author span {\n  float: left;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 35px; }\n\n.author h2 {\n  color: #9b8878;\n  font-weight: 400; }\n\n.author img {\n  width: 35px;\n  height: 35px;\n  border-radius: 35px;\n  margin-right: 10px; }\n\n.funny-things .contentHerf {\n  display: block; }\n\n.funny-things .funny-content {\n  margin-bottom: 10px;\n  font-size: 16px;\n  line-height: 1.8;\n  word-wrap: break-word;\n  color: #333; }\n\n.stats {\n  font-size: 12px;\n  margin: 20px 0 10px; }\n\n.stats, .stats a {\n  color: #999; }\n\n.stats-buttons {\n  font-size: 12px;\n  height: 35px;\n  float: left; }\n\n.stats-buttons ul {\n  margin-top: 5px;\n  margin-left: 8px; }\n\n.stats-buttons ul li {\n  float: left;\n  margin-right: 20px;\n  text-align: center; }\n\n.stats-buttons .up a {\n  background-image: none !important; }\n\n.stats-buttons ul li a {\n  display: block;\n  text-align: center; }\n\n.stats-buttons a i {\n  width: 30px;\n  height: 30px;\n  background-repeat: no-repeat;\n  display: block;\n  font-size: 24px;\n  -webkit-text-stroke-width: .2px;\n  color: #b5b5b5; }\n\n.stats-buttons .up a i {\n  background-image: url(" + __webpack_require__(9) + "); }\n\n.stats-buttons .down a i {\n  background-image: url(" + __webpack_require__(10) + "); }\n\n.stats-buttons .comments a i {\n  background-image: url(" + __webpack_require__(11) + "); }\n\n.single-share {\n  float: right;\n  margin-top: 3px; }\n\n.single-share a {\n  display: inline-block;\n  width: 24px;\n  height: 24px;\n  margin-left: 10px;\n  text-indent: -9999px;\n  background-image: url(" + __webpack_require__(8) + ");\n  background-repeat: no-repeat;\n  cursor: pointer; }\n\n.single-share .share-wechat {\n  background-position: 0 -79px; }\n\n.single-share .share-qq {\n  background-position: 0 -151px; }\n\n.single-share .share-qzone {\n  background-position: 0 -127px; }\n\n.single-share .share-weibo {\n  background-position: 0 -103px; }\n\n/* end content 样式*/\n/* start footer 样式*/\nfooter {\n  width: 960px;\n  padding: 20px 0;\n  margin: 0 auto;\n  text-align: center;\n  border-top: 1px solid #efefef; }\n\n/* end footer 样式*/\n/* start comments 样式*/\n.comments-wrap {\n  margin-bottom: 20px;\n  background-color: #fff;\n  padding: 10px 20px 0;\n  clear: both; }\n\n.comments-title {\n  color: #333;\n  font-size: 18px;\n  padding: 10px 0;\n  margin-bottom: 0; }\n\n.comments-wrap .comment-area {\n  position: relative; }\n\n.comments-wrap .comment-input {\n  width: 840px;\n  padding: 5px 50px 10px 5px;\n  height: 20px;\n  box-shadow: none;\n  border: 0;\n  background-color: #fff; }\n\n.comments-wrap .comment-submit {\n  background-color: #ffa015;\n  line-height: 31px;\n  padding: 0 5px;\n  height: 31px;\n  display: block;\n  width: 55px;\n  text-align: center;\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  margin-bottom: 5px;\n  z-index: 999;\n  color: #fff; }\n\n.comments-wrap .comment-limit-tips {\n  position: absolute;\n  left: 850px;\n  bottom: 10px;\n  z-index: 999; }\n\n.comments-wrap .comment-limit-tips strong {\n  color: #0099ff;\n  font-weight: bold; }\n\n.comment-block {\n  word-break: break-all;\n  padding: 10px 0; }\n\n.comment-block, .comment-wrap {\n  border-top: 1px solid #f4f2ef; }\n\n.comment-block .avatars {\n  float: left;\n  width: 45px;\n  vertical-align: top; }\n\n.comment-block .avatars img {\n  width: 35px;\n  height: 35px;\n  border-radius: 35px; }\n\n.comment-block .replay {\n  width: 440px;\n  float: left; }\n\n.comment-block .user-login {\n  color: #9B8878; }\n\n.comment-block .anomynous,\n.comment-block .hostname,\n.comment-block .manager,\n.comment-block .user-login {\n  margin: 0 10px 0 0;\n  display: block; }\n\n.comment-block .replay .body {\n  color: #404040;\n  line-height: 1.6;\n  word-wrap: break-word; }\n\n.comments-list .report {\n  float: right;\n  color: #ccc;\n  font-size: 12px; }\n\n/* end comments 样式*/\n/*start login 样式*/\n/*.sigin-box{\r\n    left: 50%;\r\n    margin-left: -205px;\r\n    z-index: 1002;\r\n    position: absolute;\r\n    top: 40px;\r\n    margin-top: 0px;\r\n    display: block;\r\n}*/\n.signin-box {\n  /*display: none;*/\n  left: 50%;\n  margin-left: -205px;\n  z-index: 1002;\n  position: absolute;\n  top: 40px;\n  margin-top: 0px;\n  display: block;\n  height: 500px;\n  background: #fff;\n  color: #333;\n  font-size: 14px;\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);\n  border-radius: 3px; }\n\n.sigin-left {\n  float: left;\n  margin: 44px 55px 0; }\n\n.signin-account, .signin-form {\n  margin-bottom: 14px;\n  width: 300px; }\n\n.signin-account {\n  border-bottom: 1px solid #f2f2f2; }\n\n.social-signin-heading {\n  margin-bottom: 22px;\n  color: #5e5e5e;\n  font-size: 15px; }\n\n.signin-account .social-btn {\n  display: block;\n  text-align: center;\n  width: 300px;\n  height: 40px;\n  line-height: 40px;\n  font-size: 16px;\n  color: #fff;\n  border-radius: 3px; }\n\n.social-wechat {\n  background: url(" + __webpack_require__(12) + ") 0 -2px no-repeat #62CF69;\n  margin-bottom: 10px; }\n\n.social-weibo {\n  background: url(" + __webpack_require__(13) + ") 0 -2px no-repeat #e24f48;\n  margin-bottom: 10px; }\n\n.social-qq {\n  background: url(" + __webpack_require__(14) + ") 0 -2px no-repeat #2fa2d7;\n  margin-bottom: 20px; }\n\n.user-setting .social-email {\n  background: url(" + __webpack_require__(15) + ") no-repeat; }\n\n.signin-account, .signin-form {\n  margin-bottom: 14px;\n  width: 300px; }\n\n.signin-section {\n  border: 1px solid #e6e6e6;\n  margin-bottom: 17px;\n  padding: 1px; }\n\n.signin-error {\n  display: none;\n  margin: 0 0 10px;\n  color: red; }\n\n.signin-form button, .signin-form input {\n  font-size: 18px; }\n\n.form-input {\n  color: #d2d2d2;\n  font-size: 14px !important;\n  padding: 11px !important;\n  display: block;\n  margin-top: -1px;\n  border: 0 !important;\n  border-top: 1px solid #e6e6e6 !important;\n  background-color: #fff;\n  margin-right: 0;\n  width: 296px !important; }\n\n.form-input-first {\n  border-top: 0 !important; }\n\n.form-submit {\n  background-color: #fbbf2f;\n  font-weight: 700;\n  color: #fff;\n  padding: 8px 0;\n  border-radius: 2px !important;\n  text-align: center;\n  display: block;\n  width: 100%;\n  font-size: 16px; }\n\n.signin-foot {\n  width: 300px;\n  font-size: 14px;\n  border-top: 0;\n  padding: 0;\n  text-align: left; }\n\n.signin-foot a {\n  color: #d3d3d3;\n  padding: 0 !important;\n  margin-right: 15px;\n  text-decoration: underline; }\n\n.signin-foot a.fetch-password {\n  padding-right: 15px; }\n\n.signin-foot a:hover {\n  background-color: transparent;\n  color: #999; }\n\n/*end login 样式*/\n/* start 个人主页 样式*/\n.user-main {\n  width: 980px;\n  margin: 0 auto;\n  color: #666; }\n\n.user-header {\n  margin: 0 0 20px; }\n\n.user-header .user-header-avatar {\n  position: absolute;\n  margin: 32px 0 0 30px; }\n\n.user-header .user-header-cover {\n  height: 220px;\n  background-image: url(" + __webpack_require__(16) + "); }\n\n.user-header .user-header-cover h2 {\n  padding: 150px 0 0 320px;\n  font-size: 34px;\n  color: #fff;\n  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); }\n\n.user-header .user-header-menu {\n  border: 1px solid #dedede;\n  background: #fff;\n  padding-left: 320px; }\n\n.user-header .user-header-menu li, .user-toolbar button {\n  display: inline-block; }\n\n.user-header .user-header-menu .active {\n  box-shadow: 0 -4px 0 #794627 inset; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-header .user-header-menu a {\n  display: block;\n  padding: 20px;\n  font-size: 16px; }\n\n.user-main .user-col-right {\n  float: right;\n  width: 700px; }\n\n.user-main .user-col-left {\n  float: left;\n  width: 260px; }\n\n.user-main .user-block {\n  margin: 0 0 20px;\n  border: 1px solid #dedede;\n  background: #fff;\n  position: relative; }\n\n.user-follow h3, .user-follow ul, .user-statis h3, .user-statis ul {\n  padding: 14px 20px; }\n\n.user-comment-info, .user-follow h3, .user-setting h3, .user-statis h3 {\n  border-bottom: 1px solid #e8e8e8; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-follow h3, .user-follow ul, .user-statis h3, .user-statis ul {\n  padding: 14px 20px; }\n\n.user-statis ul li {\n  line-height: 2; }\n\n.user-statis span {\n  display: inline-block;\n  width: 80px; }\n\n.user-date {\n  color: #d6d6d6; }\n\n.user-date .user-date-month {\n  position: absolute;\n  margin: 12px 0 0 19px;\n  font-size: 35px; }\n\n.user-date .user-date-break {\n  position: absolute;\n  margin: 14px 0 0 56px;\n  font-size: 38px; }\n\n.user-date .user-date-day {\n  position: absolute;\n  margin: 32px 0 0 70px;\n  font-size: 24px; }\n\n.user-indent {\n  margin-left: 100px;\n  padding-bottom: 6px; }\n\n.user-comment li, .user-feed li {\n  margin: 14px 20px; }\n\n.user-comment-info {\n  padding: 6px 0 14px; }\n\n.user-comment-info, .user-follow h3, .user-setting h3, .user-statis h3 {\n  border-bottom: 1px solid #e8e8e8; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-comment-quote {\n  background: #f7f7f7; }\n\n.user-comment-quote ul {\n  padding: 1px; }\n\n.user-comment li, .user-feed li {\n  margin: 14px 20px; }\n\n.user-article-avatar a {\n  vertical-align: middle;\n  display: inline-block; }\n\n.user-article-avatar img {\n  vertical-align: middle;\n  margin-right: 10px; }\n\n.user-article-avatar img, .user-follow ul li img {\n  width: 60px;\n  height: 60px;\n  border-radius: 60px; }\n\n.user-article-text {\n  line-height: 1.6;\n  word-wrap: break-word; }\n\n.user-article-text a, .user-article-text a:hover {\n  color: #666; }\n\n.user-article-stat, .user-article-stat a {\n  color: #949494; }\n\n/* end 个人主页 样式*/\n/* start 编辑资料 样式*/\n.user-setting h3 {\n  padding: 14px 20px; }\n\n.user-setting input {\n  font-size: 14px;\n  padding: 2px; }\n\n.user-setting li {\n  margin: 14px 20px; }\n\n.user-setting .user-setting-avatar {\n  display: block;\n  width: 210px;\n  height: 210px; }\n\n.user-setting .social-email,\n.user-setting .social-email:hover,\n.user-setting .social-qq,\n.user-setting .social-qq:hover,\n.user-setting .social-wechat,\n.user-setting .social-wechat:hover,\n.user-setting .social-weibo,\n.user-setting .social-weibo:hover {\n  display: inline-block;\n  width: 266px;\n  height: 40px;\n  line-height: 40px;\n  text-indent: 70px;\n  color: #fff;\n  margin: 0; }\n\n.user-setting .user-setting-inputlable {\n  width: 100px;\n  display: inline-block; }\n\n/* end 编辑资料 样式*/\n/* start 投稿 样式*/\n.post-readme h3 {\n  font-size: 16px;\n  padding: 0 0 20px; }\n\n.post-readme ol li {\n  padding: 20px 0;\n  border-top: 1px solid #efefef;\n  list-style-position: inside;\n  list-style-type: decimal;\n  line-height: 140%; }\n\n/* end 投稿 样式*/\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports) {
 
 	/*
@@ -25793,61 +23174,61 @@
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/6468defc.icongroup.png";
+	module.exports = __webpack_require__.p + "images/icongroup.6468defc0c98ea0ac15c517d7b03172c.png";
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABgUExURUxpcb/Ax8HByb6/x8DAx77Ax8TE0cPDzL6/x8DAy76/xr+/x76/xr7Ax7+/x77AxsPDz76/xsDByb7Axr+/xsDAx8/Pz77Ax8DAyL7Ax77Axr7Cxr+/xr+/x8HByMPDzBRcq+0AAAAgdFJOUwBXPuVNkxEe8Cj5yrl3oKcV6TTEsSMImVRuoz9khUIabsY1jgAAANxJREFUeNq9UscShSAMpEizIWJv//+ZTxGMPp3xZi5sZrNJSII+MpGlNI5pmoknUsscK84VzqW+BUSSFQEXTEZXtjfk7BLTX7SmvobX5qQXMmhBL6G+Zi4Ii9PDNIiLLV8VVQohtT5bpeKQZ7mrT1DZIdSVaHR188zTKUYPhlMPqHqiFfUg5k80jy80aW3izLYk0JC8tGWzu80KfXJoTQ2Qd1ChNfhY0gS2SY6PwVgmFmg2wVhgqKzlrqV29/T/SjpbzXNluw2PIIaFimURsNC3c3g/pvdTvB/yN/YDfoAKKUQYFhQAAAAASUVORK5CYII="
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABXUExURUxpccfHz8/Pz8fHzsfH0MbIz8fI0dDQ1MvM0sfIz8bHzsfHzsbIz83N1cbHzsfHzszM1MbHzsnJ0ezs/9DV3sfIzsfHzsbM08bIzsfIz8fIz8jL0MbJzvkkAVIAAAAddFJOUwCgFZRXqE4RKXf55bkf8e4e6T4DB8ptJJyEvzNf/64vHwAAANdJREFUeNq9UtkSgyAMFIEigiJyePX/v7MqYKTtDG/mAQibwG6S6iHruBRtKyTv/oAD7RFpGGsI6unwjb4UrtO5xuqVo16Pd3fUPsvVUx4+6Vv+oFIu5Cv4n+JfqpheivqD1Taz4DbUHPz6pI+jQMC999Uua3O6iEdYkrDbddtjl3hLZDyIEM5manfOjpvwh4hwy07XBS2GuxNnbQYbm6jaCmB4HCx/XJLEZnVuvRyZCzPz0RWGkQFhUJbKR0mLr6AsUNScGqaFlpQbWh6H8jCVRzEf5GfsA7nZCbS4NgQNAAAAAElFTkSuQmCC"
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABUUExURUxpccrL08bHzsfIzv///8bIzsfI0MfHz8bIzsrK1MfKz8fHzsfIz9XV8cbIz8bHzsbHzsjK0cjJz8bHzsbHzsjI0MfIz8bHz8fH0MbKzs7a2sbHzpvg3I4AAAAbdFJOUwAk34kB6XWBfxc+fb0GqefwLkzy01xrsFdECjuYtk4AAACJSURBVHja3c7ZDsIgEIXhYV8LhS4qvP97mppJ0UCvNX5Xh/zJBPg6bqX6IC1vdYoLc/qNY6ufAHE/8+7eIjhOu7ba+mxxSQYDTOLQapS1+vfsxlnj2G6jHDYcpt77mqMBlKok+CDmhaia4JQCrfmInopDpIF0Hy1K7NDD/KDBwBVfaYZrZS/wW54HLgYOm6GDdQAAAABJRU5ErkJggg=="
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAAsCAMAAADo1HXzAAAAPFBMVEVYul5iz2ldxWNiz2lYul7////s+O1vxHRhvmb2/Pf8/vzk9OW95L+v3rLZ8NrK6syY1Jyj2aeHzox8yYFkx8YBAAAAA3RSTlPn5klR/6+lAAABZ0lEQVRo3u3by3LCMAyF4UAdS0589/u/aytIJtjEbbxi0fNvDNtvjEbAZLpParyv/9jtPk0KWFe1JgWsywELWI+ANRCwBgLWQMAaCFgDAesT9bE4BW0W7R0B6w8sdmbeCwSs37BonV9aIrD6WKTnugisLlb48dHJCpNJTu5WAVYHK2+XScaWU0o+kh5YHawgWJ7y8yiLnASsc6xmYpkQCzGwzrGWysoyOb+aNUQG1juWqdYGtjuejsB6w/LzUapWLgusFisdOp7X+TUHrAaLjwmfBU4XK7cqi1sBVo2l8j6lzMMtqCxuKggZsBosFTetlZ6HvDWrvNTAarFU3kZWmduA9Ya1IWl6dcLNOsdyxjHFlLja5jGzTrEi72q11ULAOrDamj0rYc9qsPo/BDps8DVWG4djYOG74YbVrzivjQ7WeGA1WP3IMrDwJyuw9oA1ELAGAtZAwBoIWJ8MDw1c74bHUa5b3b8B9AippRqVijoAAAAASUVORK5CYII="
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAAsCAMAAADo1HXzAAABwlBMVEXSWTXqYzvSWTXqYzvqYzvSWTXSWTXqYzvqYzv////SWTXUYT/++/rTXTrTXjvpsJ778u/+/Pv//v3+/f3uwrX129P99/XWZ0b++vn89fLgjHP23db78e7UYD3dgWX0187ad1nln4v//v7VZUP34Nnoq5nadlnmoo712dD78O3km4XuwbT56eT01czaeFvvw7byz8T23NXqsJ/SWjfUYD7WaUnWZkXZdFbcfWHVZUT23tfbeVzrtaX34tvmpZH45N/TWzf56OPbe17gi3Lyz8X349345uHSWjb34NrhkHj89PLUXzzjl4D45uDfiW/rt6filX7vwrXYbk7VY0HTXDjiln/pr57jmILvxbjnp5Trs6P99vTZclPcfGDqYzvWaUjxyr7oqJbuwLLdgmfmoY3z0sjuv7HWaEftvK3vxLf+/PzloIv56OL9+fjXbU3z1Mv77+zfh23ln4r018/npZL12dHhknrXa0r88/DUYkD67OjbfF/fiG7dgGXsuqvqsqLXbU7ilHzaeFr9+PbadVfVY0LehmzkmoTsuKnxzMDiknvmo4/vxLj34dv9+Pfwyb3Zc1XfinHtva7st6jmpJDlnolosjYhAAAACXRSTlNJ5uZJ50rn5EpiJjFHAAACA0lEQVR4Xu3bNc/cUBSE4Q1nxsvM/DEzM2OYmZmZmZn+b+5acmF7pThSupy3mvqpTnNcrrX8+w7/j61Zp6wEy6mWi4LlOMESrH+ZYAmWYAmWYAlWdj6O6I1GjwMswdoGveZDf8YSrNrTdY0/GgD3CQoWq1daqPml0cjrA/wlwWK1Yo/jAFr03dq2t66bo0CNYLFKU37onaHqOoBZbS6FecGivZ9F6OEgmdm+I7NzNwrch4Bg0dYxGOVP1gdRPEtvqIm3AcGitQKsPaI7zGVEBYuWXgdhbYFvv/E7IoJFc7E09KLl9paORX0GjlB1FE8Ei+baoEp3tnaxUt6XABK7NJI9e3oFi6b6igD2a+RSvr9EVexUBW+VeoJlaguAreTA8TgQCmdIegYBBIbsWIK1AgyTSyPQa6IqCdU5O5ZgnUcoRl6A6uIlBAdIXoaqbMcSrACaSV5BZPjqtTKQJVkLVbsdS7BSSJNcGRvnFFRDxkFfsGMJ1k2gn7xVP0cfgIlx8s5dAA2aHUuw7t1HxMNlpDoAJB6QvZURfEg9wTI3eQC5HiZzIUTDT8nsBAD3MxoJlqnnY3jR+ZLeV2R3chqqkUkaCZYlz5sZwJ97Nz3jhmrwfRdNCZa5vg8fPy0Cn2e/jH6lKcFynGA5TrAES7AES7AES7AES54GnLfetWGjYDlr0+bfSsQgWbxlxxgAAAAASUVORK5CYII="
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAAsCAMAAADo1HXzAAAA4VBMVEU2iq1Dq9dLwPFLwPFLwPFLwPFLwPH///9DrNj3+/39/v/f8fjP6vWCyOW33/BKr9r1+/2y3e9OsdpVtNzl9PpErNjK6PTz+v1pveBJr9lErdjM6fT+/v/8/v5MsNqOzehXtdxuv+FWtNzV7Pad1OvR6/Z/x+XL6PRsvuHn9fro9frS6/bX7fdjut/+//9mu9/b7/ib0+p6xOOz3e93w+NIrtlSs9uJy+d9xuSAx+VLwPH0+v3y+fxNsNpiut613vDi8vn7/f7J5/R4w+N7xeT4/P7k8/lku9+HyuaPzuhUs9w6pPAyAAAAB3RSTlNc6eZJ5+RKwWReWgAAAThJREFUeF7t20VuA0EQheFx6PUgmDHIzMwM9z9QFl44qe7yTKTs8v4jfFJJb1OeVzG/7/I/NjFpWRFL1/IMsUpHLGL9QcQiFrGIRSxifS4vZfC3Dk4LsYh15mNY9l6ARawPjJobi0WshT5GBetjsIjVDfG9sKtjEesQPzvWsYiVC6xcxyJWJLAiFYtY1UBgBVUNi1gxZLGGRawEskTBItZ8CFlYc2IRa7EOu3rNgUWsxgpcRQ0bi1gx3K3aWMRag7umjUUsH+58G4tYwAbsNgEbi1it7Z0+ZLt7+y0bi1jtjskhOzJp24nFBX/SFFa9jrbgiXURSaxzBYtYaQDZIHVjEWv2CsNwjWHwbxQsnuHt3f0DkD0+mefeCzB4Td6MiFiFEYtYxCIWsYhFLGJViFW2Kb6jlG565gstdO5eRZuVEQAAAABJRU5ErkJggg=="
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQoAAAAsCAMAAACqlwZkAAAAilBMVEVuboWIiKaZmbqZmbqZmbqZmbqZmbqJiaf////U1N/9/f36+vzNzdrMzNn6+vv9/f7V1eCfn7eSkq7ExNP29vi7u83m5uyursOKiqiLi6js7PGlpbyZmbqdnbbx8fSmpr3d3eaTk66Tk6+Xl7Lc3OXe3ua2tsmPj6v+/v6np72OjqqYmLKOjquXl7HiTtTuAAAAB3RSTlNc6eZJ5+RKwWReWgAAAMhJREFUeF7t2keuwlAMhtEQim9q74XeeW//20NAQEJiwigS9/O/gzOwLcuGMZLvq/29Mse9BBStaQgUfQalgAIKKKCAAgoooIACCiigUJ8LiluggKLZfoDYNjpSrKWz7DcH2+pkpSOF417k3/NfEL63kYvr6NkrgjCSOEnvEGkSSxQGGrfN3UnO2VzNsz9ZLHWfIHlRVouqLHKGqVL1/rCv2SseObJisWJBAQUUUHC6gQIKKKCAAgoooIACiiHDC+szEx6b+0xnV8x4RcnG/R8JAAAAAElFTkSuQmCC"
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/f8b78e9a.usercover.jpg";
+	module.exports = __webpack_require__.p + "images/usercover.f8b78e9a15931b5deb8d2e05de7d4575.jpg";
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -26099,17 +23480,17 @@
 
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(20)
+	__vue_script__ = __webpack_require__(19)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\app.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(34)
+	__vue_template__ = __webpack_require__(30)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -26134,7 +23515,7 @@
 	})()}
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26143,11 +23524,11 @@
 		value: true
 	});
 	
-	var _header = __webpack_require__(21);
+	var _header = __webpack_require__(20);
 	
 	var _header2 = _interopRequireDefault(_header);
 	
-	var _footer = __webpack_require__(31);
+	var _footer = __webpack_require__(27);
 	
 	var _footer2 = _interopRequireDefault(_footer);
 	
@@ -26167,17 +23548,17 @@
 	};
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(22)
+	__vue_script__ = __webpack_require__(21)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\header.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(30)
+	__vue_template__ = __webpack_require__(26)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -26202,7 +23583,7 @@
 	})()}
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26211,7 +23592,7 @@
 		value: true
 	});
 	
-	var _index = __webpack_require__(23);
+	var _index = __webpack_require__(22);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
@@ -26236,7 +23617,7 @@
 	};
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26245,13 +23626,9 @@
 	    value: true
 	});
 	
-	var _stringify = __webpack_require__(24);
+	var _events = __webpack_require__(23);
 	
-	var _stringify2 = _interopRequireDefault(_stringify);
-	
-	var _events = __webpack_require__(27);
-	
-	var _util = __webpack_require__(28);
+	var _util = __webpack_require__(24);
 	
 	var _util2 = _interopRequireDefault(_util);
 	
@@ -26259,7 +23636,7 @@
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _service = __webpack_require__(29);
+	var _service = __webpack_require__(25);
 	
 	var _service2 = _interopRequireDefault(_service);
 	
@@ -26284,14 +23661,14 @@
 	store.showLoginForm = false;
 	
 	store.setToInsightInfo = function (selectList) {
-	    selectList = (0, _stringify2.default)(selectList);
+	    selectList = JSON.stringify(selectList);
 	    localStorage.setItem('searchToInsight', selectList);
 	};
 	store.getToInsightInfo = function () {
 	    return JSON.parse(localStorage.getItem('searchToInsight') || '{}');
 	};
 	store.setToSearch = function (selectList) {
-	    selectList = (0, _stringify2.default)(selectList);
+	    selectList = JSON.stringify(selectList);
 	    localStorage.setItem('insightToSearch', selectList);
 	};
 	store.getToSearch = function () {
@@ -26315,30 +23692,7 @@
 	};
 
 /***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(25), __esModule: true };
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var core  = __webpack_require__(26)
-	  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
-	module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
-	  return $JSON.stringify.apply($JSON, arguments);
-	};
-
-/***/ },
-/* 26 */
-/***/ function(module, exports) {
-
-	var core = module.exports = {version: '2.4.0'};
-	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-
-/***/ },
-/* 27 */
+/* 23 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -26646,7 +24000,7 @@
 
 
 /***/ },
-/* 28 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26655,11 +24009,7 @@
 	    value: true
 	});
 	
-	var _stringify = __webpack_require__(24);
-	
-	var _stringify2 = _interopRequireDefault(_stringify);
-	
-	var _events = __webpack_require__(27);
+	var _events = __webpack_require__(23);
 	
 	var _jquery = __webpack_require__(1);
 	
@@ -27104,7 +24454,7 @@
 	        }
 	        includeArray.push(labelJson);
 	    });
-	    return (0, _stringify2.default)(includeArray);
+	    return JSON.stringify(includeArray);
 	};
 	
 	/**
@@ -27222,7 +24572,7 @@
 	};
 
 /***/ },
-/* 29 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27231,9 +24581,9 @@
 	    value: true
 	});
 	
-	var _events = __webpack_require__(27);
+	var _events = __webpack_require__(23);
 	
-	var _util = __webpack_require__(28);
+	var _util = __webpack_require__(24);
 	
 	var _util2 = _interopRequireDefault(_util);
 	
@@ -27401,23 +24751,23 @@
 	};
 
 /***/ },
-/* 30 */
+/* 26 */
 /***/ function(module, exports) {
 
 	module.exports = "<header>\r\n    <div id=\"header\" class=\"row clearfix\">\r\n        <div id=\"logo\">\r\n            <a href=\"./index.php#!/index\"></a>\r\n        </div>\r\n        <ul id=\"nav\" class=\"menu-bar menu clearfix\">\r\n            <li id=\"highlight\">\r\n                <a href=\"/funnySharePlatform/index.php#!/index\" >热门</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/fresh\">新鲜</a>\r\n            </li>\r\n           \r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/word\">文字</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/img\">图片</a>\r\n            </li>         \r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/add\">投稿</a>\r\n            </li>\r\n        </ul>\r\n\r\n        <div id=\"loginBtn\">\r\n            <a href=\"javascript:;\" @click=\"showLoginBox()\">登录/注册</a>\r\n        </div>\r\n    </div>\r\n</header>\r\n";
 
 /***/ },
-/* 31 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(32)
+	__vue_script__ = __webpack_require__(28)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\footer.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(33)
+	__vue_template__ = __webpack_require__(29)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -27442,7 +24792,7 @@
 	})()}
 
 /***/ },
-/* 32 */
+/* 28 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27459,29 +24809,29 @@
 	};
 
 /***/ },
-/* 33 */
+/* 29 */
 /***/ function(module, exports) {
 
 	module.exports = "<footer>\r\n    <p>SCAU Copyright ©  2016-华南农业大学.All rights reserved. </p>\r\n</footer>\r\n";
 
 /***/ },
-/* 34 */
+/* 30 */
 /***/ function(module, exports) {
 
 	module.exports = "<app-header></app-header>\r\n\r\n<router-view></router-view>\r\n\r\n<app-footer></app-footer>\r\n";
 
 /***/ },
-/* 35 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(36)
+	__vue_script__ = __webpack_require__(32)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Index.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(58)
+	__vue_template__ = __webpack_require__(37)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -27506,7 +24856,7 @@
 	})()}
 
 /***/ },
-/* 36 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27519,15 +24869,19 @@
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _index = __webpack_require__(23);
+	var _util = __webpack_require__(33);
+	
+	var _util2 = _interopRequireDefault(_util);
+	
+	var _index = __webpack_require__(22);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
-	var _service = __webpack_require__(29);
+	var _service = __webpack_require__(25);
 	
 	var _service2 = _interopRequireDefault(_service);
 	
-	var _login = __webpack_require__(55);
+	var _login = __webpack_require__(34);
 	
 	var _login2 = _interopRequireDefault(_login);
 	
@@ -27572,7 +24926,7 @@
 					self.page.totalNum = res.data.totalNum;
 					self.page.totalPage = res.data.totalPage;
 				}).fail(function (res) {
-					util.dialog.alert({
+					_util2.default.dialog.alert({
 						msg: [res.msg]
 					});
 				});
@@ -27583,7 +24937,7 @@
 				_service2.default.praiseUp().done(function (res) {
 					alert('点赞成功！');
 				}).fail(function (res) {
-					util.dialog.alert({
+					_util2.default.dialog.alert({
 						msg: [res.msg]
 					});
 				});
@@ -27594,7 +24948,7 @@
 				_service2.default.trampDown().done(function (res) {
 					alert('踩成功！');
 				}).fail(function (res) {
-					util.dialog.alert({
+					_util2.default.dialog.alert({
 						msg: [res.msg]
 					});
 				});
@@ -27605,7 +24959,7 @@
 				_service2.default.trampDown().done(function (res) {
 					alert('收藏成功');
 				}).fail(function (res) {
-					util.dialog.alert({
+					_util2.default.dialog.alert({
 						msg: [res.msg]
 					});
 				});
@@ -27636,35 +24990,104 @@
 	};
 
 /***/ },
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _events = __webpack_require__(23);
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var util = new _events.EventEmitter();
+	
+	exports.default = util;
+	
+	
+	util.ajax = function (opt, other) {
+	    var defer = _jquery2.default.Deferred();
+	    if (!opt.dataType) {
+	        opt.dataType = 'json';
+	    }
+	    if (other && other.loading) {
+	        (0, _jquery2.default)('.preloader').css('display', 'block');
+	    }
+	    _jquery2.default.ajax(opt).done(function (result) {
+	        if (opt.dataType === 'json' && result.code !== 0) {
+	            if (result.code === -1) {
+	                localStorage.setItem('prevUrl', window.location.href);
+	                window.location.href = '/login.html';
+	            } else if (result.code === 2) {
+	                // code = 2 用于比较复杂的报错
+	                defer.reject(result);
+	            } else {
+	                defer.reject(result);
+	            }
+	        } else {
+	            defer.resolve(result);
+	        }
+	    }).fail(function () {
+	        defer.reject({
+	            msg: '网络出错'
+	        });
+	    }).always(function () {
+	        if (other && other.loading) {
+	            (0, _jquery2.default)('.preloader').css('display', 'none');
+	        }
+	    });;
+	
+	    return defer.promise();
+	};
+	
+	/*
+		对话框
+		data.msg	- 提示信息
+		data.title	- 标题
+		data.size	-	弹框大小，默认为sm
+		data.modal	-	显示的弹框类型	
+	*/
+	
+	util.dialog = {
+	    show: function show(data) {
+	        util.removeAllListeners('confirm-dialog').removeAllListeners('cancel-dialog');
+	        util.emit('show-dialog', data);
+	        return this;
+	    },
+	    alert: function alert(data) {
+	        util.removeAllListeners('confirm-dialog').removeAllListeners('cancel-dialog');
+	        util.emit('alert-dialog', data);
+	        return this;
+	    },
+	    confirm: function confirm(fn) {
+	        util.removeAllListeners('confirm-dialog');
+	        util.on('confirm-dialog', fn);
+	    },
+	    cancel: function cancel(fn) {
+	        util.on('cancel-dialog', fn);
+	        return this;
+	    }
+	};
+
+/***/ },
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(56)
+	__vue_script__ = __webpack_require__(35)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\login.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(57)
+	__vue_template__ = __webpack_require__(36)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -27689,7 +25112,7 @@
 	})()}
 
 /***/ },
-/* 56 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27698,7 +25121,7 @@
 		value: true
 	});
 	
-	var _index = __webpack_require__(23);
+	var _index = __webpack_require__(22);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
@@ -27728,29 +25151,29 @@
 	};
 
 /***/ },
-/* 57 */
+/* 36 */
 /***/ function(module, exports) {
 
-	module.exports = "<!--start 登录页面-->\r\n<div class=\"signin-box animated fadeInUp\" id=\"login-form\" @click=\"cancelBubble\">\r\n    <div class=\"sigin-left\">\r\n        <div class=\"signin-account clearfix\">\r\n            <h4 class=\"social-signin-heading\">社交帐号登录</h4>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-btn social-wechat\">\r\n            使用 微信 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession\" class=\"social-btn social-weibo\">\r\n            使用 微博 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://graph.qq.com/oauth2.0/authorize?which=Login&amp;display=pc&amp;client_id=100251437&amp;response_type=code&amp;redirect_uri=www.qiushibaike.com/new4/session?src=qq\" class=\"social-btn social-qq\">\r\n            使用 QQ 账号 </a>\r\n        </div>\r\n        <div class=\"signin-form clearfix\">\r\n            <h4 class=\"social-signin-heading\">糗事百科账号登录</h4>\r\n            <form method=\"post\" action=\"/Home/Login/index\">\r\n                <div class=\"signin-section clearfix\">\r\n                <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"昵称或邮箱\">\r\n                <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\">\r\n                <input type=\"checkbox\" id=\"remember_me\" name=\"remember_me\" checked=\"\" value=\"checked\" style=\"display:none\">\r\n                </div>\r\n                <div class=\"signin-error\" id=\"signin-error\"></div>\r\n                <button type=\"submit\" id=\"form-submit\" class=\"form-submit\">登录</button>\r\n            </form>\r\n        </div>\r\n        <div class=\"signin-foot clearfix\">\r\n            <a rel=\"nofollow\" href=\"/new4/fetchpass\" class=\"fetch-password\">忘记密码?</a>\r\n        </div>\r\n    </div>\r\n</div>\r\n<!--end 登录页面-->\t\r\n";
+	module.exports = "<!--start 登录页面-->\r\n<div class=\"signin-box animated fadeInUp\" id=\"login-form\" @click=\"cancelBubble\">\r\n    <div class=\"sigin-left\">\r\n        <div class=\"signin-account clearfix\">\r\n            <h4 class=\"social-signin-heading\">社交帐号登录</h4>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-btn social-wechat\">\r\n            使用 微信 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession\" class=\"social-btn social-weibo\">\r\n            使用 微博 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://graph.qq.com/oauth2.0/authorize?which=Login&amp;display=pc&amp;client_id=100251437&amp;response_type=code&amp;redirect_uri=www.qiushibaike.com/new4/session?src=qq\" class=\"social-btn social-qq\">\r\n            使用 QQ 账号 </a>\r\n        </div>\r\n        <div class=\"signin-form clearfix\">\r\n            <h4 class=\"social-signin-heading\">糗事百科账号登录</h4>\r\n            <form method=\"post\" action=\"/thesis/Login\">\r\n                <div class=\"signin-section clearfix\">\r\n                <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"昵称或邮箱\">\r\n                <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\">\r\n                <input type=\"checkbox\" id=\"remember_me\" name=\"remember_me\" checked=\"\" value=\"checked\" style=\"display:none\">\r\n                </div>\r\n                <div class=\"signin-error\" id=\"signin-error\"></div>\r\n                <button type=\"submit\" id=\"form-submit\" class=\"form-submit\">登录</button>\r\n            </form>\r\n        </div>\r\n        <div class=\"signin-foot clearfix\">\r\n            <a rel=\"nofollow\" href=\"/new4/fetchpass\" class=\"fetch-password\">忘记密码?</a>\r\n        </div>\r\n    </div>\r\n</div>\r\n<!--end 登录页面-->\t\r\n";
 
 /***/ },
-/* 58 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\">\r\n\t\t\t\t\t<img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\">\r\n\t\t\t\t</a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"thumb\">\r\n\t\t\t\t<a href=\"index.php#!/comment\" target=\"_blank\">\r\n\t\t\t\t<img src=\"http://pic.qiushibaike.com/system/pictures/11803/118031114/medium/app118031114.jpg\" alt=\"朋友圈都乱了\">\r\n\t\t\t\t</a>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t</div>\r\n</div>\r\n\r\n<div id=\"login-box\" @click=\"closeLoginBox\" v-show=\"store.showLoginForm\">\r\n\t<login-box></login-box>\r\n</div>\r\n";
+	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\">\r\n\t\t\t\t\t<img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\">\r\n\t\t\t\t</a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"thumb\">\r\n\t\t\t\t<a href=\"index.php#!/comment\" target=\"_blank\">\r\n\t\t\t\t<img src=\"http://pic.qiushibaike.com/system/pictures/11803/118031114/medium/app118031114.jpg\" alt=\"朋友圈都乱了\">\r\n\t\t\t\t</a>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t</div>\r\n</div>\r\n\r\n<div id=\"login-box\" @click=\"closeLoginBox\" v-show=\"store.showLoginForm\">\r\n\t<login-box></login-box>\r\n</div>\r\n";
 
 /***/ },
-/* 59 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(60)
+	__vue_script__ = __webpack_require__(39)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Add.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(61)
+	__vue_template__ = __webpack_require__(40)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -27775,7 +25198,7 @@
 	})()}
 
 /***/ },
-/* 60 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27799,23 +25222,23 @@
 	};
 
 /***/ },
-/* 61 */
+/* 40 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\r\n\t\t<div class=\"clearfix mt-l mb-l p-xl b-w bs-l\">\r\n\t\t<!-- 返回信息 -->\r\n\r\n\t\t\t<!-- 发表表单 -->\r\n\t\t\t<div class=\"post-readme wx250 f-r\">\r\n\t\t\t\t<h3>投稿须知</h3>\r\n\t\t\t\t<ol>\r\n\t\t\t\t\t<li>自己的或朋友的糗事，真实有笑点，不含政治、色情、广告、诽谤、歧视等内容。</li>\r\n\t\t\t\t\t<li>糗事经过审核后发表。</li>\r\n\t\t\t\t\t<li>转载请注明出处。</li>\r\n\t\t\t\t\t<li>我已阅读并同意糗事百科的《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/agreement.html\" target=\"_blank\" rel=\"external nofollow\">用户协议</a>\r\n\t\t\t\t\t\t》以及《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/policy.html\" target=\"_blank\" rel=\"external nofollow\">隐私政策</a>\r\n\t\t\t\t\t\t》\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ol>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"wx600 f-l\">\r\n\t\t\t\t<form action=\"/article/add\" enctype=\"multipart/form-data\" id=\"new_article\" method=\"post\">\r\n\t\t\t\t\t<input type=\"hidden\" name=\"_xsrf\" value=\"2|a74f41b5|67e564a1249d5794720d75050a4530fc|1479826284\">\r\n\t\t\t\t\t<input type=\"hidden\" id=\"article_group_id\" name=\"article[group_id]\" value=\"2\">\r\n\t\t\t\t\t<textarea id=\"qiushi_text\" class=\"wx600 p-m fs-s b-f-g b-lg bsi-l\" name=\"article[content]\" placeholder=\"分享一件新鲜事...\" rows=\"15\" required=\"\"></textarea>\r\n\t\t\t\t\t<div class=\"clearfix mt-r3 mb-m p-m c-lg b-f-g b-lg\">\r\n\t\t\t\t\t\t<div class=\"f-r\">\r\n\t\t\t\t\t\t\t<input type=\"hidden\" name=\"article[anonymous]\" value=\"0\">\r\n\t\t\t\t\t\t\t<input name=\"article[anonymous]\" type=\"checkbox\" id=\"article_anonymous\" onclick=\"this.value=this.checked?'1':'0'\" value=\"0\">\r\n\t\t\t\t\t\t\t匿名投稿\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"f-l\">\r\n\t\t\t\t\t\t\t<label>照片:</label>\r\n\t\t\t\t\t\t\t<input type=\"file\" id=\"article_picture\" name=\"article[picture]\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div id=\"length\" class=\"f-r\"></div><!--字数统计-->\r\n\t\t\t\t\t<input type=\"hidden\" name=\"article[comment_status]\" value=\"open\"><!--允许评论-->\r\n\t\t\t\t\t<button type=\"submit\" class=\"p-xl ptb-m b-g fs-s c-w br-s bs-l\" id=\"article_submit\" name=\"commit\">\r\n\t\t\t\t\t投递\r\n\t\t\t\t\t</button>\r\n\t\t\t\t</form>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 62 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(63)
+	__vue_script__ = __webpack_require__(42)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Comment.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(64)
+	__vue_template__ = __webpack_require__(43)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -27840,7 +25263,7 @@
 	})()}
 
 /***/ },
-/* 63 */
+/* 42 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27857,23 +25280,23 @@
 	};
 
 /***/ },
-/* 64 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div id=\"content\" class=\"main\">\r\n    <div id=\"content-block\" class=\"clearfix\">\r\n        <div class=\"funny-things clearfix\">\r\n        \t<div class=\"author clearfix\">\r\n        \t\t<a href=\"\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n        \t\t<a href=\"\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n        \t</div>\r\n        \t<a href=\"\" class=\"contentHerf\">\r\n        \t\t<div class=\"funny-content\">\r\n        \t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n        \t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n        \t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n        \t\t\t</p>\r\n        \t\t</div>\r\n        \t</a>\r\n        \t<div class=\"stats\">\r\n        \t\t<span class=\"stats-vote\">\r\n        \t\t\t<i class=\"number\">4030</i>\r\n        \t\t\t好笑\r\n        \t\t</span>\r\n        \t\t<span class=\"stats-comments\">\r\n        \t\t\t<i class=\"dash\">·</i>\r\n        \t\t\t<a href=\"\">\r\n        \t\t\t\t<i class=\"number\">110</i>\r\n        \t\t\t\t评论\r\n        \t\t\t</a>\r\n        \t\t</span>\r\n        \t</div>\r\n        \t<div class=\"stats-buttons clearfix\">\r\n        \t\t<ul class=\"clearfix\">\r\n        \t\t\t<li class=\"up\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"down\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"comments\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t</ul>\r\n        \t</div>\r\n        \t<div class=\"single-share\">\r\n        \t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n        \t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n        \t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n        \t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n        \t</div>\r\n        </div>\r\n        <div class=\"comments-wrap\">\r\n            <h3 class=\"comments-title fs-m\">评论（<em id=\"comments-num\">35</em>）</h3>\r\n            <div class=\"comments\">\r\n                <div class=\"comment-area\">\r\n                    <div id=\"length\" class=\"comment-limit-tips\">\r\n                        <strong>140</strong>\r\n                    </div>\r\n                    <input id=\"comment-input\" class=\"comment-input\"\r\n                        name=\"comment[content]\" autocomplete=\"off\" placeholder=\"我有话说...\"\r\n                        style=\"overflow: hidden;\">\r\n                    <button type=\"submit\" id=\"comment_submit\"\r\n                        class=\"comment-submit\">评论</button>\r\n                </div>\r\n\r\n                <div class=\"comments-list\">\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>";
+	module.exports = "<div id=\"content\" class=\"main\">\r\n    <div id=\"content-block\" class=\"clearfix\">\r\n        <div class=\"funny-things clearfix\">\r\n        \t<div class=\"author clearfix\">\r\n        \t\t<a href=\"\" target=\"_blank\"><img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\"></a>\r\n        \t\t<a href=\"\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n        \t</div>\r\n        \t<a href=\"\" class=\"contentHerf\">\r\n        \t\t<div class=\"funny-content\">\r\n        \t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n        \t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n        \t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n        \t\t\t</p>\r\n        \t\t</div>\r\n        \t</a>\r\n        \t<div class=\"stats\">\r\n        \t\t<span class=\"stats-vote\">\r\n        \t\t\t<i class=\"number\">4030</i>\r\n        \t\t\t好笑\r\n        \t\t</span>\r\n        \t\t<span class=\"stats-comments\">\r\n        \t\t\t<i class=\"dash\">·</i>\r\n        \t\t\t<a href=\"\">\r\n        \t\t\t\t<i class=\"number\">110</i>\r\n        \t\t\t\t评论\r\n        \t\t\t</a>\r\n        \t\t</span>\r\n        \t</div>\r\n        \t<div class=\"stats-buttons clearfix\">\r\n        \t\t<ul class=\"clearfix\">\r\n        \t\t\t<li class=\"up\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"down\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"comments\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t</ul>\r\n        \t</div>\r\n        \t<div class=\"single-share\">\r\n        \t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n        \t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n        \t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n        \t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n        \t</div>\r\n        </div>\r\n        <div class=\"comments-wrap\">\r\n            <h3 class=\"comments-title fs-m\">评论（<em id=\"comments-num\">35</em>）</h3>\r\n            <div class=\"comments\">\r\n                <div class=\"comment-area\">\r\n                    <div id=\"length\" class=\"comment-limit-tips\">\r\n                        <strong>140</strong>\r\n                    </div>\r\n                    <input id=\"comment-input\" class=\"comment-input\"\r\n                        name=\"comment[content]\" autocomplete=\"off\" placeholder=\"我有话说...\"\r\n                        style=\"overflow: hidden;\">\r\n                    <button type=\"submit\" id=\"comment_submit\"\r\n                        class=\"comment-submit\">评论</button>\r\n                </div>\r\n\r\n                <div class=\"comments-list\">\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>";
 
 /***/ },
-/* 65 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(66)
+	__vue_script__ = __webpack_require__(45)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Edit.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(67)
+	__vue_template__ = __webpack_require__(46)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -27898,7 +25321,7 @@
 	})()}
 
 /***/ },
-/* 66 */
+/* 45 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27915,23 +25338,23 @@
 	};
 
 /***/ },
-/* 67 */
+/* 46 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"user-main clearfix\">\r\n    <div class=\"user-header\">\r\n        <a href=\"/users/29459066/\" class=\"user-header-avatar\">\r\n        <img src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\" alt=\"Dodo Monster\">\r\n        </a>\r\n        <div class=\"user-header-cover\">\r\n            <h2>Dodo Monster</h2>\r\n        </div>\r\n        <ul class=\"user-header-menu\">\r\n            <li>\r\n                <a href=\"/users/29459066/\" class=\"active\">主页</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/articles/\">糗事</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/comments/\">评论</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/my/edit\">设置</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"user-col-right\">\r\n\r\n        <div id=\"editInfo\" class=\"user-block user-setting clearfix\">\r\n            <h3>更换头像</h3>\r\n            <form action=\"/my/edit\" enctype=\"multipart/form-data\" id=\"edit_user_29459066\" method=\"post\">\r\n                <input type=\"hidden\" name=\"_xsrf\" value=\"2|4fca4c9c|8798c7b71eaba7bc1d8939b71abddac8|1478965973\">\r\n                <ul>\r\n                    <li>\r\n                        <img alt=\"Dodo Monster\" class=\"user-setting-avatar\" src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\">\r\n                    </li>\r\n                    <li>\r\n                        <input name=\"_method\" type=\"hidden\" value=\"put\">\r\n                        <input id=\"user_avatar\" name=\"user[avatar]\" size=\"30\" type=\"file\">\r\n                        <input id=\"user_submit\" name=\"commit\" type=\"submit\" value=\"确定上传\">\r\n                    </li>\r\n                    <li>\r\n                    图片支持JPG格式，尺寸小于200x200像素，文件容量2M以内。\r\n                    </li>\r\n                </ul>\r\n            </form>\r\n        </div>\r\n        <div class=\"user-block user-setting clearfix\">\r\n            <h3>账号绑定</h3>\r\n            <ul>\r\n                <li>\r\n                    <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fmy%2Fedit%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-wechat\" name=\"third_account[‘type’]\">\r\n                    绑定微信账号\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fmy%2Fedit\" class=\"social-weibo\" name=\"third_account[‘type’]\">\r\n                    绑定微博账号\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a class=\"social-btn social-qq\" rel=\"nofollow\">\r\n                    北城亂世Sum\r\n                    </a>\r\n                    <a href=\"javascript:;\" data-type=\"1\" rel=\"nofollow\">\r\n                    解绑\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a rel=\"external nofollow\" href=\"javascript:;\" class=\"social-email\" data-email=\"\" act_bind_email=\"\" bind-type=\"new\" title=\"\">\r\n                    绑定邮箱\r\n                    </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n        <div id=\"editPass\" class=\"user-block user-setting clearfix\">\r\n            <h3>修改密码</h3>\r\n            <form id=\"new_user\">\r\n                <ul>\r\n                    <li>\r\n                        <label for=\"old_password\" class=\"user-setting-inputlable\">当前密码</label>\r\n                        <input id=\"old_password\" name=\"old_password\" size=\"30\" type=\"password\">\r\n                    </li>\r\n                    <li>\r\n                        <label for=\"new_password\" class=\"user-setting-inputlable\">新密码</label>\r\n                        <input id=\"new_password\" name=\"password\" size=\"30\" type=\"password\">\r\n                    </li>\r\n                    <li>\r\n                        <label for=\"password_confirmation\" class=\"user-setting-inputlable\">重复新密码</label>\r\n                        <input id=\"password_confirmation\" name=\"password_confirmation\" size=\"30\" type=\"password\">\r\n                    </li>\r\n                    <li>\r\n                        <input name=\"commit\" action_change_pass=\"\" type=\"button\" value=\"确认修改\">\r\n                    </li>\r\n                </ul>\r\n            </form>\r\n        </div>\r\n        <div class=\"user-block user-setting clearfix\">\r\n            <h3>帐号</h3>\r\n            <ul>\r\n                <li>\r\n                    <a href=\"/new4/logout\" class=\"exit\" rel=\"nofollow\">退出登录</a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n        <!-- popup Start -->\r\n        <div id=\"bg\" class=\"mask\" style=\"height: 1677px;\"></div>\r\n        <div id=\"popDiv\" class=\"bind-email\"></div>\r\n        <div id=\"bind_email_tpl\" class=\"bind-email\">\r\n            <form>\r\n                <label>更换绑定邮箱</label>\r\n                <input type=\"text\" name=\"email_addr\" class=\"email-info\" value=\"新邮箱地址\" onfocus=\"if(this.value==this.defaultValue){this.value=''}\" onblur=\"if(!this.value){this.value=this.defaultValue;}\">\r\n                <input type=\"text\" class=\"email-pd txt_passwd\" value=\"糗事百科的密码\" onfocus=\"$(this).hide().next().show().focus();\">\r\n                <input type=\"password\" name=\"email_passwd\" class=\"email-pd\" id=\"email-sc2\" maxlength=\"30\" size=\"30\" onblur=\"if(this.value==''){$(this).hide().prev().show();}\">\r\n                <input type=\"button\" value=\"下一步\" class=\"next-st\" action_bind_email=\"\" style=\"color:#fff; font-weight: bold; border: none;width: 95px; line-height: 34px; text-align: center; height: 34px; padding-left: 0px;\">\r\n            </form>\r\n        </div>\r\n        <div id=\"unbind_tpl\" class=\"bind-email\" style=\"\">\r\n            <form onsubmit=\"return false\">\r\n                <label>解除绑定</label>\r\n                <input class=\"email-pd\" placeholder=\"糗事百科的密码\" type=\"password\">\r\n                <a class=\"next-st pop_btn\" action_unbind=\"\" rel=\"external nofollow\">解除绑定</a>\r\n            </form>\r\n        </div>\r\n        <div id=\"email_sended_tpl\" class=\"bind-email\">\r\n            <form>\r\n                <p>验证邮箱已发到邮箱<span email=\"\"></span>请前往邮箱收取，完成绑定</p>\r\n                <a class=\"next-st pop_btn\" action_go_verify=\"\">去验证</a>\r\n            </form>\r\n        </div>\r\n        <div id=\"error_msg\" class=\"bind-email\">\r\n            <span class=\"error-tips\"> </span>\r\n        </div>\r\n        <!-- popup End -->\r\n        <script async=\"\" src=\"https://www.google-analytics.com/analytics.js\"></script><script type=\"text/javascript\" src=\"http://static.qiushibaike.com/js/src/libs/jquery-1.8.2.min.js?v=cfa9051cc0b05eb519f1e16b2a6645d7\"></script>\r\n        <script type=\"text/javascript\" src=\"http://static.qiushibaike.com/js/src/web/my_edit.js?v=e049ac48a8b433f1c481ea7d10df5d94\"></script>\r\n\r\n    </div>\r\n    <div class=\"user-col-left\">\r\n        <div class=\"user-statis user-block\">\r\n            <h3>糗百指数</h3>\r\n            <ul>\r\n                <li><span>粉丝数:</span>0</li>\r\n                <li><span>关注数:</span>0</li>\r\n                <li><span>糗事:</span>0</li>\r\n                <li><span>评论:</span>0</li>\r\n                <li><span>笑脸:</span>0</li>\r\n                <li><span>糗事精选:</span>0</li>\r\n            </ul>\r\n        </div>\r\n        <div class=\"user-statis user-block\">\r\n            <h3>个人资料</h3>\r\n            <ul>\r\n                <li><span>婚姻:</span></li>\r\n                <li><span>星座:</span></li>\r\n                <li><span>职业:</span></li>\r\n                <li><span>故乡:</span></li>\r\n                <li><span>糗龄:</span>485天</li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>";
 
 /***/ },
-/* 68 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(69)
+	__vue_script__ = __webpack_require__(48)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\UserHome.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(70)
+	__vue_template__ = __webpack_require__(49)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -27956,7 +25379,7 @@
 	})()}
 
 /***/ },
-/* 69 */
+/* 48 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27973,7 +25396,7 @@
 	};
 
 /***/ },
-/* 70 */
+/* 49 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"user-main clearfix\">\r\n    <div class=\"user-header\">\r\n        <a href=\"/users/29459066/\" class=\"user-header-avatar\">\r\n        <img src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\" alt=\"Dodo Monster\">\r\n        </a>\r\n        <div class=\"user-header-cover\">\r\n            <h2>Dodo Monster</h2>\r\n        </div>\r\n        <ul class=\"user-header-menu\">\r\n            <li>\r\n                <a href=\"/users/29459066/\" class=\"active\">主页</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/articles/\">糗事</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/comments/\">评论</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/my/edit\">设置</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"user-col-right\">\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">\r\n                11\r\n                </span>\r\n                <span class=\"user-date-break\">\r\n                /\r\n                </span>\r\n                <span class=\"user-date-day\">\r\n                12\r\n                </span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                    <strong>这个名没有注册过</strong>\r\n                    评论了\r\n                    <strong>这个名没有注册过</strong>\r\n                    发表的糗事\r\n                </li>\r\n                <li class=\"user-comment-text\">\r\n                    回复 70楼：我都有盒子装回去的，有自己的房间的\r\n                </li>\r\n                <li class=\"user-comment-quote\">\r\n                    <ul>\r\n                        <li class=\"user-article-avatar\">\r\n                            <a href=\"/users/26861602/\" rel=\"nofollow\">\r\n                            <img src=\"http://pic.qiushibaike.com/system/avtnew/2686/26861602/thumb/20150322160702.jpg\" alt=\"这个名没有注册过\">\r\n                            </a>\r\n                            <a href=\"/users/26861602/\">\r\n                            这个名没有注册过\r\n                            </a>\r\n                        </li>\r\n                        <li class=\"user-article-text\">\r\n                            <a href=\"/article/117961121\" target=\"_blank\">\r\n                            最近买了一个新手机，就把旧手机扔在一边，没管它。手机每天自己定时开机关机，还准时闹铃，用着仅存的一格电努力辛勤地工作着，突然觉得好感动，觉得自己真残忍。\r\n                            </a>\r\n                        </li>\r\n\r\n                        <li class=\"user-article-stat\">\r\n                            1988 好笑 ⋅\r\n                            80 评论 ⋅\r\n                            发表于\r\n                            <a href=\"/history/772f17ed41cb8d53c3c7e8aa46693a3f/\" target=\"_blank\">\r\n                            2016-11-12\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">10</span>\r\n                <span class=\"user-date-break\">/</span>\r\n                <span class=\"user-date-day\">13</span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                <strong>\r\n                这个名没有注册过\r\n                </strong>\r\n                发表了糗事\r\n                </li>\r\n                <li class=\"user-article-text\">\r\n                <a href=\"/article/117741876\" target=\"_blank\">\r\n                老婆怀了二胎，宝宝胎动得厉害。晚上老婆睡不着，忍不住嘀咕了一句：“你说这孩子在里面干啥呢？一直没停！”老公想了想，回道：“可能因为是二手房，现在正忙着装修吧！”\r\n                </a>\r\n                </li>\r\n\r\n                <li class=\"user-article-stat\">\r\n                1699 好笑 ⋅\r\n                32 评论 ⋅\r\n                发表于\r\n                <a href=\"/history/c79391d5e2f856d66059cc5b83129098/\" target=\"_blank\">\r\n                2016-10-13\r\n                </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">\r\n                11\r\n                </span>\r\n                <span class=\"user-date-break\">\r\n                /\r\n                </span>\r\n                <span class=\"user-date-day\">\r\n                12\r\n                </span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                    <strong>这个名没有注册过</strong>\r\n                    评论了\r\n                    <strong>这个名没有注册过</strong>\r\n                    发表的糗事\r\n                </li>\r\n                <li class=\"user-comment-text\">\r\n                    回复 70楼：我都有盒子装回去的，有自己的房间的\r\n                </li>\r\n                <li class=\"user-comment-quote\">\r\n                    <ul>\r\n                        <li class=\"user-article-avatar\">\r\n                            <a href=\"/users/26861602/\" rel=\"nofollow\">\r\n                            <img src=\"http://pic.qiushibaike.com/system/avtnew/2686/26861602/thumb/20150322160702.jpg\" alt=\"这个名没有注册过\">\r\n                            </a>\r\n                            <a href=\"/users/26861602/\">\r\n                            这个名没有注册过\r\n                            </a>\r\n                        </li>\r\n                        <li class=\"user-article-text\">\r\n                            <a href=\"/article/117961121\" target=\"_blank\">\r\n                            最近买了一个新手机，就把旧手机扔在一边，没管它。手机每天自己定时开机关机，还准时闹铃，用着仅存的一格电努力辛勤地工作着，突然觉得好感动，觉得自己真残忍。\r\n                            </a>\r\n                        </li>\r\n\r\n                        <li class=\"user-article-stat\">\r\n                            1988 好笑 ⋅\r\n                            80 评论 ⋅\r\n                            发表于\r\n                            <a href=\"/history/772f17ed41cb8d53c3c7e8aa46693a3f/\" target=\"_blank\">\r\n                            2016-11-12\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    <div class=\"user-col-left\">\r\n        <div class=\"user-statis user-block\">\r\n            <h3>糗百指数</h3>\r\n            <ul>\r\n                <li><span>糗事:</span>0</li>\r\n                <li><span>评论:</span>0</li>\r\n                <li><span>笑脸:</span>0</li>\r\n            </ul>\r\n        </div>\r\n        <div class=\"user-statis user-block\">\r\n            <h3>个人资料</h3>\r\n            <ul>\r\n                <li><span>婚姻:</span></li>\r\n                <li><span>星座:</span></li>\r\n                <li><span>职业:</span></li>\r\n                <li><span>故乡:</span></li>\r\n                <li><span>糗龄:</span>485天</li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>";

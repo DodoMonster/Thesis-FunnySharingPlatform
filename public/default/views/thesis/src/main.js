@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import Vue from 'vue';
 import Router from 'vue-router';
-import VueValidator from 'vue-validator';
 
 import "./scss/app.scss";
 import App from "./app/app.vue";

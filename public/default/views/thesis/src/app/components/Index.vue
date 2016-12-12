@@ -2,6 +2,7 @@
 
 <script>
 	import vue from 'vue';
+	import util from '../../libs/js/util.js';
 	import store from '../../store/index.js';
 	import service from '../../service/service.js';
 	import LoginBox from './common/login.vue';

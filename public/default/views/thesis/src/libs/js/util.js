@@ -1,7 +1,4 @@
-import {
-    EventEmitter
-}
-from 'events';
+import {EventEmitter} from 'events';
 
 import $ from 'jquery';
 const util = new EventEmitter();

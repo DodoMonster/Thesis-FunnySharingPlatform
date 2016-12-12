@@ -6,8 +6,8 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     protected $_getData=array();//get数据
     protected $_paramData=array();//路由数据
     protected $_mid=0;//当前登录用户uid
-    protected $_aid=0;//当前登录admin用户uid
-    protected $_aidLevel=0;//当前登录admin用户权限
+    // protected $_aid=0;//当前登录admin用户uid
+    // protected $_aidLevel=0;//当前登录admin用户权限
     protected $_count=20;//默认个数
     protected $_page=1;//默认页数
     protected $_userAgent='';
@@ -40,7 +40,6 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         $this->_action=$this->getRequest()->getActionName();
         //TODO跨域请求设置
         //$this->_isAjax=$this->getRequest()->isXmlHttpRequest();
-        $this->_channelId=isset($this->_postData['channel_id'])? $this->_postData['channel_id']:(isset($this->_getData['channel_id'])?$this->_getData['channel_id']:1);
         $this->_count=intval(isset($this->_postData['count'])>0?$this->_postData['count']:(isset($this->_getData['count'])>0?$this->_getData['count']:20));
         $this->_page=intval(isset($this->_postData['page'])>0?$this->_postData['page']:(isset($this->_getData['page'])>0?$this->_getData['page']:1));
         //$this->_sysVersion=isset($this->_postData['sysVersion'])?$this->_postData['sysVersion']:(isset($this->_getData['sysVersion'])?$this->_getData['sysVersion']:0);
@@ -147,21 +146,22 @@ class BaseControllers extends \Yaf_Controller_Abstract{
             }
         }
         
-        if(isset($_SESSION[SESSION_LOGGED_ADMIN_USERID]) && $_SESSION[SESSION_LOGGED_ADMIN_USERID]>0 &&isset($_SESSION[SESSION_LOGGED_ADMIN_PRIVILEGE])){
-            $this->_aid=$_SESSION[SESSION_LOGGED_ADMIN_USERID];
-            $this->_aidLevel=$_SESSION[SESSION_LOGGED_ADMIN_PRIVILEGE];
-        }
+        // if(isset($_SESSION[SESSION_LOGGED_ADMIN_USERID]) && $_SESSION[SESSION_LOGGED_ADMIN_USERID]>0){ 
+        //     // &&isset($_SESSION[SESSION_LOGGED_STATE])){
+        //     $this->_aid=$_SESSION[SESSION_LOGGED_ADMIN_USERID];
+        //     // $this->_aidLevel=$_SESSION[SESSION_LOGGED_STATE];
+        // }
     }
     
     //设置授权会话
     protected function setOauthSession($data){
-        if($data['code']==200 && isset($data['data']['uid']) && $data['data']['uid']>0){
+        if($data['code']==200 && isset($data['data']['user_id']) && $data['data']['user_id']>0){
             session_regenerate_id();
             $_SESSION=[];
-            $_SESSION[SESSION_LOGGED_USERID]=$data['data']['uid'];
+            $_SESSION[SESSION_LOGGED_USERID]=$data['data']['user_id'];
             $_SESSION[SESSION_LOGGED_EMAIL]=isset($data['data']['email'])?$data['data']['email']:'';
             $_SESSION[SESSION_LOGGED_CELLPHONE]=isset($data['data']['cellphone'])?$data['data']['cellphone']:'';
-            $_SESSION[SESSION_LOGGED_COMPANYID]=isset($data['data']['company_id'])?$data['data']['company_id']:'';
+            // $_SESSION[SESSION_LOGGED_COMPANYID]=isset($data['data']['company_id'])?$data['data']['company_id']:'';
             //setcookie(COOKIE_LOGGED_USER, base64_encode(session_id())."#".base64_encode($data['data']['uid']),time()+3600*24*365,'/');
         }
         //$this->_sessionObject->__set('uid',$data['data']['uid']);
@@ -179,11 +179,11 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     
     //设置授权管理员会话
     protected function setOauthAdminSession($data){
-        if($data['code']==200 && isset($data['data']['uid']) && $data['data']['uid']>0){
+        if($data['code']==200 && isset($data['data']['user_id']) && $data['data']['user_id']>0){
             session_regenerate_id();
             $_SESSION=[];
-            $_SESSION[SESSION_LOGGED_ADMIN_USERID]=$data['data']['uid'];
-            $_SESSION[SESSION_LOGGED_ADMIN_PRIVILEGE]=$data['data']['privilege'];
+            $_SESSION[SESSION_LOGGED_ADMIN_USERID] = $data['data']['user_id'];
+            // $_SESSION[SESSION_LOGGED_STATE] = $data['data']['is_login'];
         }
     }
     
@@ -207,14 +207,14 @@ class BaseControllers extends \Yaf_Controller_Abstract{
                     return;
                 }
                 break;
-            case 'admin':
-                if($this->_aid>0){
-                    return;
-                }
-                if($this->_controller=='Adminindex'){
-                    $this->redirect("/admin/adminoauth/login");
-                }
-                break;
+            // case 'admin':
+            //     if($this->_aid>0){
+            //         return;
+            //     }
+            //     if($this->_controller == 'Adminindex'){
+            //         $this->redirect("/admin/adminoauth/login");
+            //     }
+            //     break;
             default :
                 break;
         }       
