@@ -12,7 +12,8 @@
 
 		data(){
 			return{
-				
+				isLogin:true,
+				isShowResetPwd:false
 			}
 		},
 
@@ -24,6 +25,21 @@
 					e.cancelBubble = true;
 				}
 				
+			},
+
+			showRegister:function(){
+				this.isLogin = false;
+				this.isShowResetPwd = false;
+			},
+
+			showLogin:function(){
+				this.isLogin = true;
+				this.isShowResetPwd = false;
+			},
+
+			showResetPwd:function(){
+				this.isShowResetPwd = true;
+				this.isLogin = false;
 			}
 		},
 
