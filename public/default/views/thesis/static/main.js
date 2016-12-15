@@ -24598,12 +24598,54 @@
 	exports.default = service;
 	
 	/**
-	 * 获取趣事列表
+	 * 注册
 	 */
 	
+	service.register = function (data) {
+	    return _util2.default.ajax({
+	        url: '/thesis/register',
+	        type: 'POST',
+	        data: {
+	            username: data.username,
+	            password: data.password
+	        }
+	    });
+	};
+	
+	/**
+	 * 重置密码
+	 */
+	service.reset = function (data) {
+	    return _util2.default.ajax({
+	        url: '/thesis/reset',
+	        type: 'POST',
+	        data: {
+	            username: data.username,
+	            password: data.password
+	        }
+	    });
+	};
+	
+	/**
+	 * 登录
+	 */
+	service.login = function (data) {
+	    return _util2.default.ajax({
+	        url: '/thesis/login',
+	        type: 'POST',
+	        data: {
+	            username: data.username,
+	            password: data.password
+	        }
+	    });
+	};
+	
+	/**
+	 * 获取趣事列表
+	 */
 	service.getFunnyThingsList = function (page, type) {
 	    return _util2.default.ajax({
-	        url: '/home/getFunnyThingsList',
+	        url: '/thesis/getFunnyThingsList',
 	        data: {
 	            page: page,
 	            type: type
@@ -24616,7 +24658,7 @@
 	 */
 	service.praiseUp = function (id) {
 	    return _util2.default.ajax({
-	        url: '/home/praiseUp',
+	        url: '/thesis/praiseUp',
 	        data: {
 	            things_id: id
 	        }
@@ -24628,7 +24670,7 @@
 	 */
 	service.trampDown = function (id) {
 	    return _util2.default.ajax({
-	        url: '/home/trampDown',
+	        url: '/thesis/trampDown',
 	        data: {
 	            things_id: id
 	        }
@@ -24640,7 +24682,7 @@
 	 */
 	service.favorite = function (id) {
 	    return _util2.default.ajax({
-	        url: '/home/favorite',
+	        url: '/thesis/favorite',
 	        data: {
 	            things_id: id
 	        }
@@ -24652,7 +24694,7 @@
 	 */
 	service.favorite = function (id) {
 	    return _util2.default.ajax({
-	        url: '/home/favorite',
+	        url: '/thesis/favorite',
 	        data: {
 	            things_id: id
 	        }
@@ -24664,7 +24706,7 @@
 	 */
 	service.getFunnyThingsDetail = function (id) {
 	    return _util2.default.ajax({
-	        url: '/home/getFunnyThingsDetail',
+	        url: '/thesis/getFunnyThingsDetail',
 	        data: {
 	            things_id: id
 	        }
@@ -24676,7 +24718,7 @@
 	 */
 	service.getFunnyThingsDetail = function (data) {
 	    return _util2.default.ajax({
-	        url: '/home/getFunnyThingsDetail',
+	        url: '/thesis/getFunnyThingsDetail',
 	        data: {
 	            user_id: data.uid,
 	            things_id: data.thingsId,
@@ -24690,7 +24732,7 @@
 	 */
 	service.getPersonalDetail = function (uid) {
 	    return _util2.default.ajax({
-	        url: '/home/getPersonalDetail',
+	        url: '/thesis/getPersonalDetail',
 	        data: {
 	            user_id: uid
 	        }
@@ -24702,7 +24744,7 @@
 	 */
 	service.getMyFavorite = function (uid) {
 	    return _util2.default.ajax({
-	        url: '/home/getMyFavorite',
+	        url: '/thesis/getMyFavorite',
 	        data: {
 	            user_id: uid
 	        }
@@ -24714,7 +24756,7 @@
 	 */
 	service.getMyComment = function (uid) {
 	    return _util2.default.ajax({
-	        url: '/home/getMyComment',
+	        url: '/thesis/getMyComment',
 	        data: {
 	            user_id: uid
 	        }
@@ -24726,7 +24768,7 @@
 	 */
 	service.editMyData = function (data) {
 	    return _util2.default.ajax({
-	        url: '/home/editMyData',
+	        url: '/thesis/editMyData',
 	        data: {
 	            user_id: data.uid,
 	            user_name: data.uname,
@@ -24741,7 +24783,7 @@
 	 */
 	service.sendThings = function (data) {
 	    return _util2.default.ajax({
-	        url: '/home/sendThings',
+	        url: '/thesis/sendThings',
 	        data: {
 	            user_id: data.uid,
 	            content: data.content,
@@ -25121,9 +25163,9 @@
 		value: true
 	});
 	
-	var _index = __webpack_require__(22);
+	var _service = __webpack_require__(25);
 	
-	var _index2 = _interopRequireDefault(_index);
+	var _service2 = _interopRequireDefault(_service);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -25136,7 +25178,21 @@
 		data: function data() {
 			return {
 				isLogin: true,
-				isShowResetPwd: false
+				isShowResetPwd: false,
+				loginData: {
+					username: '',
+					password: ''
+				},
+				registerData: {
+					username: '',
+					password: '',
+					passwordAgain: ''
+				},
+				resetData: {
+					username: '',
+					password: '',
+					passwordAgain: ''
+				}
 			};
 		},
 	
@@ -25163,6 +25219,63 @@
 			showResetPwd: function showResetPwd() {
 				this.isShowResetPwd = true;
 				this.isLogin = false;
+			},
+			login: function login() {
+				var self = this;
+				if (!self.loginData.username) {
+					alert('请先输入用户名！');
+					return false;
+				} else if (!self.loginData.password) {
+					alert('请先输入密码！');
+					return false;
+				}
+				_service2.default.login(self.loginData).done(function (res) {
+					alert(res.msg);
+				}).fail(function (res) {
+					alert(res.msg);
+				});
+			},
+			reset: function reset() {
+				var self = this;
+				if (!self.resetData.username) {
+					alert('请先输入用户名！');
+					return false;
+				} else if (!self.resetData.password) {
+					alert('请先输入密码！');
+					return false;
+				} else if (!self.resetData.passwordAgain) {
+					alert('请先输入密码！');
+					return false;
+				} else if (self.resetData.password != self.resetData.passwordAgain) {
+					alert('两次密码不一致请重新确认！');
+					return false;
+				}
+				_service2.default.reset(self.resetData).done(function (res) {
+					alert(res.msg);
+				}).fail(function (res) {
+					alert(res.msg);
+				});
+			},
+			register: function register() {
+				var self = this;
+				if (!self.registerData.username) {
+					alert('请先输入用户名！');
+					return false;
+				} else if (!self.registerData.password) {
+					alert('请先输入密码！');
+					return false;
+				} else if (!self.registerData.passwordAgain) {
+					alert('请先输入密码！');
+					return false;
+				} else if (self.registerData.password != self.registerData.passwordAgain) {
+					alert('两次密码不一致请重新确认！');
+					return false;
+				}
+				_service2.default.register(self.registerData).done(function (res) {
+					alert(res.msg);
+				}).fail(function (res) {
+					alert(res.msg);
+				});
 			}
 		}
 	
@@ -25172,7 +25285,7 @@
 /* 36 */
 /***/ function(module, exports) {
 
-	module.exports = "<!--start 登录页面-->\r\n<div class=\"signin-box animated fadeInUp\" id=\"login-form\" @click=\"cancelBubble\">\r\n    <div class=\"sigin-left\">\r\n      <!--   <div class=\"signin-account clearfix\">\r\n            <h4 class=\"social-signin-heading\">社交帐号登录</h4>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-btn social-wechat\">\r\n            使用 微信 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession\" class=\"social-btn social-weibo\">\r\n            使用 微博 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://graph.qq.com/oauth2.0/authorize?which=Login&amp;display=pc&amp;client_id=100251437&amp;response_type=code&amp;redirect_uri=www.qiushibaike.com/new4/session?src=qq\" class=\"social-btn social-qq\">\r\n            使用 QQ 账号 </a>\r\n        </div> -->\r\n        <div class=\"signin-form clearfix\" v-show=\"isLogin && !isShowResetPwd\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号登录</h4>\r\n                <form method=\"post\" action=\"/thesis/Login\">\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"昵称或邮箱\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\">\r\n                        <input type=\"checkbox\" id=\"remember_me\" name=\"remember_me\" checked=\"\" value=\"checked\" style=\"display:none\">\r\n                    </div>\r\n                    <div class=\"signin-error\" id=\"signin-error\"></div>\r\n                    <button type=\"submit\" id=\"form-submit\" class=\"form-submit\">登录</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\" v-show=\"isLogin\">\r\n                <a rel=\"nofollow\" class=\"fetch-password f-l\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showRegister()\">注册</a>\r\n            </div>\r\n        \r\n        <div class=\"register-box\" v-show=\"!isLogin && !isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号注册</h4>\r\n                <form method=\"post\" action=\"/thesis/Login\">\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"昵称或邮箱\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\">\r\n                    </div>\r\n                    <div class=\"signin-error\" id=\"signin-error\"></div>\r\n                    <button type=\"submit\" id=\"form-submit\" class=\"form-submit\">登录</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\" class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">注册</a>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"register-box\" v-show=\"isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台重置密码</h4>\r\n                <form method=\"post\" action=\"/thesis/Login\">\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"昵称或邮箱\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\">\r\n                    </div>\r\n                    <div class=\"signin-error\" id=\"signin-error\"></div>\r\n                    <button type=\"submit\" id=\"form-submit\" class=\"form-submit\">登录</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\"  class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">注册</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<!--end 登录页面-->\t\r\n";
+	module.exports = "<!--start 登录页面-->\r\n<div class=\"signin-box animated fadeInUp\" id=\"login-form\" @click=\"cancelBubble\">\r\n    <div class=\"sigin-left\">\r\n      <!--   <div class=\"signin-account clearfix\">\r\n            <h4 class=\"social-signin-heading\">社交帐号登录</h4>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-btn social-wechat\">\r\n            使用 微信 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession\" class=\"social-btn social-weibo\">\r\n            使用 微博 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://graph.qq.com/oauth2.0/authorize?which=Login&amp;display=pc&amp;client_id=100251437&amp;response_type=code&amp;redirect_uri=www.qiushibaike.com/new4/session?src=qq\" class=\"social-btn social-qq\">\r\n            使用 QQ 账号 </a>\r\n        </div> -->\r\n        <div class=\"signin-form clearfix\" v-show=\"isLogin && !isShowResetPwd\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号登录</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"loginData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\" v-model=\"loginData.password\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\"  class=\"form-submit\" @click=\"login()\">登录</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\" v-show=\"isLogin\">\r\n                <a rel=\"nofollow\" class=\"fetch-password f-l\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showRegister()\">注册</a>\r\n            </div>\r\n        \r\n        <div class=\"register-box\" v-show=\"!isLogin && !isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号注册</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"registerData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\"\r\n                        v-model=\"registerData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\" v-model=\"registerData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"register()\">注册</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\" class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"register-box\" v-show=\"isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台重置密码</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\"\r\n                        v-model=\"resetData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"新密码\"\r\n                        v-model=\"resetData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\"\r\n                        v-model=\"resetData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"reset()\">重置</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\"  class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<!--end 登录页面-->\t\r\n";
 
 /***/ },
 /* 37 */

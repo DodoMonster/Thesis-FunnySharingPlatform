@@ -9,12 +9,55 @@ const service = new EventEmitter();
 
 export default service;
 
+
+/**
+ * 注册
+ */
+service.register = (data) => {
+    return util.ajax({
+        url: '/thesis/register',
+        type:'POST',
+        data: {
+            username:data.username,
+            password:data.password
+        }
+    });
+}
+
+/**
+ * 重置密码
+ */
+service.reset = (data) => {
+    return util.ajax({
+        url: '/thesis/reset',
+        type:'POST',
+        data: {
+            username:data.username,
+            password:data.password
+        }
+    });
+}
+
+/**
+ * 登录
+ */
+service.login = (data) => {
+    return util.ajax({
+        url: '/thesis/login',
+        type:'POST',
+        data: {
+            username:data.username,
+            password:data.password
+        }
+    });
+}
+
 /**
  * 获取趣事列表
  */
 service.getFunnyThingsList = (page,type) => {
     return util.ajax({
-        url: '/home/getFunnyThingsList',
+        url: '/thesis/getFunnyThingsList',
         data: {
             page:page,
             type:type
@@ -27,7 +70,7 @@ service.getFunnyThingsList = (page,type) => {
  */
 service.praiseUp = (id) => {
     return util.ajax({
-        url: '/home/praiseUp',
+        url: '/thesis/praiseUp',
         data: {
             things_id: id,
         }
@@ -39,7 +82,7 @@ service.praiseUp = (id) => {
  */
 service.trampDown = (id) => {
     return util.ajax({
-        url: '/home/trampDown',
+        url: '/thesis/trampDown',
         data: {
             things_id: id,
         }
@@ -51,7 +94,7 @@ service.trampDown = (id) => {
  */
 service.favorite = (id) => {
     return util.ajax({
-        url: '/home/favorite',
+        url: '/thesis/favorite',
         data: {
             things_id: id,
         }
@@ -64,7 +107,7 @@ service.favorite = (id) => {
  */
 service.favorite = (id) => {
     return util.ajax({
-        url: '/home/favorite',
+        url: '/thesis/favorite',
         data: {
             things_id: id,
         }
@@ -76,7 +119,7 @@ service.favorite = (id) => {
  */
 service.getFunnyThingsDetail = (id) => {
     return util.ajax({
-        url: '/home/getFunnyThingsDetail',
+        url: '/thesis/getFunnyThingsDetail',
         data: {
             things_id: id,
         }
@@ -88,7 +131,7 @@ service.getFunnyThingsDetail = (id) => {
  */
 service.getFunnyThingsDetail = (data) => {
     return util.ajax({
-        url: '/home/getFunnyThingsDetail',
+        url: '/thesis/getFunnyThingsDetail',
         data: {
             user_id: data.uid,
             things_id:data.thingsId,
@@ -103,7 +146,7 @@ service.getFunnyThingsDetail = (data) => {
  */
 service.getPersonalDetail = (uid) => {
     return util.ajax({
-        url: '/home/getPersonalDetail',
+        url: '/thesis/getPersonalDetail',
         data: {
             user_id: uid,
         }
@@ -115,7 +158,7 @@ service.getPersonalDetail = (uid) => {
  */
 service.getMyFavorite = (uid) => {
     return util.ajax({
-        url: '/home/getMyFavorite',
+        url: '/thesis/getMyFavorite',
         data: {
             user_id: uid,
         }
@@ -128,7 +171,7 @@ service.getMyFavorite = (uid) => {
  */
 service.getMyComment = (uid) => {
     return util.ajax({
-        url: '/home/getMyComment',
+        url: '/thesis/getMyComment',
         data: {
             user_id: uid,
         }
@@ -140,7 +183,7 @@ service.getMyComment = (uid) => {
  */
 service.editMyData = (data) => {
     return util.ajax({
-        url: '/home/editMyData',
+        url: '/thesis/editMyData',
         data: {
             user_id: data.uid,
             user_name:data.uname,
@@ -155,7 +198,7 @@ service.editMyData = (data) => {
  */
 service.sendThings = (data) => {
     return util.ajax({
-        url: '/home/sendThings',
+        url: '/thesis/sendThings',
         data: {
             user_id: data.uid,
             content:data.content,

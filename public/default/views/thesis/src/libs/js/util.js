@@ -50,24 +50,24 @@ util.ajax = (opt, other) => {
 */
 
 util.dialog = {
-    	show(data) {
-            util.removeAllListeners('confirm-dialog').removeAllListeners(
-                'cancel-dialog');
-            util.emit('show-dialog', data);
-            return this;
-        },
-        alert(data) {
-            util.removeAllListeners('confirm-dialog').removeAllListeners(
-                'cancel-dialog');
-            util.emit('alert-dialog', data);
-            return this;
-        },
-        confirm(fn) {
-            util.removeAllListeners('confirm-dialog');
-            util.on('confirm-dialog', fn);
-        },
-        cancel(fn) {
-            util.on('cancel-dialog', fn);
-            return this;
-        },
+	show(data) {
+        util.removeAllListeners('confirm-dialog').removeAllListeners(
+            'cancel-dialog');
+        util.emit('show-dialog', data);
+        return this;
+    },
+    alert(data) {
+        util.removeAllListeners('confirm-dialog').removeAllListeners(
+            'cancel-dialog');
+        util.emit('alert-dialog', data);
+        return this;
+    },
+    confirm(fn) {
+        util.removeAllListeners('confirm-dialog');
+        util.on('confirm-dialog', fn);
+    },
+    cancel(fn) {
+        util.on('cancel-dialog', fn);
+        return this;
+    },
 }

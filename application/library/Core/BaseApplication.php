@@ -19,7 +19,7 @@ class BaseApplication {
         if(ENVIRONMENT==1){
             \Yaf_Registry::set("dbconfig",new \Yaf_Config_Ini('conf/db.ini', 'production'));
             \Yaf_Registry::set("redisconfig",new \Yaf_Config_Ini('conf/redis.ini', 'production'));
-            \Yaf_Registry::set("payconfig",new \Yaf_Config_Ini('conf/pay.ini', 'production'));
+            // \Yaf_Registry::set("payconfig",new \Yaf_Config_Ini('conf/pay.ini', 'production'));
             $sysSiteUrl=\Yaf_Registry::get("sysconfig")->sys->url->production;
         }else{
             \Yaf_Registry::set("dbconfig",new \Yaf_Config_Ini('conf/db.ini', 'development'));

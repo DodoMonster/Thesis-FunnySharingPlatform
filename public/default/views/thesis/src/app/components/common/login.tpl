@@ -12,14 +12,13 @@
         </div> -->
         <div class="signin-form clearfix" v-show="isLogin && !isShowResetPwd">
                 <h4 class="social-signin-heading">华农趣事平台账号登录</h4>
-                <form method="post" action="/thesis/Login">
+                <form>
                     <div class="signin-section clearfix">
-                        <input type="text" class="form-input form-input-first" name="username" placeholder="昵称或邮箱">
-                        <input type="password" class="form-input" name="password" placeholder="密码">
-                        <input type="checkbox" id="remember_me" name="remember_me" checked="" value="checked" style="display:none">
+                        <input type="text" class="form-input form-input-first" name="username" placeholder="用户名" v-model="loginData.username">
+                        <input type="password" class="form-input" name="password" placeholder="密码" v-model="loginData.password">
                     </div>
-                    <div class="signin-error" id="signin-error"></div>
-                    <button type="submit" id="form-submit" class="form-submit">登录</button>
+                    <div class="signin-error"></div>
+                    <button type="button"  class="form-submit" @click="login()">登录</button>
                 </form>
             </div>
             <div class="signin-foot clearfix" v-show="isLogin">
@@ -30,38 +29,42 @@
         <div class="register-box" v-show="!isLogin && !isShowResetPwd">
             <div class="signin-form clearfix">
                 <h4 class="social-signin-heading">华农趣事平台账号注册</h4>
-                <form method="post" action="/thesis/Login">
+                <form>
                     <div class="signin-section clearfix">
-                        <input type="text" class="form-input form-input-first" name="username" placeholder="昵称或邮箱">
-                        <input type="password" class="form-input" name="password" placeholder="密码">
-                        <input type="password" class="form-input" name="passwordAgain" placeholder="重复密码">
+                        <input type="text" class="form-input form-input-first" name="username" placeholder="用户名" v-model="registerData.username">
+                        <input type="password" class="form-input" name="password" placeholder="密码"
+                        v-model="registerData.password">
+                        <input type="password" class="form-input" name="passwordAgain" placeholder="重复密码" v-model="registerData.passwordAgain">
                     </div>
-                    <div class="signin-error" id="signin-error"></div>
-                    <button type="submit" id="form-submit" class="form-submit">登录</button>
+                    <div class="signin-error"></div>
+                    <button type="button" class="form-submit" @click="register()">注册</button>
                 </form>
             </div>
             <div class="signin-foot clearfix">
                 <a rel="nofollow" class="fetch-password" @click="showResetPwd()">忘记密码?</a>
-                <a rel="nofollow" class="fetch-password f-r" @click="showLogin()">注册</a>
+                <a rel="nofollow" class="fetch-password f-r" @click="showLogin()">登录</a>
             </div>
         </div>
 
         <div class="register-box" v-show="isShowResetPwd">
             <div class="signin-form clearfix">
                 <h4 class="social-signin-heading">华农趣事平台重置密码</h4>
-                <form method="post" action="/thesis/Login">
+                <form>
                     <div class="signin-section clearfix">
-                        <input type="text" class="form-input form-input-first" name="username" placeholder="昵称或邮箱">
-                        <input type="password" class="form-input" name="password" placeholder="密码">
-                        <input type="password" class="form-input" name="passwordAgain" placeholder="重复密码">
+                        <input type="text" class="form-input form-input-first" name="username" placeholder="用户名"
+                        v-model="resetData.username">
+                        <input type="password" class="form-input" name="password" placeholder="新密码"
+                        v-model="resetData.password">
+                        <input type="password" class="form-input" name="passwordAgain" placeholder="重复密码"
+                        v-model="resetData.passwordAgain">
                     </div>
-                    <div class="signin-error" id="signin-error"></div>
-                    <button type="submit" id="form-submit" class="form-submit">登录</button>
+                    <div class="signin-error"></div>
+                    <button type="button" class="form-submit" @click="reset()">重置</button>
                 </form>
             </div>
             <div class="signin-foot clearfix">
                 <a rel="nofollow"  class="fetch-password" @click="showResetPwd()">忘记密码?</a>
-                <a rel="nofollow" class="fetch-password f-r" @click="showLogin()">注册</a>
+                <a rel="nofollow" class="fetch-password f-r" @click="showLogin()">登录</a>
             </div>
         </div>
     </div>
