@@ -60,27 +60,27 @@
 	
 	__webpack_require__(5);
 	
-	var _app = __webpack_require__(18);
+	var _app = __webpack_require__(19);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	var _Index = __webpack_require__(31);
+	var _Index = __webpack_require__(32);
 	
 	var _Index2 = _interopRequireDefault(_Index);
 	
-	var _Add = __webpack_require__(38);
+	var _Add = __webpack_require__(39);
 	
 	var _Add2 = _interopRequireDefault(_Add);
 	
-	var _Comment = __webpack_require__(41);
+	var _Comment = __webpack_require__(42);
 	
 	var _Comment2 = _interopRequireDefault(_Comment);
 	
-	var _Edit = __webpack_require__(44);
+	var _Edit = __webpack_require__(45);
 	
 	var _Edit2 = _interopRequireDefault(_Edit);
 	
-	var _UserHome = __webpack_require__(47);
+	var _UserHome = __webpack_require__(48);
 	
 	var _UserHome2 = _interopRequireDefault(_UserHome);
 	
@@ -91,17 +91,37 @@
 	var router = new _vueRouter2.default({});
 	
 	router.map({
-		'/index': {
+		'/index/:thingsType': {
+			name: 'index',
 			component: _Index2.default
 		},
-		'/add': {
+		// '/index/:thingsType': {
+		// 	name:'fresh',
+		// 	component: Index
+		// },
+		// '/index/:thingsType': {
+		// 	name:'pic',
+		// 	component: Index
+		// },
+		// '/index/:thingsType': {
+		// 	name:'word',
+		// 	component: Index
+		// },
+		'/index/add': {
+			name: 'add',
 			component: _Add2.default
 		},
 		'/comment': {
+			name: 'comment',
 			component: _Comment2.default
 		},
 		'/edit': {
+			name: 'edit',
 			component: _Edit2.default
+		},
+		'/add': {
+			name: 'add',
+			component: _Add2.default
 		},
 		'/userHome': {
 			component: _UserHome2.default
@@ -23087,7 +23107,7 @@
 	var content = __webpack_require__(6);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(17)(content, {});
+	var update = __webpack_require__(18)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -23112,7 +23132,7 @@
 	
 	
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n/* compileCompressed: false*/\n/*自动保存时不自动编译此sass文件*/\n/*color*/\n/* width&height*/\n/* start reset 样式 */\nhtml, body, h1, h2, h3, h4, h5, h6,\ndiv, dl, dt, dd, ul, ol, li, p, blockquote,\npre, hr, figure, table, caption, th, td,\nform, fieldset, legend, input, button,\ntextarea, menu {\n  margin: 0;\n  padding: 0; }\n\nheader, footer, section, article,\naside, nav, hgroup, address, figure,\nfigcaption, menu, details {\n  display: block; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\ncaption, th {\n  text-align: left;\n  font-weight: normal; }\n\nhtml, body, fieldset, img, iframe, abbr {\n  border: 0; }\n\ni, cite, em, var, address, dfn {\n  font-style: normal; }\n\n[hidefocus], summary {\n  outline: 0; }\n\nli {\n  list-style: none; }\n\nh1, h2, h3, h4, h5, h6, small {\n  font-size: 100%; }\n\nsup, sub {\n  font-size: 83%; }\n\npre, code, kbd, samp {\n  font-family: inherit; }\n\nq:before, q:after {\n  content: none; }\n\ntextarea {\n  overflow: auto;\n  resize: none; }\n\nlabel, summary {\n  cursor: default;\n  font-weight: normal; }\n\na, button {\n  cursor: pointer; }\n\nbutton {\n  border: none;\n  overflow: visible;\n  width: auto;\n  cursor: pointer; }\n\nh1, h2, h3, h4, h5, h6, em, strong, b {\n  font-weight: 400; }\n\ndel, ins, u, s, a, a:hover {\n  text-decoration: none; }\n\ntextarea, input {\n  resize: none; }\n\ninput[type=file] {\n  display: inline; }\n\nbody, textarea, input,\nbutton, select, keygen,\nlegend {\n  font: 12px/1.14 arial,\\5b8b\\4f53;\n  color: #333;\n  outline: 0;\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #fff;\n  font-family: PingHei,\"PingFang SC\",\"Helvetica Neue\",Helvetica,STHeitiSC-Light,\"Microsoft YaHei\",Arial,sans-serif;\n  font-size: 14px;\n  font-weight: 400;\n  color: #333;\n  background: #f7f7f7; }\n\nbody a {\n  color: #9b8878; }\n\n/*a,a:hover{\n  color:#333;\n}*/\nul, li {\n  list-style: none; }\n\n/* end reset 样式*/\n/*color*/\n/* width&height*/\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-w {\n  background: #FFF; }\n\n.p-xl {\n  padding: 30px; }\n\n.mb-l {\n  margin-bottom: 20px; }\n\n.mt-l {\n  margin-top: 20px; }\n\n.post-readme {\n  color: #666; }\n\n.wx250 {\n  width: 250px; }\n\n.wx600 {\n  width: 600px; }\n\n.wx578 {\n  width: 578px; }\n\n.f-r {\n  float: right; }\n\n.f-l {\n  float: left; }\n\n.p-m {\n  padding: 10px; }\n\n.b-f-g {\n  border: 1px solid #ccc; }\n\n.b-lg {\n  background: #f9f9f9; }\n\n.c-lg, a.c-lg {\n  color: #999; }\n\n.mb-m {\n  margin-bottom: 10px; }\n\n.mt-r1 {\n  margin-top: -1px; }\n\n.br-s {\n  border-radius: 2px; }\n\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-g {\n  background: #7BB03E; }\n\n.bsi-l {\n  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1); }\n\n.fs-s {\n  font-size: 14px;\n  line-height: 18px; }\n\n.p-xl {\n  padding: 30px; }\n\n.ptb-m {\n  padding-top: 10px;\n  padding-bottom: 10px; }\n\n.c-w, .fcdb a:hover, a.c-w, a:hover.c-w {\n  color: #fff; }\n\n.mt-r3 {\n  margin-top: -3px; }\n\n.br-s {\n  border-radius: 2px; }\n\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-g {\n  background: #7BB03E; }\n\nheader {\n  background: #ffd52b;\n  height: 82px;\n  width: 100%; }\n\n#header,\n#content-block {\n  width: 70%;\n  min-width: 960px;\n  margin: 0 auto; }\n\n#header #logo,\n#header #nav {\n  float: left; }\n\n#header #logo a {\n  display: inline-block;\n  height: 79px;\n  width: 207px;\n  text-indent: -9px;\n  background-image: url(" + __webpack_require__(8) + ");\n  background-position: 0 0; }\n\n#header #nav {\n  margin: 0 10px; }\n\n.menu a {\n  float: left;\n  margin-right: 1px;\n  padding: 0 14px;\n  text-align: center;\n  line-height: 82px;\n  display: block;\n  font-size: 16.5px;\n  color: #7A4624;\n  height: 78px; }\n\n#nav li {\n  float: left;\n  margin-right: 1px;\n  padding: 0 14px;\n  text-align: center;\n  line-height: 82px;\n  display: inline-block;\n  font-size: 16.5px;\n  color: #7A4624;\n  height: 78px;\n  border-bottom: 4px solid #ffd52b; }\n\n#nav #highlight {\n  background: #ffe36f;\n  border-bottom-color: #7a4624; }\n\n#loginBtn {\n  float: right;\n  height: 82px;\n  line-height: 82px;\n  text-align: right; }\n\n#loginBtn a {\n  color: #7A4624;\n  font-size: 16.5px;\n  cursor: pointer; }\n\n#login-box {\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.7);\n  clear: both;\n  overflow: hidden;\n  position: fixed;\n  top: 0;\n  left: 0; }\n\n/* end header 样式*/\n/* start content 样式*/\n.funny-things {\n  background-color: #fff;\n  padding: 10px 20px;\n  margin: 20px auto 20px auto; }\n\n.author a, .author span {\n  float: left;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 35px; }\n\n.author h2 {\n  color: #9b8878;\n  font-weight: 400; }\n\n.author img {\n  width: 35px;\n  height: 35px;\n  border-radius: 35px;\n  margin-right: 10px; }\n\n.funny-things .contentHerf {\n  display: block; }\n\n.funny-things .funny-content {\n  margin-bottom: 10px;\n  font-size: 16px;\n  line-height: 1.8;\n  word-wrap: break-word;\n  color: #333; }\n\n.stats {\n  font-size: 12px;\n  margin: 20px 0 10px; }\n\n.stats, .stats a {\n  color: #999; }\n\n.stats-buttons {\n  font-size: 12px;\n  height: 35px;\n  float: left; }\n\n.stats-buttons ul {\n  margin-top: 5px;\n  margin-left: 8px; }\n\n.stats-buttons ul li {\n  float: left;\n  margin-right: 20px;\n  text-align: center; }\n\n.stats-buttons .up a {\n  background-image: none !important; }\n\n.stats-buttons ul li a {\n  display: block;\n  text-align: center; }\n\n.stats-buttons a i {\n  width: 30px;\n  height: 30px;\n  background-repeat: no-repeat;\n  display: block;\n  font-size: 24px;\n  -webkit-text-stroke-width: .2px;\n  color: #b5b5b5; }\n\n.stats-buttons .up a i {\n  background-image: url(" + __webpack_require__(9) + "); }\n\n.stats-buttons .down a i {\n  background-image: url(" + __webpack_require__(10) + "); }\n\n.stats-buttons .comments a i {\n  background-image: url(" + __webpack_require__(11) + "); }\n\n.single-share {\n  float: right;\n  margin-top: 3px; }\n\n.single-share a {\n  display: inline-block;\n  width: 24px;\n  height: 24px;\n  margin-left: 10px;\n  text-indent: -9999px;\n  background-image: url(" + __webpack_require__(8) + ");\n  background-repeat: no-repeat;\n  cursor: pointer; }\n\n.single-share .share-wechat {\n  background-position: 0 -79px; }\n\n.single-share .share-qq {\n  background-position: 0 -151px; }\n\n.single-share .share-qzone {\n  background-position: 0 -127px; }\n\n.single-share .share-weibo {\n  background-position: 0 -103px; }\n\n/* end content 样式*/\n/* start footer 样式*/\nfooter {\n  width: 960px;\n  padding: 20px 0;\n  margin: 0 auto;\n  text-align: center;\n  border-top: 1px solid #efefef; }\n\n/* end footer 样式*/\n/* start comments 样式*/\n.comments-wrap {\n  margin-bottom: 20px;\n  background-color: #fff;\n  padding: 10px 20px 0;\n  clear: both; }\n\n.comments-title {\n  color: #333;\n  font-size: 18px;\n  padding: 10px 0;\n  margin-bottom: 0; }\n\n.comments-wrap .comment-area {\n  position: relative; }\n\n.comments-wrap .comment-input {\n  width: 840px;\n  padding: 5px 50px 10px 5px;\n  height: 20px;\n  box-shadow: none;\n  border: 0;\n  background-color: #fff; }\n\n.comments-wrap .comment-submit {\n  background-color: #ffa015;\n  line-height: 31px;\n  padding: 0 5px;\n  height: 31px;\n  display: block;\n  width: 55px;\n  text-align: center;\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  margin-bottom: 5px;\n  z-index: 999;\n  color: #fff; }\n\n.comments-wrap .comment-limit-tips {\n  position: absolute;\n  left: 850px;\n  bottom: 10px;\n  z-index: 999; }\n\n.comments-wrap .comment-limit-tips strong {\n  color: #0099ff;\n  font-weight: bold; }\n\n.comment-block {\n  word-break: break-all;\n  padding: 10px 0; }\n\n.comment-block, .comment-wrap {\n  border-top: 1px solid #f4f2ef; }\n\n.comment-block .avatars {\n  float: left;\n  width: 45px;\n  vertical-align: top; }\n\n.comment-block .avatars img {\n  width: 35px;\n  height: 35px;\n  border-radius: 35px; }\n\n.comment-block .replay {\n  width: 440px;\n  float: left; }\n\n.comment-block .user-login {\n  color: #9B8878; }\n\n.comment-block .anomynous,\n.comment-block .hostname,\n.comment-block .manager,\n.comment-block .user-login {\n  margin: 0 10px 0 0;\n  display: block; }\n\n.comment-block .replay .body {\n  color: #404040;\n  line-height: 1.6;\n  word-wrap: break-word; }\n\n.comments-list .report {\n  float: right;\n  color: #ccc;\n  font-size: 12px; }\n\n/* end comments 样式*/\n/*start login 样式*/\n.signin-box {\n  left: 50%;\n  top: 50%;\n  margin-left: -205px;\n  z-index: 1002;\n  position: fixed;\n  margin-top: -150px;\n  display: block;\n  height: 300px;\n  background: #fff;\n  color: #333;\n  font-size: 14px;\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);\n  border-radius: 3px; }\n\n.sigin-left {\n  margin: 44px 55px 0; }\n\n.signin-account, .signin-form {\n  margin-bottom: 14px;\n  width: 300px; }\n\n.signin-account {\n  border-bottom: 1px solid #f2f2f2; }\n\n.social-signin-heading {\n  margin-bottom: 22px;\n  color: #5e5e5e;\n  font-size: 15px; }\n\n.signin-account .social-btn {\n  display: block;\n  text-align: center;\n  width: 300px;\n  height: 40px;\n  line-height: 40px;\n  font-size: 16px;\n  color: #fff;\n  border-radius: 3px; }\n\n.social-wechat {\n  background: url(" + __webpack_require__(12) + ") 0 -2px no-repeat #62CF69;\n  margin-bottom: 10px; }\n\n.social-weibo {\n  background: url(" + __webpack_require__(13) + ") 0 -2px no-repeat #e24f48;\n  margin-bottom: 10px; }\n\n.social-qq {\n  background: url(" + __webpack_require__(14) + ") 0 -2px no-repeat #2fa2d7;\n  margin-bottom: 20px; }\n\n.user-setting .social-email {\n  background: url(" + __webpack_require__(15) + ") no-repeat; }\n\n.signin-account, .signin-form {\n  margin-bottom: 14px;\n  width: 300px; }\n\n.signin-section {\n  border: 1px solid #e6e6e6;\n  margin-bottom: 17px;\n  padding: 1px; }\n\n.signin-error {\n  display: none;\n  margin: 0 0 10px;\n  color: red; }\n\n.signin-form button, .signin-form input {\n  font-size: 18px; }\n\n.form-input {\n  color: #d2d2d2;\n  font-size: 14px !important;\n  padding: 11px !important;\n  display: block;\n  margin-top: -1px;\n  border: 0 !important;\n  border-top: 1px solid #e6e6e6 !important;\n  background-color: #fff;\n  margin-right: 0;\n  width: 296px !important; }\n\n.form-input-first {\n  border-top: 0 !important; }\n\n.form-submit {\n  background-color: #fbbf2f;\n  font-weight: 700;\n  color: #fff;\n  padding: 8px 0;\n  border-radius: 2px !important;\n  text-align: center;\n  display: block;\n  width: 100%;\n  font-size: 16px; }\n\n.signin-foot {\n  width: 300px;\n  font-size: 14px;\n  border-top: 0;\n  padding: 0;\n  text-align: left; }\n\n.signin-foot a {\n  color: #d3d3d3;\n  padding: 0 !important;\n  margin-right: 15px;\n  text-decoration: underline; }\n\n.signin-foot a.fetch-password {\n  padding-right: 15px; }\n\n.signin-foot a:hover {\n  background-color: transparent;\n  color: #999; }\n\n/*end login 样式*/\n/* start 个人主页 样式*/\n.user-main {\n  width: 980px;\n  margin: 0 auto;\n  color: #666; }\n\n.user-header {\n  margin: 0 0 20px; }\n\n.user-header .user-header-avatar {\n  position: absolute;\n  margin: 32px 0 0 30px; }\n\n.user-header .user-header-cover {\n  height: 220px;\n  background-image: url(" + __webpack_require__(16) + "); }\n\n.user-header .user-header-cover h2 {\n  padding: 150px 0 0 320px;\n  font-size: 34px;\n  color: #fff;\n  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); }\n\n.user-header .user-header-menu {\n  border: 1px solid #dedede;\n  background: #fff;\n  padding-left: 320px; }\n\n.user-header .user-header-menu li, .user-toolbar button {\n  display: inline-block; }\n\n.user-header .user-header-menu .active {\n  box-shadow: 0 -4px 0 #794627 inset; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-header .user-header-menu a {\n  display: block;\n  padding: 20px;\n  font-size: 16px; }\n\n.user-main .user-col-right {\n  float: right;\n  width: 700px; }\n\n.user-main .user-col-left {\n  float: left;\n  width: 260px; }\n\n.user-main .user-block {\n  margin: 0 0 20px;\n  border: 1px solid #dedede;\n  background: #fff;\n  position: relative; }\n\n.user-follow h3, .user-follow ul, .user-statis h3, .user-statis ul {\n  padding: 14px 20px; }\n\n.user-comment-info, .user-follow h3, .user-setting h3, .user-statis h3 {\n  border-bottom: 1px solid #e8e8e8; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-follow h3, .user-follow ul, .user-statis h3, .user-statis ul {\n  padding: 14px 20px; }\n\n.user-statis ul li {\n  line-height: 2; }\n\n.user-statis span {\n  display: inline-block;\n  width: 80px; }\n\n.user-date {\n  color: #d6d6d6; }\n\n.user-date .user-date-month {\n  position: absolute;\n  margin: 12px 0 0 19px;\n  font-size: 35px; }\n\n.user-date .user-date-break {\n  position: absolute;\n  margin: 14px 0 0 56px;\n  font-size: 38px; }\n\n.user-date .user-date-day {\n  position: absolute;\n  margin: 32px 0 0 70px;\n  font-size: 24px; }\n\n.user-indent {\n  margin-left: 100px;\n  padding-bottom: 6px; }\n\n.user-comment li, .user-feed li {\n  margin: 14px 20px; }\n\n.user-comment-info {\n  padding: 6px 0 14px; }\n\n.user-comment-info, .user-follow h3, .user-setting h3, .user-statis h3 {\n  border-bottom: 1px solid #e8e8e8; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-comment-quote {\n  background: #f7f7f7; }\n\n.user-comment-quote ul {\n  padding: 1px; }\n\n.user-comment li, .user-feed li {\n  margin: 14px 20px; }\n\n.user-article-avatar a {\n  vertical-align: middle;\n  display: inline-block; }\n\n.user-article-avatar img {\n  vertical-align: middle;\n  margin-right: 10px; }\n\n.user-article-avatar img, .user-follow ul li img {\n  width: 60px;\n  height: 60px;\n  border-radius: 60px; }\n\n.user-article-text {\n  line-height: 1.6;\n  word-wrap: break-word; }\n\n.user-article-text a, .user-article-text a:hover {\n  color: #666; }\n\n.user-article-stat, .user-article-stat a {\n  color: #949494; }\n\n/* end 个人主页 样式*/\n/* start 编辑资料 样式*/\n.user-setting h3 {\n  padding: 14px 20px; }\n\n.user-setting input {\n  font-size: 14px;\n  padding: 2px; }\n\n.user-setting li {\n  margin: 14px 20px; }\n\n.user-setting .user-setting-avatar {\n  display: block;\n  width: 210px;\n  height: 210px; }\n\n.user-setting .social-email,\n.user-setting .social-email:hover,\n.user-setting .social-qq,\n.user-setting .social-qq:hover,\n.user-setting .social-wechat,\n.user-setting .social-wechat:hover,\n.user-setting .social-weibo,\n.user-setting .social-weibo:hover {\n  display: inline-block;\n  width: 266px;\n  height: 40px;\n  line-height: 40px;\n  text-indent: 70px;\n  color: #fff;\n  margin: 0; }\n\n.user-setting .user-setting-inputlable {\n  width: 100px;\n  display: inline-block; }\n\n/* end 编辑资料 样式*/\n/* start 投稿 样式*/\n.post-readme h3 {\n  font-size: 16px;\n  padding: 0 0 20px; }\n\n.post-readme ol li {\n  padding: 20px 0;\n  border-top: 1px solid #efefef;\n  list-style-position: inside;\n  list-style-type: decimal;\n  line-height: 140%; }\n\n/* end 投稿 样式*/\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n/* compileCompressed: false*/\n/*自动保存时不自动编译此sass文件*/\n/*color*/\n/* width&height*/\n/* start reset 样式 */\nhtml, body, h1, h2, h3, h4, h5, h6,\ndiv, dl, dt, dd, ul, ol, li, p, blockquote,\npre, hr, figure, table, caption, th, td,\nform, fieldset, legend, input, button,\ntextarea, menu {\n  margin: 0;\n  padding: 0; }\n\nheader, footer, section, article,\naside, nav, hgroup, address, figure,\nfigcaption, menu, details {\n  display: block; }\n\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\ncaption, th {\n  text-align: left;\n  font-weight: normal; }\n\nhtml, body, fieldset, img, iframe, abbr {\n  border: 0; }\n\ni, cite, em, var, address, dfn {\n  font-style: normal; }\n\n[hidefocus], summary {\n  outline: 0; }\n\nli {\n  list-style: none; }\n\nh1, h2, h3, h4, h5, h6, small {\n  font-size: 100%; }\n\nsup, sub {\n  font-size: 83%; }\n\npre, code, kbd, samp {\n  font-family: inherit; }\n\nq:before, q:after {\n  content: none; }\n\ntextarea {\n  overflow: auto;\n  resize: none; }\n\nlabel, summary {\n  cursor: default;\n  font-weight: normal; }\n\na, button {\n  cursor: pointer; }\n\nbutton {\n  border: none;\n  overflow: visible;\n  width: auto;\n  cursor: pointer; }\n\nh1, h2, h3, h4, h5, h6, em, strong, b {\n  font-weight: 400; }\n\ndel, ins, u, s, a, a:hover {\n  text-decoration: none; }\n\ntextarea, input {\n  resize: none; }\n\ninput[type=file] {\n  display: inline; }\n\nbody, textarea, input,\nbutton, select, keygen,\nlegend {\n  font: 12px/1.14 arial,\\5b8b\\4f53;\n  color: #333;\n  outline: 0;\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #fff;\n  font-family: PingHei,\"PingFang SC\",\"Helvetica Neue\",Helvetica,STHeitiSC-Light,\"Microsoft YaHei\",Arial,sans-serif;\n  font-size: 14px;\n  font-weight: 400;\n  color: #333;\n  background: #f7f7f7; }\n\nbody a {\n  color: #9b8878; }\n\n/*a,a:hover{\n  color:#333;\n}*/\nul, li {\n  list-style: none; }\n\n/* end reset 样式*/\n/*color*/\n/* width&height*/\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-w {\n  background: #FFF; }\n\n.p-xl {\n  padding: 30px; }\n\n.mb-l {\n  margin-bottom: 20px; }\n\n.mt-l {\n  margin-top: 20px; }\n\n.post-readme {\n  color: #666; }\n\n.wx250 {\n  width: 250px; }\n\n.wx600 {\n  width: 600px; }\n\n.wx578 {\n  width: 578px; }\n\n.f-r {\n  float: right; }\n\n.f-l {\n  float: left; }\n\n.p-m {\n  padding: 10px; }\n\n.b-f-g {\n  border: 1px solid #ccc; }\n\n.b-lg {\n  background: #f9f9f9; }\n\n.c-lg, a.c-lg {\n  color: #999; }\n\n.mb-m {\n  margin-bottom: 10px; }\n\n.mt-r1 {\n  margin-top: -1px; }\n\n.br-s {\n  border-radius: 2px; }\n\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-g {\n  background: #7BB03E; }\n\n.bsi-l {\n  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1); }\n\n.fs-s {\n  font-size: 14px;\n  line-height: 18px; }\n\n.p-xl {\n  padding: 30px; }\n\n.ptb-m {\n  padding-top: 10px;\n  padding-bottom: 10px; }\n\n.c-w, .fcdb a:hover, a.c-w, a:hover.c-w {\n  color: #fff; }\n\n.mt-r3 {\n  margin-top: -3px; }\n\n.br-s {\n  border-radius: 2px; }\n\n.bs-l {\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }\n\n.b-g {\n  background: #7BB03E; }\n\nheader {\n  background: #ffd52b;\n  height: 82px;\n  width: 100%; }\n\n#header,\n#content-block {\n  width: 70%;\n  min-width: 960px;\n  margin: 0 auto; }\n\n#header #logo,\n#header #nav {\n  float: left; }\n\n#header #logo a {\n  display: inline-block;\n  height: 79px;\n  width: 207px;\n  text-indent: -9px;\n  background: url(" + __webpack_require__(8) + ") center center no-repeat; }\n\n#header #nav {\n  margin: 0 10px; }\n\n.menu a {\n  float: left;\n  margin-right: 1px;\n  padding: 0 14px;\n  text-align: center;\n  line-height: 82px;\n  display: block;\n  font-size: 16.5px;\n  color: #7A4624;\n  height: 78px; }\n\n#nav li {\n  float: left;\n  margin-right: 1px;\n  padding: 0 14px;\n  text-align: center;\n  line-height: 82px;\n  display: inline-block;\n  font-size: 16.5px;\n  color: #7A4624;\n  height: 78px;\n  border-bottom: 4px solid #ffd52b; }\n\n#nav .highlight {\n  background: #ffe36f;\n  border-bottom-color: #7a4624; }\n\n#loginBtn {\n  float: right;\n  height: 82px;\n  line-height: 82px;\n  text-align: right; }\n\n#loginBtn a {\n  color: #7A4624;\n  font-size: 16.5px;\n  cursor: pointer; }\n\n#login-box {\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.7);\n  clear: both;\n  overflow: hidden;\n  position: fixed;\n  top: 0;\n  left: 0; }\n\n/* end header 样式*/\n/* start content 样式*/\n.funny-things {\n  background-color: #fff;\n  padding: 10px 20px;\n  margin: 20px auto 20px auto; }\n\n.author a, .author span {\n  float: left;\n  font-size: 14px;\n  font-weight: 700;\n  line-height: 35px; }\n\n.author h2 {\n  color: #9b8878;\n  font-weight: 400; }\n\n.author img {\n  width: 35px;\n  height: 35px;\n  border-radius: 35px;\n  margin-right: 10px; }\n\n.funny-things .contentHerf {\n  display: block; }\n\n.funny-things .funny-content {\n  margin-bottom: 10px;\n  font-size: 16px;\n  line-height: 1.8;\n  word-wrap: break-word;\n  color: #333; }\n\n.stats {\n  font-size: 12px;\n  margin: 20px 0 10px; }\n\n.stats, .stats a {\n  color: #999; }\n\n.stats-buttons {\n  font-size: 12px;\n  height: 35px;\n  float: left; }\n\n.stats-buttons ul {\n  margin-top: 5px;\n  margin-left: 8px; }\n\n.stats-buttons ul li {\n  float: left;\n  margin-right: 20px;\n  text-align: center; }\n\n.stats-buttons .up a {\n  background-image: none !important; }\n\n.stats-buttons ul li a {\n  display: block;\n  text-align: center; }\n\n.stats-buttons a i {\n  width: 30px;\n  height: 30px;\n  background-repeat: no-repeat;\n  display: block;\n  font-size: 24px;\n  -webkit-text-stroke-width: .2px;\n  color: #b5b5b5; }\n\n.stats-buttons .up a i {\n  background-image: url(" + __webpack_require__(9) + "); }\n\n.stats-buttons .down a i {\n  background-image: url(" + __webpack_require__(10) + "); }\n\n.stats-buttons .comments a i {\n  background-image: url(" + __webpack_require__(11) + "); }\n\n.single-share {\n  float: right;\n  margin-top: 3px; }\n\n.single-share a {\n  display: inline-block;\n  width: 24px;\n  height: 24px;\n  margin-left: 10px;\n  text-indent: -9999px;\n  background-image: url(" + __webpack_require__(12) + ");\n  background-repeat: no-repeat;\n  cursor: pointer; }\n\n.single-share .share-wechat {\n  background-position: 0 -79px; }\n\n.single-share .share-qq {\n  background-position: 0 -151px; }\n\n.single-share .share-qzone {\n  background-position: 0 -127px; }\n\n.single-share .share-weibo {\n  background-position: 0 -103px; }\n\n/* end content 样式*/\n/* start footer 样式*/\nfooter {\n  width: 960px;\n  padding: 20px 0;\n  margin: 0 auto;\n  text-align: center;\n  border-top: 1px solid #efefef; }\n\n/* end footer 样式*/\n/* start comments 样式*/\n.comments-wrap {\n  margin-bottom: 20px;\n  background-color: #fff;\n  padding: 10px 20px 0;\n  clear: both; }\n\n.comments-title {\n  color: #333;\n  font-size: 18px;\n  padding: 10px 0;\n  margin-bottom: 0; }\n\n.comments-wrap .comment-area {\n  position: relative; }\n\n.comments-wrap .comment-input {\n  width: 840px;\n  padding: 5px 50px 10px 5px;\n  height: 20px;\n  box-shadow: none;\n  border: 0;\n  background-color: #fff; }\n\n.comments-wrap .comment-submit {\n  background-color: #ffa015;\n  line-height: 31px;\n  padding: 0 5px;\n  height: 31px;\n  display: block;\n  width: 55px;\n  text-align: center;\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  margin-bottom: 5px;\n  z-index: 999;\n  color: #fff; }\n\n.comments-wrap .comment-limit-tips {\n  position: absolute;\n  left: 850px;\n  bottom: 10px;\n  z-index: 999; }\n\n.comments-wrap .comment-limit-tips strong {\n  color: #0099ff;\n  font-weight: bold; }\n\n.comment-block {\n  word-break: break-all;\n  padding: 10px 0; }\n\n.comment-block, .comment-wrap {\n  border-top: 1px solid #f4f2ef; }\n\n.comment-block .avatars {\n  float: left;\n  width: 45px;\n  vertical-align: top; }\n\n.comment-block .avatars img {\n  width: 35px;\n  height: 35px;\n  border-radius: 35px; }\n\n.comment-block .replay {\n  width: 440px;\n  float: left; }\n\n.comment-block .user-login {\n  color: #9B8878; }\n\n.comment-block .anomynous,\n.comment-block .hostname,\n.comment-block .manager,\n.comment-block .user-login {\n  margin: 0 10px 0 0;\n  display: block; }\n\n.comment-block .replay .body {\n  color: #404040;\n  line-height: 1.6;\n  word-wrap: break-word; }\n\n.comments-list .report {\n  float: right;\n  color: #ccc;\n  font-size: 12px; }\n\n/* end comments 样式*/\n/*start login 样式*/\n.signin-box {\n  left: 50%;\n  top: 50%;\n  margin-left: -205px;\n  z-index: 1002;\n  position: fixed;\n  margin-top: -150px;\n  display: block;\n  height: 300px;\n  background: #fff;\n  color: #333;\n  font-size: 14px;\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);\n  border-radius: 3px; }\n\n.sigin-left {\n  margin: 44px 55px 0; }\n\n.signin-account, .signin-form {\n  margin-bottom: 14px;\n  width: 300px; }\n\n.signin-account {\n  border-bottom: 1px solid #f2f2f2; }\n\n.social-signin-heading {\n  margin-bottom: 22px;\n  color: #5e5e5e;\n  font-size: 15px; }\n\n.signin-account .social-btn {\n  display: block;\n  text-align: center;\n  width: 300px;\n  height: 40px;\n  line-height: 40px;\n  font-size: 16px;\n  color: #fff;\n  border-radius: 3px; }\n\n.social-wechat {\n  background: url(" + __webpack_require__(13) + ") 0 -2px no-repeat #62CF69;\n  margin-bottom: 10px; }\n\n.social-weibo {\n  background: url(" + __webpack_require__(14) + ") 0 -2px no-repeat #e24f48;\n  margin-bottom: 10px; }\n\n.social-qq {\n  background: url(" + __webpack_require__(15) + ") 0 -2px no-repeat #2fa2d7;\n  margin-bottom: 20px; }\n\n.user-setting .social-email {\n  background: url(" + __webpack_require__(16) + ") no-repeat; }\n\n.signin-account, .signin-form {\n  margin-bottom: 14px;\n  width: 300px; }\n\n.signin-section {\n  border: 1px solid #e6e6e6;\n  margin-bottom: 17px;\n  padding: 1px; }\n\n.signin-error {\n  display: none;\n  margin: 0 0 10px;\n  color: red; }\n\n.signin-form button, .signin-form input {\n  font-size: 18px; }\n\n.form-input {\n  color: #d2d2d2;\n  font-size: 14px !important;\n  padding: 11px !important;\n  display: block;\n  margin-top: -1px;\n  border: 0 !important;\n  border-top: 1px solid #e6e6e6 !important;\n  background-color: #fff;\n  margin-right: 0;\n  width: 296px !important; }\n\n.form-input-first {\n  border-top: 0 !important; }\n\n.form-submit {\n  background-color: #fbbf2f;\n  font-weight: 700;\n  color: #fff;\n  padding: 8px 0;\n  border-radius: 2px !important;\n  text-align: center;\n  display: block;\n  width: 100%;\n  font-size: 16px; }\n\n.signin-foot {\n  width: 300px;\n  font-size: 14px;\n  border-top: 0;\n  padding: 0;\n  text-align: left; }\n\n.signin-foot a {\n  color: #d3d3d3;\n  padding: 0 !important;\n  margin-right: 15px;\n  text-decoration: underline; }\n\n.signin-foot a.fetch-password {\n  padding-right: 15px; }\n\n.signin-foot a:hover {\n  background-color: transparent;\n  color: #999; }\n\n/*end login 样式*/\n/* start 个人主页 样式*/\n.user-main {\n  width: 980px;\n  margin: 0 auto;\n  color: #666; }\n\n.user-header {\n  margin: 0 0 20px; }\n\n.user-header .user-header-avatar {\n  position: absolute;\n  margin: 32px 0 0 30px; }\n\n.user-header .user-header-cover {\n  height: 220px;\n  background-image: url(" + __webpack_require__(17) + "); }\n\n.user-header .user-header-cover h2 {\n  padding: 150px 0 0 320px;\n  font-size: 34px;\n  color: #fff;\n  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); }\n\n.user-header .user-header-menu {\n  border: 1px solid #dedede;\n  background: #fff;\n  padding-left: 320px; }\n\n.user-header .user-header-menu li, .user-toolbar button {\n  display: inline-block; }\n\n.user-header .user-header-menu .active {\n  box-shadow: 0 -4px 0 #794627 inset; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-header .user-header-menu a {\n  display: block;\n  padding: 20px;\n  font-size: 16px; }\n\n.user-main .user-col-right {\n  float: right;\n  width: 700px; }\n\n.user-main .user-col-left {\n  float: left;\n  width: 260px; }\n\n.user-main .user-block {\n  margin: 0 0 20px;\n  border: 1px solid #dedede;\n  background: #fff;\n  position: relative; }\n\n.user-follow h3, .user-follow ul, .user-statis h3, .user-statis ul {\n  padding: 14px 20px; }\n\n.user-comment-info, .user-follow h3, .user-setting h3, .user-statis h3 {\n  border-bottom: 1px solid #e8e8e8; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-follow h3, .user-follow ul, .user-statis h3, .user-statis ul {\n  padding: 14px 20px; }\n\n.user-statis ul li {\n  line-height: 2; }\n\n.user-statis span {\n  display: inline-block;\n  width: 80px; }\n\n.user-date {\n  color: #d6d6d6; }\n\n.user-date .user-date-month {\n  position: absolute;\n  margin: 12px 0 0 19px;\n  font-size: 35px; }\n\n.user-date .user-date-break {\n  position: absolute;\n  margin: 14px 0 0 56px;\n  font-size: 38px; }\n\n.user-date .user-date-day {\n  position: absolute;\n  margin: 32px 0 0 70px;\n  font-size: 24px; }\n\n.user-indent {\n  margin-left: 100px;\n  padding-bottom: 6px; }\n\n.user-comment li, .user-feed li {\n  margin: 14px 20px; }\n\n.user-comment-info {\n  padding: 6px 0 14px; }\n\n.user-comment-info, .user-follow h3, .user-setting h3, .user-statis h3 {\n  border-bottom: 1px solid #e8e8e8; }\n\n.bind-email label, .user-follow h3, .user-header .user-header-menu .active, .user-main strong, .user-setting h3, .user-statis h3 {\n  font-weight: 700; }\n\n.user-comment-quote {\n  background: #f7f7f7; }\n\n.user-comment-quote ul {\n  padding: 1px; }\n\n.user-comment li, .user-feed li {\n  margin: 14px 20px; }\n\n.user-article-avatar a {\n  vertical-align: middle;\n  display: inline-block; }\n\n.user-article-avatar img {\n  vertical-align: middle;\n  margin-right: 10px; }\n\n.user-article-avatar img, .user-follow ul li img {\n  width: 60px;\n  height: 60px;\n  border-radius: 60px; }\n\n.user-article-text {\n  line-height: 1.6;\n  word-wrap: break-word; }\n\n.user-article-text a, .user-article-text a:hover {\n  color: #666; }\n\n.user-article-stat, .user-article-stat a {\n  color: #949494; }\n\n/* end 个人主页 样式*/\n/* start 编辑资料 样式*/\n.user-setting h3 {\n  padding: 14px 20px; }\n\n.user-setting input {\n  font-size: 14px;\n  padding: 2px; }\n\n.user-setting li {\n  margin: 14px 20px; }\n\n.user-setting .user-setting-avatar {\n  display: block;\n  width: 210px;\n  height: 210px; }\n\n.user-setting .social-email,\n.user-setting .social-email:hover,\n.user-setting .social-qq,\n.user-setting .social-qq:hover,\n.user-setting .social-wechat,\n.user-setting .social-wechat:hover,\n.user-setting .social-weibo,\n.user-setting .social-weibo:hover {\n  display: inline-block;\n  width: 266px;\n  height: 40px;\n  line-height: 40px;\n  text-indent: 70px;\n  color: #fff;\n  margin: 0; }\n\n.user-setting .user-setting-inputlable {\n  width: 100px;\n  display: inline-block; }\n\n/* end 编辑资料 样式*/\n/* start 投稿 样式*/\n.post-readme h3 {\n  font-size: 16px;\n  padding: 0 0 20px; }\n\n.post-readme ol li {\n  padding: 20px 0;\n  border-top: 1px solid #efefef;\n  list-style-position: inside;\n  list-style-type: decimal;\n  line-height: 140%; }\n\n/* end 投稿 样式*/\n", ""]);
 	
 	// exports
 
@@ -23177,7 +23197,7 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "images/icongroup.6468defc0c98ea0ac15c517d7b03172c.png";
+	module.exports = __webpack_require__.p + "images/logo.ee3823bd72f32f99f123e9be3db5ecd1.png";
 
 /***/ },
 /* 9 */
@@ -23199,36 +23219,42 @@
 
 /***/ },
 /* 12 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAAsCAMAAADo1HXzAAAAPFBMVEVYul5iz2ldxWNiz2lYul7////s+O1vxHRhvmb2/Pf8/vzk9OW95L+v3rLZ8NrK6syY1Jyj2aeHzox8yYFkx8YBAAAAA3RSTlPn5klR/6+lAAABZ0lEQVRo3u3by3LCMAyF4UAdS0589/u/aytIJtjEbbxi0fNvDNtvjEbAZLpParyv/9jtPk0KWFe1JgWsywELWI+ANRCwBgLWQMAaCFgDAesT9bE4BW0W7R0B6w8sdmbeCwSs37BonV9aIrD6WKTnugisLlb48dHJCpNJTu5WAVYHK2+XScaWU0o+kh5YHawgWJ7y8yiLnASsc6xmYpkQCzGwzrGWysoyOb+aNUQG1juWqdYGtjuejsB6w/LzUapWLgusFisdOp7X+TUHrAaLjwmfBU4XK7cqi1sBVo2l8j6lzMMtqCxuKggZsBosFTetlZ6HvDWrvNTAarFU3kZWmduA9Ya1IWl6dcLNOsdyxjHFlLja5jGzTrEi72q11ULAOrDamj0rYc9qsPo/BDps8DVWG4djYOG74YbVrzivjQ7WeGA1WP3IMrDwJyuw9oA1ELAGAtZAwBoIWJ8MDw1c74bHUa5b3b8B9AippRqVijoAAAAASUVORK5CYII="
+	module.exports = __webpack_require__.p + "images/icongroup.6468defc0c98ea0ac15c517d7b03172c.png";
 
 /***/ },
 /* 13 */
 /***/ function(module, exports) {
 
-	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAAsCAMAAADo1HXzAAABwlBMVEXSWTXqYzvSWTXqYzvqYzvSWTXSWTXqYzvqYzv////SWTXUYT/++/rTXTrTXjvpsJ778u/+/Pv//v3+/f3uwrX129P99/XWZ0b++vn89fLgjHP23db78e7UYD3dgWX0187ad1nln4v//v7VZUP34Nnoq5nadlnmoo712dD78O3km4XuwbT56eT01czaeFvvw7byz8T23NXqsJ/SWjfUYD7WaUnWZkXZdFbcfWHVZUT23tfbeVzrtaX34tvmpZH45N/TWzf56OPbe17gi3Lyz8X349345uHSWjb34NrhkHj89PLUXzzjl4D45uDfiW/rt6filX7vwrXYbk7VY0HTXDjiln/pr57jmILvxbjnp5Trs6P99vTZclPcfGDqYzvWaUjxyr7oqJbuwLLdgmfmoY3z0sjuv7HWaEftvK3vxLf+/PzloIv56OL9+fjXbU3z1Mv77+zfh23ln4r018/npZL12dHhknrXa0r88/DUYkD67OjbfF/fiG7dgGXsuqvqsqLXbU7ilHzaeFr9+PbadVfVY0LehmzkmoTsuKnxzMDiknvmo4/vxLj34dv9+Pfwyb3Zc1XfinHtva7st6jmpJDlnolosjYhAAAACXRSTlNJ5uZJ50rn5EpiJjFHAAACA0lEQVR4Xu3bNc/cUBSE4Q1nxsvM/DEzM2OYmZmZmZn+b+5acmF7pThSupy3mvqpTnNcrrX8+w7/j61Zp6wEy6mWi4LlOMESrH+ZYAmWYAmWYAlWdj6O6I1GjwMswdoGveZDf8YSrNrTdY0/GgD3CQoWq1daqPml0cjrA/wlwWK1Yo/jAFr03dq2t66bo0CNYLFKU37onaHqOoBZbS6FecGivZ9F6OEgmdm+I7NzNwrch4Bg0dYxGOVP1gdRPEtvqIm3AcGitQKsPaI7zGVEBYuWXgdhbYFvv/E7IoJFc7E09KLl9paORX0GjlB1FE8Ei+baoEp3tnaxUt6XABK7NJI9e3oFi6b6igD2a+RSvr9EVexUBW+VeoJlaguAreTA8TgQCmdIegYBBIbsWIK1AgyTSyPQa6IqCdU5O5ZgnUcoRl6A6uIlBAdIXoaqbMcSrACaSV5BZPjqtTKQJVkLVbsdS7BSSJNcGRvnFFRDxkFfsGMJ1k2gn7xVP0cfgIlx8s5dAA2aHUuw7t1HxMNlpDoAJB6QvZURfEg9wTI3eQC5HiZzIUTDT8nsBAD3MxoJlqnnY3jR+ZLeV2R3chqqkUkaCZYlz5sZwJ97Nz3jhmrwfRdNCZa5vg8fPy0Cn2e/jH6lKcFynGA5TrAES7AES7AES7AES54GnLfetWGjYDlr0+bfSsQgWbxlxxgAAAAASUVORK5CYII="
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAAsCAMAAADo1HXzAAAAPFBMVEVYul5iz2ldxWNiz2lYul7////s+O1vxHRhvmb2/Pf8/vzk9OW95L+v3rLZ8NrK6syY1Jyj2aeHzox8yYFkx8YBAAAAA3RSTlPn5klR/6+lAAABZ0lEQVRo3u3by3LCMAyF4UAdS0589/u/aytIJtjEbbxi0fNvDNtvjEbAZLpParyv/9jtPk0KWFe1JgWsywELWI+ANRCwBgLWQMAaCFgDAesT9bE4BW0W7R0B6w8sdmbeCwSs37BonV9aIrD6WKTnugisLlb48dHJCpNJTu5WAVYHK2+XScaWU0o+kh5YHawgWJ7y8yiLnASsc6xmYpkQCzGwzrGWysoyOb+aNUQG1juWqdYGtjuejsB6w/LzUapWLgusFisdOp7X+TUHrAaLjwmfBU4XK7cqi1sBVo2l8j6lzMMtqCxuKggZsBosFTetlZ6HvDWrvNTAarFU3kZWmduA9Ya1IWl6dcLNOsdyxjHFlLja5jGzTrEi72q11ULAOrDamj0rYc9qsPo/BDps8DVWG4djYOG74YbVrzivjQ7WeGA1WP3IMrDwJyuw9oA1ELAGAtZAwBoIWJ8MDw1c74bHUa5b3b8B9AippRqVijoAAAAASUVORK5CYII="
 
 /***/ },
 /* 14 */
 /***/ function(module, exports) {
 
-	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAAsCAMAAADo1HXzAAAA4VBMVEU2iq1Dq9dLwPFLwPFLwPFLwPFLwPH///9DrNj3+/39/v/f8fjP6vWCyOW33/BKr9r1+/2y3e9OsdpVtNzl9PpErNjK6PTz+v1pveBJr9lErdjM6fT+/v/8/v5MsNqOzehXtdxuv+FWtNzV7Pad1OvR6/Z/x+XL6PRsvuHn9fro9frS6/bX7fdjut/+//9mu9/b7/ib0+p6xOOz3e93w+NIrtlSs9uJy+d9xuSAx+VLwPH0+v3y+fxNsNpiut613vDi8vn7/f7J5/R4w+N7xeT4/P7k8/lku9+HyuaPzuhUs9w6pPAyAAAAB3RSTlNc6eZJ5+RKwWReWgAAAThJREFUeF7t20VuA0EQheFx6PUgmDHIzMwM9z9QFl44qe7yTKTs8v4jfFJJb1OeVzG/7/I/NjFpWRFL1/IMsUpHLGL9QcQiFrGIRSxifS4vZfC3Dk4LsYh15mNY9l6ARawPjJobi0WshT5GBetjsIjVDfG9sKtjEesQPzvWsYiVC6xcxyJWJLAiFYtY1UBgBVUNi1gxZLGGRawEskTBItZ8CFlYc2IRa7EOu3rNgUWsxgpcRQ0bi1gx3K3aWMRag7umjUUsH+58G4tYwAbsNgEbi1it7Z0+ZLt7+y0bi1jtjskhOzJp24nFBX/SFFa9jrbgiXURSaxzBYtYaQDZIHVjEWv2CsNwjWHwbxQsnuHt3f0DkD0+mefeCzB4Td6MiFiFEYtYxCIWsYhFLGJViFW2Kb6jlG565gstdO5eRZuVEQAAAABJRU5ErkJggg=="
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAAsCAMAAADo1HXzAAABwlBMVEXSWTXqYzvSWTXqYzvqYzvSWTXSWTXqYzvqYzv////SWTXUYT/++/rTXTrTXjvpsJ778u/+/Pv//v3+/f3uwrX129P99/XWZ0b++vn89fLgjHP23db78e7UYD3dgWX0187ad1nln4v//v7VZUP34Nnoq5nadlnmoo712dD78O3km4XuwbT56eT01czaeFvvw7byz8T23NXqsJ/SWjfUYD7WaUnWZkXZdFbcfWHVZUT23tfbeVzrtaX34tvmpZH45N/TWzf56OPbe17gi3Lyz8X349345uHSWjb34NrhkHj89PLUXzzjl4D45uDfiW/rt6filX7vwrXYbk7VY0HTXDjiln/pr57jmILvxbjnp5Trs6P99vTZclPcfGDqYzvWaUjxyr7oqJbuwLLdgmfmoY3z0sjuv7HWaEftvK3vxLf+/PzloIv56OL9+fjXbU3z1Mv77+zfh23ln4r018/npZL12dHhknrXa0r88/DUYkD67OjbfF/fiG7dgGXsuqvqsqLXbU7ilHzaeFr9+PbadVfVY0LehmzkmoTsuKnxzMDiknvmo4/vxLj34dv9+Pfwyb3Zc1XfinHtva7st6jmpJDlnolosjYhAAAACXRSTlNJ5uZJ50rn5EpiJjFHAAACA0lEQVR4Xu3bNc/cUBSE4Q1nxsvM/DEzM2OYmZmZmZn+b+5acmF7pThSupy3mvqpTnNcrrX8+w7/j61Zp6wEy6mWi4LlOMESrH+ZYAmWYAmWYAlWdj6O6I1GjwMswdoGveZDf8YSrNrTdY0/GgD3CQoWq1daqPml0cjrA/wlwWK1Yo/jAFr03dq2t66bo0CNYLFKU37onaHqOoBZbS6FecGivZ9F6OEgmdm+I7NzNwrch4Bg0dYxGOVP1gdRPEtvqIm3AcGitQKsPaI7zGVEBYuWXgdhbYFvv/E7IoJFc7E09KLl9paORX0GjlB1FE8Ei+baoEp3tnaxUt6XABK7NJI9e3oFi6b6igD2a+RSvr9EVexUBW+VeoJlaguAreTA8TgQCmdIegYBBIbsWIK1AgyTSyPQa6IqCdU5O5ZgnUcoRl6A6uIlBAdIXoaqbMcSrACaSV5BZPjqtTKQJVkLVbsdS7BSSJNcGRvnFFRDxkFfsGMJ1k2gn7xVP0cfgIlx8s5dAA2aHUuw7t1HxMNlpDoAJB6QvZURfEg9wTI3eQC5HiZzIUTDT8nsBAD3MxoJlqnnY3jR+ZLeV2R3chqqkUkaCZYlz5sZwJ97Nz3jhmrwfRdNCZa5vg8fPy0Cn2e/jH6lKcFynGA5TrAES7AES7AES7AES54GnLfetWGjYDlr0+bfSsQgWbxlxxgAAAAASUVORK5CYII="
 
 /***/ },
 /* 15 */
 /***/ function(module, exports) {
 
-	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQoAAAAsCAMAAACqlwZkAAAAilBMVEVuboWIiKaZmbqZmbqZmbqZmbqZmbqJiaf////U1N/9/f36+vzNzdrMzNn6+vv9/f7V1eCfn7eSkq7ExNP29vi7u83m5uyursOKiqiLi6js7PGlpbyZmbqdnbbx8fSmpr3d3eaTk66Tk6+Xl7Lc3OXe3ua2tsmPj6v+/v6np72OjqqYmLKOjquXl7HiTtTuAAAAB3RSTlNc6eZJ5+RKwWReWgAAAMhJREFUeF7t2keuwlAMhtEQim9q74XeeW//20NAQEJiwigS9/O/gzOwLcuGMZLvq/29Mse9BBStaQgUfQalgAIKKKCAAgoooIACCiigUJ8LiluggKLZfoDYNjpSrKWz7DcH2+pkpSOF417k3/NfEL63kYvr6NkrgjCSOEnvEGkSSxQGGrfN3UnO2VzNsz9ZLHWfIHlRVouqLHKGqVL1/rCv2SseObJisWJBAQUUUHC6gQIKKKCAAgoooIACiiHDC+szEx6b+0xnV8x4RcnG/R8JAAAAAElFTkSuQmCC"
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAAsCAMAAADo1HXzAAAA4VBMVEU2iq1Dq9dLwPFLwPFLwPFLwPFLwPH///9DrNj3+/39/v/f8fjP6vWCyOW33/BKr9r1+/2y3e9OsdpVtNzl9PpErNjK6PTz+v1pveBJr9lErdjM6fT+/v/8/v5MsNqOzehXtdxuv+FWtNzV7Pad1OvR6/Z/x+XL6PRsvuHn9fro9frS6/bX7fdjut/+//9mu9/b7/ib0+p6xOOz3e93w+NIrtlSs9uJy+d9xuSAx+VLwPH0+v3y+fxNsNpiut613vDi8vn7/f7J5/R4w+N7xeT4/P7k8/lku9+HyuaPzuhUs9w6pPAyAAAAB3RSTlNc6eZJ5+RKwWReWgAAAThJREFUeF7t20VuA0EQheFx6PUgmDHIzMwM9z9QFl44qe7yTKTs8v4jfFJJb1OeVzG/7/I/NjFpWRFL1/IMsUpHLGL9QcQiFrGIRSxifS4vZfC3Dk4LsYh15mNY9l6ARawPjJobi0WshT5GBetjsIjVDfG9sKtjEesQPzvWsYiVC6xcxyJWJLAiFYtY1UBgBVUNi1gxZLGGRawEskTBItZ8CFlYc2IRa7EOu3rNgUWsxgpcRQ0bi1gx3K3aWMRag7umjUUsH+58G4tYwAbsNgEbi1it7Z0+ZLt7+y0bi1jtjskhOzJp24nFBX/SFFa9jrbgiXURSaxzBYtYaQDZIHVjEWv2CsNwjWHwbxQsnuHt3f0DkD0+mefeCzB4Td6MiFiFEYtYxCIWsYhFLGJViFW2Kb6jlG565gstdO5eRZuVEQAAAABJRU5ErkJggg=="
 
 /***/ },
 /* 16 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQoAAAAsCAMAAACqlwZkAAAAilBMVEVuboWIiKaZmbqZmbqZmbqZmbqZmbqJiaf////U1N/9/f36+vzNzdrMzNn6+vv9/f7V1eCfn7eSkq7ExNP29vi7u83m5uyursOKiqiLi6js7PGlpbyZmbqdnbbx8fSmpr3d3eaTk66Tk6+Xl7Lc3OXe3ua2tsmPj6v+/v6np72OjqqYmLKOjquXl7HiTtTuAAAAB3RSTlNc6eZJ5+RKwWReWgAAAMhJREFUeF7t2keuwlAMhtEQim9q74XeeW//20NAQEJiwigS9/O/gzOwLcuGMZLvq/29Mse9BBStaQgUfQalgAIKKKCAAgoooIACCiigUJ8LiluggKLZfoDYNjpSrKWz7DcH2+pkpSOF417k3/NfEL63kYvr6NkrgjCSOEnvEGkSSxQGGrfN3UnO2VzNsz9ZLHWfIHlRVouqLHKGqVL1/rCv2SseObJisWJBAQUUUHC6gQIKKKCAAgoooIACiiHDC+szEx6b+0xnV8x4RcnG/R8JAAAAAElFTkSuQmCC"
+
+/***/ },
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "images/usercover.f8b78e9a15931b5deb8d2e05de7d4575.jpg";
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -23480,17 +23506,17 @@
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(19)
+	__vue_script__ = __webpack_require__(20)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\app.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(30)
+	__vue_template__ = __webpack_require__(31)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -23515,7 +23541,7 @@
 	})()}
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23524,13 +23550,21 @@
 		value: true
 	});
 	
-	var _header = __webpack_require__(20);
+	var _header = __webpack_require__(21);
 	
 	var _header2 = _interopRequireDefault(_header);
 	
-	var _footer = __webpack_require__(27);
+	var _footer = __webpack_require__(28);
 	
 	var _footer2 = _interopRequireDefault(_footer);
+	
+	var _login = __webpack_require__(35);
+	
+	var _login2 = _interopRequireDefault(_login);
+	
+	var _index = __webpack_require__(23);
+	
+	var _index2 = _interopRequireDefault(_index);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23540,25 +23574,50 @@
 	
 		name: 'App',
 	
+		data: function data() {
+			return {
+				store: _index2.default
+			};
+		},
+	
+	
+		methods: {
+			closeLoginBox: function closeLoginBox() {
+				_index2.default.showLoginForm = false;
+			}
+		},
+	
+		watch: {
+			'store.showLoginForm': function storeShowLoginForm(val, oldVal) {
+				if (val) {
+					_index2.default.showLoginForm = true;
+				} else {
+					_index2.default.showLoginForm = false;
+				}
+			}
+	
+		},
+	
 		components: {
 			AppHeader: _header2.default,
-			AppFooter: _footer2.default
+			AppFooter: _footer2.default,
+			LoginBox: _login2.default
 		}
 	
 	};
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(21)
+	__vue_script__ = __webpack_require__(22)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\header.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(26)
+	__vue_template__ = __webpack_require__(27)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -23583,7 +23642,7 @@
 	})()}
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23592,9 +23651,13 @@
 		value: true
 	});
 	
-	var _index = __webpack_require__(22);
+	var _index = __webpack_require__(23);
 	
 	var _index2 = _interopRequireDefault(_index);
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23604,6 +23667,22 @@
 	
 		name: 'Header',
 	
+		route: {
+			canReuse: false, data: function data(_ref) {
+				var to = _ref.to;
+	
+				var id = to.params.thingsType;
+				var self = this;
+				self.thingsType = id;
+				console.info(to.params.thingsType);
+			}
+		},
+	
+		ready: function ready() {
+			(0, _jquery2.default)('#nav li').click(function () {
+				(0, _jquery2.default)(this).addClass('highlight').siblings('li').removeClass('highlight');
+			});
+		},
 		data: function data() {
 			return {};
 		},
@@ -23617,7 +23696,7 @@
 	};
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23626,9 +23705,9 @@
 	    value: true
 	});
 	
-	var _events = __webpack_require__(23);
+	var _events = __webpack_require__(24);
 	
-	var _util = __webpack_require__(24);
+	var _util = __webpack_require__(25);
 	
 	var _util2 = _interopRequireDefault(_util);
 	
@@ -23636,7 +23715,7 @@
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _service = __webpack_require__(25);
+	var _service = __webpack_require__(26);
 	
 	var _service2 = _interopRequireDefault(_service);
 	
@@ -23692,7 +23771,7 @@
 	};
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -24000,7 +24079,7 @@
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24009,7 +24088,7 @@
 	    value: true
 	});
 	
-	var _events = __webpack_require__(23);
+	var _events = __webpack_require__(24);
 	
 	var _jquery = __webpack_require__(1);
 	
@@ -24572,7 +24651,7 @@
 	};
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24581,9 +24660,9 @@
 	    value: true
 	});
 	
-	var _events = __webpack_require__(23);
+	var _events = __webpack_require__(24);
 	
-	var _util = __webpack_require__(24);
+	var _util = __webpack_require__(25);
 	
 	var _util2 = _interopRequireDefault(_util);
 	
@@ -24714,6 +24793,21 @@
 	};
 	
 	/**
+	 * 发表趣事
+	 */
+	service.publishThings = function (data) {
+	    return _util2.default.ajax({
+	        url: '/thesis/publishThings',
+	        type: 'POST',
+	        data: {
+	            things_content: data.content,
+	            things_img: data.img,
+	            is_anonymous: data.is_anonymous
+	        }
+	    });
+	};
+	
+	/**
 	 * 发表评论
 	 */
 	service.getFunnyThingsDetail = function (data) {
@@ -24793,23 +24887,23 @@
 	};
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports) {
 
-	module.exports = "<header>\r\n    <div id=\"header\" class=\"row clearfix\">\r\n        <div id=\"logo\">\r\n            <a href=\"./index.php#!/index\"></a>\r\n        </div>\r\n        <ul id=\"nav\" class=\"menu-bar menu clearfix\">\r\n            <li id=\"highlight\">\r\n                <a href=\"/funnySharePlatform/index.php#!/index\" >热门</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/fresh\">新鲜</a>\r\n            </li>\r\n           \r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/word\">文字</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/img\">图片</a>\r\n            </li>         \r\n            <li>\r\n                <a href=\"/funnySharePlatform/index.php#!/add\">投稿</a>\r\n            </li>\r\n        </ul>\r\n\r\n        <div id=\"loginBtn\">\r\n            <a href=\"javascript:;\" @click=\"showLoginBox()\">登录/注册</a>\r\n        </div>\r\n    </div>\r\n</header>\r\n";
+	module.exports = "<header>\r\n    <div id=\"header\" class=\"row clearfix\">\r\n        <div id=\"logo\">\r\n            <a href=\"./home#!/index/hot\"></a>\r\n        </div>\r\n        <ul id=\"nav\" class=\"menu-bar menu clearfix\">\r\n            <li :class=\"thingsType == 'hot' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'hot'}}\">热门</a>\r\n            </li>\r\n            <li :class=\"thingsType == 'fresh' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'fresh'}}\">新鲜</a>\r\n            </li>\r\n           \r\n            <li :class=\"thingsType == 'word' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'word'}}\">文字</a>\r\n            </li>\r\n            <li :class=\"thingsType == 'pic' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'pic'}}\">图片</a>\r\n            </li>         \r\n            <li>\r\n                <a v-link=\"{name:'add'}\">投稿</a>\r\n            </li>\r\n        </ul>\r\n\r\n        <div id=\"loginBtn\">\r\n            <a href=\"javascript:;\" @click=\"showLoginBox()\">登录/注册</a>\r\n        </div>\r\n    </div>\r\n</header>\r\n";
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(28)
+	__vue_script__ = __webpack_require__(29)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\footer.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(29)
+	__vue_template__ = __webpack_require__(30)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -24834,7 +24928,7 @@
 	})()}
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24851,29 +24945,29 @@
 	};
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports) {
 
 	module.exports = "<footer>\r\n    <p>SCAU Copyright ©  2016-华南农业大学.All rights reserved. </p>\r\n</footer>\r\n";
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports) {
 
-	module.exports = "<app-header></app-header>\r\n\r\n<router-view></router-view>\r\n\r\n<app-footer></app-footer>\r\n";
+	module.exports = "<app-header></app-header>\r\n\r\n<router-view></router-view>\r\n\r\n<div id=\"login-box\" @click=\"closeLoginBox()\" v-show=\"store.showLoginForm\">\r\n\t<login-box></login-box>\r\n</div>\r\n\r\n<app-footer></app-footer>\r\n";
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(32)
+	__vue_script__ = __webpack_require__(33)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Index.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(37)
+	__vue_template__ = __webpack_require__(38)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -24898,7 +24992,7 @@
 	})()}
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24911,21 +25005,17 @@
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _util = __webpack_require__(33);
+	var _util = __webpack_require__(34);
 	
 	var _util2 = _interopRequireDefault(_util);
 	
-	var _index = __webpack_require__(22);
+	var _index = __webpack_require__(23);
 	
 	var _index2 = _interopRequireDefault(_index);
 	
-	var _service = __webpack_require__(25);
+	var _service = __webpack_require__(26);
 	
 	var _service2 = _interopRequireDefault(_service);
-	
-	var _login = __webpack_require__(34);
-	
-	var _login2 = _interopRequireDefault(_login);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -24936,7 +25026,6 @@
 	
 		data: function data() {
 			return {
-				showLoginForm: false,
 				store: _index2.default,
 				funnyThingsList: [],
 				page: {
@@ -24953,13 +25042,6 @@
 	
 	
 		methods: {
-			showLoginBox: function showLoginBox() {
-				_index2.default.showLoginForm = true;
-			},
-	
-			closeLoginBox: function closeLoginBox() {
-				_index2.default.showLoginForm = false;
-			},
 	
 			getFunnyThingsList: function getFunnyThingsList() {
 				var self = this;
@@ -25023,16 +25105,12 @@
 				self.getFunnyThingsList(self.page);
 			}
 	
-		},
-	
-		components: {
-			LoginBox: _login2.default
 		}
 	
 	};
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25041,7 +25119,7 @@
 	    value: true
 	});
 	
-	var _events = __webpack_require__(23);
+	var _events = __webpack_require__(24);
 	
 	var _jquery = __webpack_require__(1);
 	
@@ -25119,17 +25197,17 @@
 	};
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(35)
+	__vue_script__ = __webpack_require__(36)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\login.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(36)
+	__vue_template__ = __webpack_require__(37)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25154,7 +25232,7 @@
 	})()}
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25163,7 +25241,7 @@
 		value: true
 	});
 	
-	var _service = __webpack_require__(25);
+	var _service = __webpack_require__(26);
 	
 	var _service2 = _interopRequireDefault(_service);
 	
@@ -25282,29 +25360,29 @@
 	};
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports) {
 
 	module.exports = "<!--start 登录页面-->\r\n<div class=\"signin-box animated fadeInUp\" id=\"login-form\" @click=\"cancelBubble\">\r\n    <div class=\"sigin-left\">\r\n      <!--   <div class=\"signin-account clearfix\">\r\n            <h4 class=\"social-signin-heading\">社交帐号登录</h4>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-btn social-wechat\">\r\n            使用 微信 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession\" class=\"social-btn social-weibo\">\r\n            使用 微博 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://graph.qq.com/oauth2.0/authorize?which=Login&amp;display=pc&amp;client_id=100251437&amp;response_type=code&amp;redirect_uri=www.qiushibaike.com/new4/session?src=qq\" class=\"social-btn social-qq\">\r\n            使用 QQ 账号 </a>\r\n        </div> -->\r\n        <div class=\"signin-form clearfix\" v-show=\"isLogin && !isShowResetPwd\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号登录</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"loginData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\" v-model=\"loginData.password\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\"  class=\"form-submit\" @click=\"login()\">登录</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\" v-show=\"isLogin\">\r\n                <a rel=\"nofollow\" class=\"fetch-password f-l\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showRegister()\">注册</a>\r\n            </div>\r\n        \r\n        <div class=\"register-box\" v-show=\"!isLogin && !isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号注册</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"registerData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\"\r\n                        v-model=\"registerData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\" v-model=\"registerData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"register()\">注册</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\" class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"register-box\" v-show=\"isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台重置密码</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\"\r\n                        v-model=\"resetData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"新密码\"\r\n                        v-model=\"resetData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\"\r\n                        v-model=\"resetData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"reset()\">重置</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\"  class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<!--end 登录页面-->\t\r\n";
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\">\r\n\t\t\t\t\t<img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\">\r\n\t\t\t\t</a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"thumb\">\r\n\t\t\t\t<a href=\"index.php#!/comment\" target=\"_blank\">\r\n\t\t\t\t<img src=\"http://pic.qiushibaike.com/system/pictures/11803/118031114/medium/app118031114.jpg\" alt=\"朋友圈都乱了\">\r\n\t\t\t\t</a>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t</div>\r\n</div>\r\n\r\n<div id=\"login-box\" @click=\"closeLoginBox\" v-show=\"store.showLoginForm\">\r\n\t<login-box></login-box>\r\n</div>\r\n";
+	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\">\r\n\t\t\t\t\t<img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\">\r\n\t\t\t\t</a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"thumb\">\r\n\t\t\t\t<a href=\"index.php#!/comment\" target=\"_blank\">\r\n\t\t\t\t<img src=\"http://pic.qiushibaike.com/system/pictures/11803/118031114/medium/app118031114.jpg\" alt=\"朋友圈都乱了\">\r\n\t\t\t\t</a>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t</div>\r\n</div>\r\n\r\n";
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(39)
+	__vue_script__ = __webpack_require__(40)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Add.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(40)
+	__vue_template__ = __webpack_require__(41)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25329,7 +25407,7 @@
 	})()}
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25338,9 +25416,9 @@
 		value: true
 	});
 	
-	var _vue = __webpack_require__(2);
+	var _service = __webpack_require__(26);
 	
-	var _vue2 = _interopRequireDefault(_vue);
+	var _service2 = _interopRequireDefault(_service);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -25349,27 +25427,48 @@
 	
 		name: 'Add',
 	
-		data: function data() {}
+		data: function data() {
+			return {
+				publishData: {
+					content: '',
+					img: '',
+					is_anonymous: '0'
+				}
+			};
+		},
+	
+	
+		methods: {
+			publishThings: function publishThings() {
+				var self = this;
+				_service2.default.publishThings(self.publishData).done(function (res) {
+					alert('发表成功！');
+				}).fail(function (res) {
+					alert(res.msg);
+				});
+			}
+		}
+	
 	};
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports) {
 
-	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\r\n\t\t<div class=\"clearfix mt-l mb-l p-xl b-w bs-l\">\r\n\t\t<!-- 返回信息 -->\r\n\r\n\t\t\t<!-- 发表表单 -->\r\n\t\t\t<div class=\"post-readme wx250 f-r\">\r\n\t\t\t\t<h3>投稿须知</h3>\r\n\t\t\t\t<ol>\r\n\t\t\t\t\t<li>自己的或朋友的糗事，真实有笑点，不含政治、色情、广告、诽谤、歧视等内容。</li>\r\n\t\t\t\t\t<li>糗事经过审核后发表。</li>\r\n\t\t\t\t\t<li>转载请注明出处。</li>\r\n\t\t\t\t\t<li>我已阅读并同意糗事百科的《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/agreement.html\" target=\"_blank\" rel=\"external nofollow\">用户协议</a>\r\n\t\t\t\t\t\t》以及《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/policy.html\" target=\"_blank\" rel=\"external nofollow\">隐私政策</a>\r\n\t\t\t\t\t\t》\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ol>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"wx600 f-l\">\r\n\t\t\t\t<form action=\"/article/add\" enctype=\"multipart/form-data\" id=\"new_article\" method=\"post\">\r\n\t\t\t\t\t<input type=\"hidden\" name=\"_xsrf\" value=\"2|a74f41b5|67e564a1249d5794720d75050a4530fc|1479826284\">\r\n\t\t\t\t\t<input type=\"hidden\" id=\"article_group_id\" name=\"article[group_id]\" value=\"2\">\r\n\t\t\t\t\t<textarea id=\"qiushi_text\" class=\"wx600 p-m fs-s b-f-g b-lg bsi-l\" name=\"article[content]\" placeholder=\"分享一件新鲜事...\" rows=\"15\" required=\"\"></textarea>\r\n\t\t\t\t\t<div class=\"clearfix mt-r3 mb-m p-m c-lg b-f-g b-lg\">\r\n\t\t\t\t\t\t<div class=\"f-r\">\r\n\t\t\t\t\t\t\t<input type=\"hidden\" name=\"article[anonymous]\" value=\"0\">\r\n\t\t\t\t\t\t\t<input name=\"article[anonymous]\" type=\"checkbox\" id=\"article_anonymous\" onclick=\"this.value=this.checked?'1':'0'\" value=\"0\">\r\n\t\t\t\t\t\t\t匿名投稿\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"f-l\">\r\n\t\t\t\t\t\t\t<label>照片:</label>\r\n\t\t\t\t\t\t\t<input type=\"file\" id=\"article_picture\" name=\"article[picture]\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div id=\"length\" class=\"f-r\"></div><!--字数统计-->\r\n\t\t\t\t\t<input type=\"hidden\" name=\"article[comment_status]\" value=\"open\"><!--允许评论-->\r\n\t\t\t\t\t<button type=\"submit\" class=\"p-xl ptb-m b-g fs-s c-w br-s bs-l\" id=\"article_submit\" name=\"commit\">\r\n\t\t\t\t\t投递\r\n\t\t\t\t\t</button>\r\n\t\t\t\t</form>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
+	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\r\n\t\t<div class=\"clearfix mt-l mb-l p-xl b-w bs-l\">\r\n\t\t<!-- 返回信息 -->\r\n\r\n\t\t\t<!-- 发表表单 -->\r\n\t\t\t<div class=\"post-readme wx250 f-r\">\r\n\t\t\t\t<h3>投稿须知</h3>\r\n\t\t\t\t<ol>\r\n\t\t\t\t\t<li>自己的或朋友的糗事，真实有笑点，不含政治、色情、广告、诽谤、歧视等内容。</li>\r\n\t\t\t\t\t<li>糗事经过审核后发表。</li>\r\n\t\t\t\t\t<li>转载请注明出处。</li>\r\n\t\t\t\t\t<li>我已阅读并同意糗事百科的《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/agreement.html\" target=\"_blank\" rel=\"external nofollow\">用户协议</a>\r\n\t\t\t\t\t\t》以及《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/policy.html\" target=\"_blank\" rel=\"external nofollow\">隐私政策</a>\r\n\t\t\t\t\t\t》\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ol>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"wx600 f-l\">\r\n\t\t\t\t<form enctype=\"multipart/form-data\" id=\"new_article\" method=\"post\">\r\n\t\t\t\t\t<textarea id=\"qiushi_text\" class=\"wx600 p-m fs-s b-f-g b-lg bsi-l\" name=\"article[content]\" placeholder=\"分享一件新鲜事...\" rows=\"15\" required=\"required\" v-model=\"publishData.content\"></textarea>\r\n\t\t\t\t\t<div class=\"clearfix mt-r3 mb-m p-m c-lg b-f-g b-lg\">\r\n\t\t\t\t\t\t<div class=\"f-r\">\r\n\t\t\t\t\t\t\t<input  type=\"checkbox\"  value=\"1\" v-model=\"publishData.is_anonymous\">\r\n\t\t\t\t\t\t\t匿名投稿\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"f-l\">\r\n\t\t\t\t\t\t\t<label>照片:</label>\r\n\t\t\t\t\t\t\t<input type=\"file\" id=\"article_picture\" v-model=\"publishData.img\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div id=\"length\" class=\"f-r\"></div><!--字数统计-->\r\n\t\t\t\t\t<button type=\"button\" class=\"p-xl ptb-m b-g fs-s c-w br-s bs-l\" id=\"article_submit\" name=\"commit\" @click=\"publishThings()\">\r\n\t\t\t\t\t投递\r\n\t\t\t\t\t</button>\r\n\t\t\t\t</form>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(42)
+	__vue_script__ = __webpack_require__(43)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Comment.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(43)
+	__vue_template__ = __webpack_require__(44)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25394,7 +25493,7 @@
 	})()}
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25411,23 +25510,23 @@
 	};
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div id=\"content\" class=\"main\">\r\n    <div id=\"content-block\" class=\"clearfix\">\r\n        <div class=\"funny-things clearfix\">\r\n        \t<div class=\"author clearfix\">\r\n        \t\t<a href=\"\" target=\"_blank\"><img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\"></a>\r\n        \t\t<a href=\"\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n        \t</div>\r\n        \t<a href=\"\" class=\"contentHerf\">\r\n        \t\t<div class=\"funny-content\">\r\n        \t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n        \t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n        \t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n        \t\t\t</p>\r\n        \t\t</div>\r\n        \t</a>\r\n        \t<div class=\"stats\">\r\n        \t\t<span class=\"stats-vote\">\r\n        \t\t\t<i class=\"number\">4030</i>\r\n        \t\t\t好笑\r\n        \t\t</span>\r\n        \t\t<span class=\"stats-comments\">\r\n        \t\t\t<i class=\"dash\">·</i>\r\n        \t\t\t<a href=\"\">\r\n        \t\t\t\t<i class=\"number\">110</i>\r\n        \t\t\t\t评论\r\n        \t\t\t</a>\r\n        \t\t</span>\r\n        \t</div>\r\n        \t<div class=\"stats-buttons clearfix\">\r\n        \t\t<ul class=\"clearfix\">\r\n        \t\t\t<li class=\"up\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"down\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"comments\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t</ul>\r\n        \t</div>\r\n        \t<div class=\"single-share\">\r\n        \t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n        \t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n        \t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n        \t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n        \t</div>\r\n        </div>\r\n        <div class=\"comments-wrap\">\r\n            <h3 class=\"comments-title fs-m\">评论（<em id=\"comments-num\">35</em>）</h3>\r\n            <div class=\"comments\">\r\n                <div class=\"comment-area\">\r\n                    <div id=\"length\" class=\"comment-limit-tips\">\r\n                        <strong>140</strong>\r\n                    </div>\r\n                    <input id=\"comment-input\" class=\"comment-input\"\r\n                        name=\"comment[content]\" autocomplete=\"off\" placeholder=\"我有话说...\"\r\n                        style=\"overflow: hidden;\">\r\n                    <button type=\"submit\" id=\"comment_submit\"\r\n                        class=\"comment-submit\">评论</button>\r\n                </div>\r\n\r\n                <div class=\"comments-list\">\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(16) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>";
+	module.exports = "<div id=\"content\" class=\"main\">\r\n    <div id=\"content-block\" class=\"clearfix\">\r\n        <div class=\"funny-things clearfix\">\r\n        \t<div class=\"author clearfix\">\r\n        \t\t<a href=\"\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n        \t\t<a href=\"\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n        \t</div>\r\n        \t<a href=\"\" class=\"contentHerf\">\r\n        \t\t<div class=\"funny-content\">\r\n        \t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n        \t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n        \t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n        \t\t\t</p>\r\n        \t\t</div>\r\n        \t</a>\r\n        \t<div class=\"stats\">\r\n        \t\t<span class=\"stats-vote\">\r\n        \t\t\t<i class=\"number\">4030</i>\r\n        \t\t\t好笑\r\n        \t\t</span>\r\n        \t\t<span class=\"stats-comments\">\r\n        \t\t\t<i class=\"dash\">·</i>\r\n        \t\t\t<a href=\"\">\r\n        \t\t\t\t<i class=\"number\">110</i>\r\n        \t\t\t\t评论\r\n        \t\t\t</a>\r\n        \t\t</span>\r\n        \t</div>\r\n        \t<div class=\"stats-buttons clearfix\">\r\n        \t\t<ul class=\"clearfix\">\r\n        \t\t\t<li class=\"up\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"down\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"comments\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t</ul>\r\n        \t</div>\r\n        \t<div class=\"single-share\">\r\n        \t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n        \t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n        \t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n        \t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n        \t</div>\r\n        </div>\r\n        <div class=\"comments-wrap\">\r\n            <h3 class=\"comments-title fs-m\">评论（<em id=\"comments-num\">35</em>）</h3>\r\n            <div class=\"comments\">\r\n                <div class=\"comment-area\">\r\n                    <div id=\"length\" class=\"comment-limit-tips\">\r\n                        <strong>140</strong>\r\n                    </div>\r\n                    <input id=\"comment-input\" class=\"comment-input\"\r\n                        name=\"comment[content]\" autocomplete=\"off\" placeholder=\"我有话说...\"\r\n                        style=\"overflow: hidden;\">\r\n                    <button type=\"submit\" id=\"comment_submit\"\r\n                        class=\"comment-submit\">评论</button>\r\n                </div>\r\n\r\n                <div class=\"comments-list\">\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>";
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(45)
+	__vue_script__ = __webpack_require__(46)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Edit.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(46)
+	__vue_template__ = __webpack_require__(47)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25452,7 +25551,7 @@
 	})()}
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25469,23 +25568,23 @@
 	};
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"user-main clearfix\">\r\n    <div class=\"user-header\">\r\n        <a href=\"/users/29459066/\" class=\"user-header-avatar\">\r\n        <img src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\" alt=\"Dodo Monster\">\r\n        </a>\r\n        <div class=\"user-header-cover\">\r\n            <h2>Dodo Monster</h2>\r\n        </div>\r\n        <ul class=\"user-header-menu\">\r\n            <li>\r\n                <a href=\"/users/29459066/\" class=\"active\">主页</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/articles/\">糗事</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/comments/\">评论</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/my/edit\">设置</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"user-col-right\">\r\n\r\n        <div id=\"editInfo\" class=\"user-block user-setting clearfix\">\r\n            <h3>更换头像</h3>\r\n            <form action=\"/my/edit\" enctype=\"multipart/form-data\" id=\"edit_user_29459066\" method=\"post\">\r\n                <input type=\"hidden\" name=\"_xsrf\" value=\"2|4fca4c9c|8798c7b71eaba7bc1d8939b71abddac8|1478965973\">\r\n                <ul>\r\n                    <li>\r\n                        <img alt=\"Dodo Monster\" class=\"user-setting-avatar\" src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\">\r\n                    </li>\r\n                    <li>\r\n                        <input name=\"_method\" type=\"hidden\" value=\"put\">\r\n                        <input id=\"user_avatar\" name=\"user[avatar]\" size=\"30\" type=\"file\">\r\n                        <input id=\"user_submit\" name=\"commit\" type=\"submit\" value=\"确定上传\">\r\n                    </li>\r\n                    <li>\r\n                    图片支持JPG格式，尺寸小于200x200像素，文件容量2M以内。\r\n                    </li>\r\n                </ul>\r\n            </form>\r\n        </div>\r\n        <div class=\"user-block user-setting clearfix\">\r\n            <h3>账号绑定</h3>\r\n            <ul>\r\n                <li>\r\n                    <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fmy%2Fedit%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-wechat\" name=\"third_account[‘type’]\">\r\n                    绑定微信账号\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fmy%2Fedit\" class=\"social-weibo\" name=\"third_account[‘type’]\">\r\n                    绑定微博账号\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a class=\"social-btn social-qq\" rel=\"nofollow\">\r\n                    北城亂世Sum\r\n                    </a>\r\n                    <a href=\"javascript:;\" data-type=\"1\" rel=\"nofollow\">\r\n                    解绑\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a rel=\"external nofollow\" href=\"javascript:;\" class=\"social-email\" data-email=\"\" act_bind_email=\"\" bind-type=\"new\" title=\"\">\r\n                    绑定邮箱\r\n                    </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n        <div id=\"editPass\" class=\"user-block user-setting clearfix\">\r\n            <h3>修改密码</h3>\r\n            <form id=\"new_user\">\r\n                <ul>\r\n                    <li>\r\n                        <label for=\"old_password\" class=\"user-setting-inputlable\">当前密码</label>\r\n                        <input id=\"old_password\" name=\"old_password\" size=\"30\" type=\"password\">\r\n                    </li>\r\n                    <li>\r\n                        <label for=\"new_password\" class=\"user-setting-inputlable\">新密码</label>\r\n                        <input id=\"new_password\" name=\"password\" size=\"30\" type=\"password\">\r\n                    </li>\r\n                    <li>\r\n                        <label for=\"password_confirmation\" class=\"user-setting-inputlable\">重复新密码</label>\r\n                        <input id=\"password_confirmation\" name=\"password_confirmation\" size=\"30\" type=\"password\">\r\n                    </li>\r\n                    <li>\r\n                        <input name=\"commit\" action_change_pass=\"\" type=\"button\" value=\"确认修改\">\r\n                    </li>\r\n                </ul>\r\n            </form>\r\n        </div>\r\n        <div class=\"user-block user-setting clearfix\">\r\n            <h3>帐号</h3>\r\n            <ul>\r\n                <li>\r\n                    <a href=\"/new4/logout\" class=\"exit\" rel=\"nofollow\">退出登录</a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n        <!-- popup Start -->\r\n        <div id=\"bg\" class=\"mask\" style=\"height: 1677px;\"></div>\r\n        <div id=\"popDiv\" class=\"bind-email\"></div>\r\n        <div id=\"bind_email_tpl\" class=\"bind-email\">\r\n            <form>\r\n                <label>更换绑定邮箱</label>\r\n                <input type=\"text\" name=\"email_addr\" class=\"email-info\" value=\"新邮箱地址\" onfocus=\"if(this.value==this.defaultValue){this.value=''}\" onblur=\"if(!this.value){this.value=this.defaultValue;}\">\r\n                <input type=\"text\" class=\"email-pd txt_passwd\" value=\"糗事百科的密码\" onfocus=\"$(this).hide().next().show().focus();\">\r\n                <input type=\"password\" name=\"email_passwd\" class=\"email-pd\" id=\"email-sc2\" maxlength=\"30\" size=\"30\" onblur=\"if(this.value==''){$(this).hide().prev().show();}\">\r\n                <input type=\"button\" value=\"下一步\" class=\"next-st\" action_bind_email=\"\" style=\"color:#fff; font-weight: bold; border: none;width: 95px; line-height: 34px; text-align: center; height: 34px; padding-left: 0px;\">\r\n            </form>\r\n        </div>\r\n        <div id=\"unbind_tpl\" class=\"bind-email\" style=\"\">\r\n            <form onsubmit=\"return false\">\r\n                <label>解除绑定</label>\r\n                <input class=\"email-pd\" placeholder=\"糗事百科的密码\" type=\"password\">\r\n                <a class=\"next-st pop_btn\" action_unbind=\"\" rel=\"external nofollow\">解除绑定</a>\r\n            </form>\r\n        </div>\r\n        <div id=\"email_sended_tpl\" class=\"bind-email\">\r\n            <form>\r\n                <p>验证邮箱已发到邮箱<span email=\"\"></span>请前往邮箱收取，完成绑定</p>\r\n                <a class=\"next-st pop_btn\" action_go_verify=\"\">去验证</a>\r\n            </form>\r\n        </div>\r\n        <div id=\"error_msg\" class=\"bind-email\">\r\n            <span class=\"error-tips\"> </span>\r\n        </div>\r\n        <!-- popup End -->\r\n        <script async=\"\" src=\"https://www.google-analytics.com/analytics.js\"></script><script type=\"text/javascript\" src=\"http://static.qiushibaike.com/js/src/libs/jquery-1.8.2.min.js?v=cfa9051cc0b05eb519f1e16b2a6645d7\"></script>\r\n        <script type=\"text/javascript\" src=\"http://static.qiushibaike.com/js/src/web/my_edit.js?v=e049ac48a8b433f1c481ea7d10df5d94\"></script>\r\n\r\n    </div>\r\n    <div class=\"user-col-left\">\r\n        <div class=\"user-statis user-block\">\r\n            <h3>糗百指数</h3>\r\n            <ul>\r\n                <li><span>粉丝数:</span>0</li>\r\n                <li><span>关注数:</span>0</li>\r\n                <li><span>糗事:</span>0</li>\r\n                <li><span>评论:</span>0</li>\r\n                <li><span>笑脸:</span>0</li>\r\n                <li><span>糗事精选:</span>0</li>\r\n            </ul>\r\n        </div>\r\n        <div class=\"user-statis user-block\">\r\n            <h3>个人资料</h3>\r\n            <ul>\r\n                <li><span>婚姻:</span></li>\r\n                <li><span>星座:</span></li>\r\n                <li><span>职业:</span></li>\r\n                <li><span>故乡:</span></li>\r\n                <li><span>糗龄:</span>485天</li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>";
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(48)
+	__vue_script__ = __webpack_require__(49)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\UserHome.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(49)
+	__vue_template__ = __webpack_require__(50)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25510,7 +25609,7 @@
 	})()}
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25527,7 +25626,7 @@
 	};
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"user-main clearfix\">\r\n    <div class=\"user-header\">\r\n        <a href=\"/users/29459066/\" class=\"user-header-avatar\">\r\n        <img src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\" alt=\"Dodo Monster\">\r\n        </a>\r\n        <div class=\"user-header-cover\">\r\n            <h2>Dodo Monster</h2>\r\n        </div>\r\n        <ul class=\"user-header-menu\">\r\n            <li>\r\n                <a href=\"/users/29459066/\" class=\"active\">主页</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/articles/\">糗事</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/comments/\">评论</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/my/edit\">设置</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"user-col-right\">\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">\r\n                11\r\n                </span>\r\n                <span class=\"user-date-break\">\r\n                /\r\n                </span>\r\n                <span class=\"user-date-day\">\r\n                12\r\n                </span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                    <strong>这个名没有注册过</strong>\r\n                    评论了\r\n                    <strong>这个名没有注册过</strong>\r\n                    发表的糗事\r\n                </li>\r\n                <li class=\"user-comment-text\">\r\n                    回复 70楼：我都有盒子装回去的，有自己的房间的\r\n                </li>\r\n                <li class=\"user-comment-quote\">\r\n                    <ul>\r\n                        <li class=\"user-article-avatar\">\r\n                            <a href=\"/users/26861602/\" rel=\"nofollow\">\r\n                            <img src=\"http://pic.qiushibaike.com/system/avtnew/2686/26861602/thumb/20150322160702.jpg\" alt=\"这个名没有注册过\">\r\n                            </a>\r\n                            <a href=\"/users/26861602/\">\r\n                            这个名没有注册过\r\n                            </a>\r\n                        </li>\r\n                        <li class=\"user-article-text\">\r\n                            <a href=\"/article/117961121\" target=\"_blank\">\r\n                            最近买了一个新手机，就把旧手机扔在一边，没管它。手机每天自己定时开机关机，还准时闹铃，用着仅存的一格电努力辛勤地工作着，突然觉得好感动，觉得自己真残忍。\r\n                            </a>\r\n                        </li>\r\n\r\n                        <li class=\"user-article-stat\">\r\n                            1988 好笑 ⋅\r\n                            80 评论 ⋅\r\n                            发表于\r\n                            <a href=\"/history/772f17ed41cb8d53c3c7e8aa46693a3f/\" target=\"_blank\">\r\n                            2016-11-12\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">10</span>\r\n                <span class=\"user-date-break\">/</span>\r\n                <span class=\"user-date-day\">13</span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                <strong>\r\n                这个名没有注册过\r\n                </strong>\r\n                发表了糗事\r\n                </li>\r\n                <li class=\"user-article-text\">\r\n                <a href=\"/article/117741876\" target=\"_blank\">\r\n                老婆怀了二胎，宝宝胎动得厉害。晚上老婆睡不着，忍不住嘀咕了一句：“你说这孩子在里面干啥呢？一直没停！”老公想了想，回道：“可能因为是二手房，现在正忙着装修吧！”\r\n                </a>\r\n                </li>\r\n\r\n                <li class=\"user-article-stat\">\r\n                1699 好笑 ⋅\r\n                32 评论 ⋅\r\n                发表于\r\n                <a href=\"/history/c79391d5e2f856d66059cc5b83129098/\" target=\"_blank\">\r\n                2016-10-13\r\n                </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">\r\n                11\r\n                </span>\r\n                <span class=\"user-date-break\">\r\n                /\r\n                </span>\r\n                <span class=\"user-date-day\">\r\n                12\r\n                </span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                    <strong>这个名没有注册过</strong>\r\n                    评论了\r\n                    <strong>这个名没有注册过</strong>\r\n                    发表的糗事\r\n                </li>\r\n                <li class=\"user-comment-text\">\r\n                    回复 70楼：我都有盒子装回去的，有自己的房间的\r\n                </li>\r\n                <li class=\"user-comment-quote\">\r\n                    <ul>\r\n                        <li class=\"user-article-avatar\">\r\n                            <a href=\"/users/26861602/\" rel=\"nofollow\">\r\n                            <img src=\"http://pic.qiushibaike.com/system/avtnew/2686/26861602/thumb/20150322160702.jpg\" alt=\"这个名没有注册过\">\r\n                            </a>\r\n                            <a href=\"/users/26861602/\">\r\n                            这个名没有注册过\r\n                            </a>\r\n                        </li>\r\n                        <li class=\"user-article-text\">\r\n                            <a href=\"/article/117961121\" target=\"_blank\">\r\n                            最近买了一个新手机，就把旧手机扔在一边，没管它。手机每天自己定时开机关机，还准时闹铃，用着仅存的一格电努力辛勤地工作着，突然觉得好感动，觉得自己真残忍。\r\n                            </a>\r\n                        </li>\r\n\r\n                        <li class=\"user-article-stat\">\r\n                            1988 好笑 ⋅\r\n                            80 评论 ⋅\r\n                            发表于\r\n                            <a href=\"/history/772f17ed41cb8d53c3c7e8aa46693a3f/\" target=\"_blank\">\r\n                            2016-11-12\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    <div class=\"user-col-left\">\r\n        <div class=\"user-statis user-block\">\r\n            <h3>糗百指数</h3>\r\n            <ul>\r\n                <li><span>糗事:</span>0</li>\r\n                <li><span>评论:</span>0</li>\r\n                <li><span>笑脸:</span>0</li>\r\n            </ul>\r\n        </div>\r\n        <div class=\"user-statis user-block\">\r\n            <h3>个人资料</h3>\r\n            <ul>\r\n                <li><span>婚姻:</span></li>\r\n                <li><span>星座:</span></li>\r\n                <li><span>职业:</span></li>\r\n                <li><span>故乡:</span></li>\r\n                <li><span>糗龄:</span>485天</li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>";

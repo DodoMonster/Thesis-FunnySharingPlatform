@@ -16,17 +16,37 @@ Vue.use(Router);
 let router = new Router({});
 
 router.map({
-	'/index': {
+	'/index/:thingsType': {
+		name:'index',
 		component: Index
 	},
-	'/add': {
+	// '/index/:thingsType': {
+	// 	name:'fresh',
+	// 	component: Index
+	// },
+	// '/index/:thingsType': {
+	// 	name:'pic',
+	// 	component: Index
+	// },
+	// '/index/:thingsType': {
+	// 	name:'word',
+	// 	component: Index
+	// },
+	'/index/add': {
+		name:'add',
 		component: Add
 	},
 	'/comment': {
+		name:'comment',
 		component: Comment
 	},
 	'/edit': {
+		name:'edit',
 		component: Edit
+	},
+	'/add': {
+		name:'add',
+		component: Add
 	},
 	'/userHome': {
 		component: UserHome

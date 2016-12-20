@@ -1,24 +1,24 @@
 <header>
     <div id="header" class="row clearfix">
         <div id="logo">
-            <a href="./index.php#!/index"></a>
+            <a href="./home#!/index/hot"></a>
         </div>
         <ul id="nav" class="menu-bar menu clearfix">
-            <li id="highlight">
-                <a href="/funnySharePlatform/index.php#!/index" >热门</a>
+            <li :class="thingsType == 'hot' ? 'highlight' : ''">
+                <a v-link="{name:'index',params:{thingsType:'hot'}}">热门</a>
             </li>
-            <li>
-                <a href="/funnySharePlatform/index.php#!/fresh">新鲜</a>
+            <li :class="thingsType == 'fresh' ? 'highlight' : ''">
+                <a v-link="{name:'index',params:{thingsType:'fresh'}}">新鲜</a>
             </li>
            
-            <li>
-                <a href="/funnySharePlatform/index.php#!/word">文字</a>
+            <li :class="thingsType == 'word' ? 'highlight' : ''">
+                <a v-link="{name:'index',params:{thingsType:'word'}}">文字</a>
             </li>
-            <li>
-                <a href="/funnySharePlatform/index.php#!/img">图片</a>
+            <li :class="thingsType == 'pic' ? 'highlight' : ''">
+                <a v-link="{name:'index',params:{thingsType:'pic'}}">图片</a>
             </li>         
             <li>
-                <a href="/funnySharePlatform/index.php#!/add">投稿</a>
+                <a v-link="{name:'add'}">投稿</a>
             </li>
         </ul>
 

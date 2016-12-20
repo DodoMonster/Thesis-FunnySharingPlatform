@@ -5,7 +5,6 @@
 	import util from '../../libs/js/util.js';
 	import store from '../../store/index.js';
 	import service from '../../service/service.js';
-	import LoginBox from './common/login.vue';
 
 	export default {
 		replace: true,
@@ -13,8 +12,7 @@
 		name: 'Index',
 
 		data () {
-			return {
-				showLoginForm : false,
+			return {				
 				store : store,
 				funnyThingsList:[],
 				page:{
@@ -31,13 +29,11 @@
 		},
 
 		methods:{
-			showLoginBox:function(){
-				store.showLoginForm = true;
-			},
+			// showLoginBox:function(){
+			// 	store.showLoginForm = true;
+			// },
 
-			closeLoginBox:function(){				
-				store.showLoginForm = false;
-			},
+			
 
 			getFunnyThingsList:function(){
 				let self = this;
@@ -104,10 +100,6 @@
 				self.getFunnyThingsList(self.page);
 			}
 
-		},
-
-		components:{
-			LoginBox : LoginBox,
 		},
 
 	};

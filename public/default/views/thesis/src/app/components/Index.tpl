@@ -151,6 +151,3 @@
 	</div>
 </div>
 
-<div id="login-box" @click="closeLoginBox" v-show="store.showLoginForm">
-	<login-box></login-box>
-</div>

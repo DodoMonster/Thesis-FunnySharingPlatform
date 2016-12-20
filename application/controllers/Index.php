@@ -6,8 +6,7 @@ class IndexController extends \Core\BaseControllers{
     }
     
     public function homeAction(){
-        $this->forward("Thesis","home");
-        
+        $this->forward("Thesis","home");        
     }
     
 }

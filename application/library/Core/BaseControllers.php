@@ -5,9 +5,7 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     protected $_postData=array();//post数据
     protected $_getData=array();//get数据
     protected $_paramData=array();//路由数据
-    protected $_mid=0;//当前登录用户uid
-    // protected $_aid=0;//当前登录admin用户uid
-    // protected $_aidLevel=0;//当前登录admin用户权限
+    protected $_uid=0;//当前登录用户uid
     protected $_count=20;//默认个数
     protected $_page=1;//默认页数
     protected $_userAgent='';
@@ -111,7 +109,7 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         $this->_httpUserAgent= $_SERVER['HTTP_USER_AGENT'];
     }
     
-    //过滤会话//设置mid,aid
+    //过滤会话//设置uid,aid
     private function fitlerSession(){
         //TODO,COOKIE绑定登录记录
         //TODO有session的过滤方案(多次请求问题，恶意抓取问题)
@@ -121,15 +119,15 @@ class BaseControllers extends \Yaf_Controller_Abstract{
                 $tmpValue=explode('#',$_COOKIE[COOKIE_LOGGED_USER]);
                 $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
                 if($loggedUser==$_SESSION[SESSION_LOGGED_USERID]){
-                    $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
+                    $this->_uid=$_SESSION[SESSION_LOGGED_USERID];
                 }elseif($loggedUser>0){
                     $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
-                    $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
+                    $this->_uid=$_SESSION[SESSION_LOGGED_USERID];
                 }else{
                     BaseErrors::ErrorHandler(5001);
                 }
             }else{
-                $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
+                $this->_uid=$_SESSION[SESSION_LOGGED_USERID];
             }
             return;
         }else{
@@ -138,7 +136,7 @@ class BaseControllers extends \Yaf_Controller_Abstract{
                 $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
                 if($loggedUser>0){
                     $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
-                    $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
+                    $this->_uid=$_SESSION[SESSION_LOGGED_USERID];
                     return;
                 }else{
                     BaseErrors::ErrorHandler(5001);
@@ -158,13 +156,14 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         if($data['code']==200 && isset($data['data']['user_id']) && $data['data']['user_id']>0){
             session_regenerate_id();
             $_SESSION=[];
-            $_SESSION[SESSION_LOGGED_USERID]=$data['data']['user_id'];
+            $_SESSION[SESSION_LOGGED_USERID] = $data['data']['user_id'];
+            
             $_SESSION[SESSION_LOGGED_EMAIL]=isset($data['data']['email'])?$data['data']['email']:'';
             $_SESSION[SESSION_LOGGED_CELLPHONE]=isset($data['data']['cellphone'])?$data['data']['cellphone']:'';
             // $_SESSION[SESSION_LOGGED_COMPANYID]=isset($data['data']['company_id'])?$data['data']['company_id']:'';
-            //setcookie(COOKIE_LOGGED_USER, base64_encode(session_id())."#".base64_encode($data['data']['uid']),time()+3600*24*365,'/');
+            // setcookie(COOKIE_LOGGED_USER, base64_encode(session_id())."#".base64_encode($data['data']['user_id']),time()+3600*24*365,'/');
         }
-        //$this->_sessionObject->__set('uid',$data['data']['uid']);
+        // $this->_sessionObject->__set('uid',$data['data']['user_id']);
     }
     
     //取消授权会话
@@ -178,7 +177,7 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     }
     
     //设置授权管理员会话
-    protected function setOauthAdminSession($data){
+    protected function setOauthAdminSession($data){        
         if($data['code']==200 && isset($data['data']['user_id']) && $data['data']['user_id']>0){
             session_regenerate_id();
             $_SESSION=[];
@@ -201,10 +200,11 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     protected function accessRule(){
         
         switch ($this->_module){
-            case 'api':
             case 'web':
-                if($this->_mid>0){
+                if($this->_uid>0){
                     return;
+                }else{
+                    $this->_uid = 0;
                 }
                 break;
             // case 'admin':
@@ -360,9 +360,9 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         $useragent = isset($_SERVER['HTTP_USER_AGENT'])? $_SERVER['HTTP_USER_AGENT']: '';
         $mobile_list = array('Google Wireless Transcoder','Windows CE','WindowsCE',
             'Symbian', 'Android','armv6l','armv5','Mobile','CentOS','mowser',
-            'AvantGo','Opera Mobi','J2ME/MIDP',
+            'AvantGo','Opera Mobi','J2ME/uidP',
             'Smartphone','Go.Web','Palm','iPAQ',
-            'Profile/MIDP', 'Configuration/CLDC-',
+            'Profile/uidP', 'Configuration/CLDC-',
             '160×160','176×220','240×240','240×320','320×240',
             'UP.Browser','UP.Link','SymbianOS','PalmOS','PocketPC','SonyEricsson',
             'Nokia','BlackBerry','Vodafone',

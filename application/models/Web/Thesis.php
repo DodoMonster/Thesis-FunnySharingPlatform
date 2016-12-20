@@ -20,7 +20,8 @@ class ThesisModel extends \Core\BaseModels {
     public function login($param){
         $options['table'] = 'user';
         $options['where'] = array('user_name'=>'?','user_password'=>'?');
-        $options['param'] = array($param['username'],$param['password']);
+        $options['param'] = array($param['username'],md5($param['password']));
+        // print_r($options);exit;
         $info = $this->db->find($options);
         // print_r($info);exit;
         if(!empty($info)){
@@ -52,6 +53,28 @@ class ThesisModel extends \Core\BaseModels {
         }
     }
 
+    //发表趣事
+    public function publishThings($param,$user_id){ 
+    print_r($user_id);
+        $options['table'] = 'user';        
+        $options['where'] = array('user_id'=>'?');
+        $options['param'] = array($user_id);
+        $result=$this->db->find($options);
+        if(empty($result)){
+            return $this->returnResult(201);
+        }
+        $tmpData = array('things_content'=>'?','things_img'=>'?','is_anonymous'=>'?','publish_time'=>'?');
+        $options1['table'] = 'things';        
+        $options1['where'] = array('user_id'=>'?');
+        $options1['param'] = array($param['things_content'],$param['things_img'],$param['is_anonymous'],time(),$user_id);
+        $info = $this->db->add($tmpData,$options1);
+
+        if($info!=FALSE){
+            return $this->returnResult(200);
+        }else{
+            return $this->returnResult(4000);
+        }
+    }
     // 获取热门趣事
     public function getHotThings(){
         $options['table'] = 'things';

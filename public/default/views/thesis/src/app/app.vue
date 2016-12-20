@@ -3,6 +3,8 @@
 <script>
 	import Header from './components/common/header.vue';
 	import Footer from './components/common/footer.vue';
+	import LoginBox from './components/common/login.vue';
+	import store from '../store/index.js';
 
 	export default {
 
@@ -10,9 +12,33 @@
 
 		name: 'App',
 
+		data () {
+			return {				
+				store : store,
+			}
+		},
+
+		methods:{
+			closeLoginBox:function(){			
+				store.showLoginForm = false;
+			},
+		},
+
+		watch:{
+			'store.showLoginForm':function(val,oldVal){
+				if(val){
+					store.showLoginForm = true;
+				}else{
+					store.showLoginForm = false;
+				}
+			},
+
+		},
+
 		components: {
 			AppHeader: Header,
-			AppFooter: Footer
+			AppFooter: Footer,
+			LoginBox : LoginBox,
 		}
 
 	};
