@@ -5,7 +5,9 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     protected $_postData=array();//post数据
     protected $_getData=array();//get数据
     protected $_paramData=array();//路由数据
-    protected $_uid=0;//当前登录用户uid
+    protected $_mid=0;//当前登录用户uid
+    protected $_uid=0;//当前登录admin用户uid
+    protected $_uidLevel=0;//当前登录admin用户权限
     protected $_count=20;//默认个数
     protected $_page=1;//默认页数
     protected $_userAgent='';
@@ -33,19 +35,17 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         $this->_httpReferer=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
         $this->_remoteIp=isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:'';
         $this->_realIp=$this->getRealIp();
-        $this->_module=strtolower($this->getRequest()->getModuleName());
-        $this->_controller=strtolower($this->getRequest()->getControllerName());
-        $this->_action=$this->getRequest()->getActionName();
         //TODO跨域请求设置
         //$this->_isAjax=$this->getRequest()->isXmlHttpRequest();
         $this->_count=intval(isset($this->_postData['count'])>0?$this->_postData['count']:(isset($this->_getData['count'])>0?$this->_getData['count']:20));
         $this->_page=intval(isset($this->_postData['page'])>0?$this->_postData['page']:(isset($this->_getData['page'])>0?$this->_getData['page']:1));
-        //$this->_sysVersion=isset($this->_postData['sysVersion'])?$this->_postData['sysVersion']:(isset($this->_getData['sysVersion'])?$this->_getData['sysVersion']:0);
      
-        $this->fitlerUserAgent();
-        $this->isDebug();
+        // $this->fitlerUserAgent();
+        // $this->isDebug();
         $this->fitlerSession();
-        $this->accessRule();
+        print_r($this->_uid);
+        print_r($this->_mid);
+
     }
     
     //参数过滤
@@ -109,81 +109,61 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         $this->_httpUserAgent= $_SERVER['HTTP_USER_AGENT'];
     }
     
-    //过滤会话//设置uid,aid
+    //过滤会话//设置mid,uid
     private function fitlerSession(){
         //TODO,COOKIE绑定登录记录
-        //TODO有session的过滤方案(多次请求问题，恶意抓取问题)
+        //TODO有session的过滤方案(多次请求问题，恶意抓取问题) 
         if(isset($_SESSION[SESSION_LOGGED_USERID]) && $_SESSION[SESSION_LOGGED_USERID]>0){
+            print_r('a');
             if(isset($_COOKIE[COOKIE_LOGGED_USER])&&!empty($_COOKIE[COOKIE_LOGGED_USER])){
                 //$tmpValue=explode('#',filter_input(INPUT_COOKIE, 'LOGGED_USER'));
+                print_r('b');
                 $tmpValue=explode('#',$_COOKIE[COOKIE_LOGGED_USER]);
                 $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
                 if($loggedUser==$_SESSION[SESSION_LOGGED_USERID]){
-                    $this->_uid=$_SESSION[SESSION_LOGGED_USERID];
+                    $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
                 }elseif($loggedUser>0){
                     $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
-                    $this->_uid=$_SESSION[SESSION_LOGGED_USERID];
+                    $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
                 }else{
                     BaseErrors::ErrorHandler(5001);
                 }
             }else{
-                $this->_uid=$_SESSION[SESSION_LOGGED_USERID];
+                print_r('c');
+                $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
             }
             return;
         }else{
+            print_r('d');
             if(isset($_COOKIE[COOKIE_LOGGED_USER])&&!empty($_COOKIE[COOKIE_LOGGED_USER])){
+                print_r('e');
                 $tmpValue=explode('#',$_COOKIE[COOKIE_LOGGED_USER]);
                 $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
                 if($loggedUser>0){
+                    print_r('g');
                     $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
-                    $this->_uid=$_SESSION[SESSION_LOGGED_USERID];
+                    $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
                     return;
                 }else{
+                    print_r('f');
                     BaseErrors::ErrorHandler(5001);
                 }
             }
         }
-        
-        // if(isset($_SESSION[SESSION_LOGGED_ADMIN_USERID]) && $_SESSION[SESSION_LOGGED_ADMIN_USERID]>0){ 
-        //     // &&isset($_SESSION[SESSION_LOGGED_STATE])){
-        //     $this->_aid=$_SESSION[SESSION_LOGGED_ADMIN_USERID];
-        //     // $this->_aidLevel=$_SESSION[SESSION_LOGGED_STATE];
-        // }
+
+        if(isset($_SESSION[SESSION_LOGGED_ADMIN_USERID]) && $_SESSION[SESSION_LOGGED_ADMIN_USERID]>0){
+            $this->_uid=$_SESSION[SESSION_LOGGED_ADMIN_USERID];
+        }        
     }
     
-    //设置授权会话
-    protected function setOauthSession($data){
+    
+    //设置授权管理员会话
+    protected function setOauthAdminSession($data){ 
         if($data['code']==200 && isset($data['data']['user_id']) && $data['data']['user_id']>0){
             session_regenerate_id();
             $_SESSION=[];
             $_SESSION[SESSION_LOGGED_USERID] = $data['data']['user_id'];
-            
-            $_SESSION[SESSION_LOGGED_EMAIL]=isset($data['data']['email'])?$data['data']['email']:'';
-            $_SESSION[SESSION_LOGGED_CELLPHONE]=isset($data['data']['cellphone'])?$data['data']['cellphone']:'';
-            // $_SESSION[SESSION_LOGGED_COMPANYID]=isset($data['data']['company_id'])?$data['data']['company_id']:'';
-            // setcookie(COOKIE_LOGGED_USER, base64_encode(session_id())."#".base64_encode($data['data']['user_id']),time()+3600*24*365,'/');
-        }
-        // $this->_sessionObject->__set('uid',$data['data']['user_id']);
-    }
-    
-    //取消授权会话
-    protected function unsetOauthSession(){
-        //setcookie(COOKIE_LOGGED_USER,'',time() - 3600,'/');
-        if(filter_has_var(INPUT_COOKIE, session_name())){
-            setcookie(session_name(),'',time() - 3600,'/');
-        }
-        $_SESSION=array();
-        session_destroy();
-    }
-    
-    //设置授权管理员会话
-    protected function setOauthAdminSession($data){        
-        if($data['code']==200 && isset($data['data']['user_id']) && $data['data']['user_id']>0){
-            session_regenerate_id();
-            $_SESSION=[];
-            $_SESSION[SESSION_LOGGED_ADMIN_USERID] = $data['data']['user_id'];
-            // $_SESSION[SESSION_LOGGED_STATE] = $data['data']['is_login'];
-        }
+        }        
     }
     
     //取消授权管理员会话
@@ -194,31 +174,6 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         $_SESSION=array();
         session_destroy();
     }
-
-
-    //过滤规则
-    protected function accessRule(){
-        
-        switch ($this->_module){
-            case 'web':
-                if($this->_uid>0){
-                    return;
-                }else{
-                    $this->_uid = 0;
-                }
-                break;
-            // case 'admin':
-            //     if($this->_aid>0){
-            //         return;
-            //     }
-            //     if($this->_controller == 'Adminindex'){
-            //         $this->redirect("/admin/adminoauth/login");
-            //     }
-            //     break;
-            default :
-                break;
-        }       
-    } 
 
     //开启调试
     protected function isDebug(){
@@ -353,28 +308,6 @@ class BaseControllers extends \Yaf_Controller_Abstract{
             $browser = 'other';
         }
         return $browser;
-    }
-
-    //(no used)
-    protected function isMobile(){
-        $useragent = isset($_SERVER['HTTP_USER_AGENT'])? $_SERVER['HTTP_USER_AGENT']: '';
-        $mobile_list = array('Google Wireless Transcoder','Windows CE','WindowsCE',
-            'Symbian', 'Android','armv6l','armv5','Mobile','CentOS','mowser',
-            'AvantGo','Opera Mobi','J2ME/uidP',
-            'Smartphone','Go.Web','Palm','iPAQ',
-            'Profile/uidP', 'Configuration/CLDC-',
-            '160×160','176×220','240×240','240×320','320×240',
-            'UP.Browser','UP.Link','SymbianOS','PalmOS','PocketPC','SonyEricsson',
-            'Nokia','BlackBerry','Vodafone',
-            'BenQ','Novarra-Vision','Iris','NetFront','HTC_','Xda_','SAMSUNG-SGH',
-            'Wapaka','DoCoMo','iPhone','iPod'
-        );
-        foreach($mobile_list as $keyword){
-            if(false !== strpos($useragent, $keyword)){
-                return true;
-            }
-        }
-        return false;
     }
 
     //验证签名

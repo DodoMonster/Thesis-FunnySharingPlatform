@@ -64,7 +64,7 @@
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	var _Index = __webpack_require__(32);
+	var _Index = __webpack_require__(35);
 	
 	var _Index2 = _interopRequireDefault(_Index);
 	
@@ -23516,7 +23516,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\app.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(31)
+	__vue_template__ = __webpack_require__(34)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -23558,7 +23558,7 @@
 	
 	var _footer2 = _interopRequireDefault(_footer);
 	
-	var _login = __webpack_require__(35);
+	var _login = __webpack_require__(31);
 	
 	var _login2 = _interopRequireDefault(_login);
 	
@@ -24111,10 +24111,7 @@
 	    }
 	    _jquery2.default.ajax(opt).done(function (result) {
 	        if (opt.dataType === 'json' && result.code !== 0) {
-	            if (result.code === -1) {
-	                localStorage.setItem('prevUrl', window.location.href);
-	                window.location.href = '/login.html';
-	            } else if (result.code === 2) {
+	            if (result.code === 2) {
 	                // code = 2 用于比较复杂的报错
 	                defer.reject(result);
 	            } else {
@@ -24662,7 +24659,7 @@
 	
 	var _events = __webpack_require__(24);
 	
-	var _util = __webpack_require__(25);
+	var _util = __webpack_require__(37);
 	
 	var _util2 = _interopRequireDefault(_util);
 	
@@ -24952,262 +24949,16 @@
 
 /***/ },
 /* 31 */
-/***/ function(module, exports) {
-
-	module.exports = "<app-header></app-header>\r\n\r\n<router-view></router-view>\r\n\r\n<div id=\"login-box\" @click=\"closeLoginBox()\" v-show=\"store.showLoginForm\">\r\n\t<login-box></login-box>\r\n</div>\r\n\r\n<app-footer></app-footer>\r\n";
-
-/***/ },
-/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(33)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
-	  console.warn("[vue-loader] src\\app\\components\\Index.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(38)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
-	if (__vue_template__) {
-	__vue_options__.template = __vue_template__
-	}
-	if (!__vue_options__.computed) __vue_options__.computed = {}
-	Object.keys(__vue_styles__).forEach(function (key) {
-	var module = __vue_styles__[key]
-	__vue_options__.computed[key] = function () { return module }
-	})
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), false)
-	  if (!hotAPI.compatible) return
-	  var id = "_v-32542ffa/Index.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _vue = __webpack_require__(2);
-	
-	var _vue2 = _interopRequireDefault(_vue);
-	
-	var _util = __webpack_require__(34);
-	
-	var _util2 = _interopRequireDefault(_util);
-	
-	var _index = __webpack_require__(23);
-	
-	var _index2 = _interopRequireDefault(_index);
-	
-	var _service = __webpack_require__(26);
-	
-	var _service2 = _interopRequireDefault(_service);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = {
-		replace: true,
-	
-		name: 'Index',
-	
-		data: function data() {
-			return {
-				store: _index2.default,
-				funnyThingsList: [],
-				page: {
-					cur: 1,
-					totalNum: 0,
-					totalPage: 0
-				}
-			};
-		},
-		ready: function ready() {
-			var self = this;
-			self.getFunnyThingsList(self.page);
-		},
-	
-	
-		methods: {
-	
-			getFunnyThingsList: function getFunnyThingsList() {
-				var self = this;
-				_service2.default.getFunnyThingsList(self.page).done(function (res) {
-					self.funnyThingsList = res.data.list;
-					self.page.totalNum = res.data.totalNum;
-					self.page.totalPage = res.data.totalPage;
-				}).fail(function (res) {
-					_util2.default.dialog.alert({
-						msg: [res.msg]
-					});
-				});
-			},
-	
-			praiseUp: function praiseUp(id) {
-				var self = this;
-				_service2.default.praiseUp().done(function (res) {
-					alert('点赞成功！');
-				}).fail(function (res) {
-					_util2.default.dialog.alert({
-						msg: [res.msg]
-					});
-				});
-			},
-	
-			trampDown: function trampDown(id) {
-				var self = this;
-				_service2.default.trampDown().done(function (res) {
-					alert('踩成功！');
-				}).fail(function (res) {
-					_util2.default.dialog.alert({
-						msg: [res.msg]
-					});
-				});
-			},
-	
-			favorite: function favorite(id) {
-				var self = this;
-				_service2.default.trampDown().done(function (res) {
-					alert('收藏成功');
-				}).fail(function (res) {
-					_util2.default.dialog.alert({
-						msg: [res.msg]
-					});
-				});
-			}
-	
-		},
-	
-		watch: {
-			'store.showLoginForm': function storeShowLoginForm(val, oldVal) {
-				if (val) {
-					_index2.default.showLoginForm = true;
-				} else {
-					_index2.default.showLoginForm = false;
-				}
-			},
-			'page.cur': function pageCur(newVal, oldVal) {
-				var self = this;
-				self.page.cur = newVal;
-				self.getFunnyThingsList(self.page);
-			}
-	
-		}
-	
-	};
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _events = __webpack_require__(24);
-	
-	var _jquery = __webpack_require__(1);
-	
-	var _jquery2 = _interopRequireDefault(_jquery);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var util = new _events.EventEmitter();
-	
-	exports.default = util;
-	
-	
-	util.ajax = function (opt, other) {
-	    var defer = _jquery2.default.Deferred();
-	    if (!opt.dataType) {
-	        opt.dataType = 'json';
-	    }
-	    if (other && other.loading) {
-	        (0, _jquery2.default)('.preloader').css('display', 'block');
-	    }
-	    _jquery2.default.ajax(opt).done(function (result) {
-	        if (opt.dataType === 'json' && result.code !== 0) {
-	            if (result.code === -1) {
-	                localStorage.setItem('prevUrl', window.location.href);
-	                window.location.href = '/login.html';
-	            } else if (result.code === 2) {
-	                // code = 2 用于比较复杂的报错
-	                defer.reject(result);
-	            } else {
-	                defer.reject(result);
-	            }
-	        } else {
-	            defer.resolve(result);
-	        }
-	    }).fail(function () {
-	        defer.reject({
-	            msg: '网络出错'
-	        });
-	    }).always(function () {
-	        if (other && other.loading) {
-	            (0, _jquery2.default)('.preloader').css('display', 'none');
-	        }
-	    });;
-	
-	    return defer.promise();
-	};
-	
-	/*
-		对话框
-		data.msg	- 提示信息
-		data.title	- 标题
-		data.size	-	弹框大小，默认为sm
-		data.modal	-	显示的弹框类型	
-	*/
-	
-	util.dialog = {
-	    show: function show(data) {
-	        util.removeAllListeners('confirm-dialog').removeAllListeners('cancel-dialog');
-	        util.emit('show-dialog', data);
-	        return this;
-	    },
-	    alert: function alert(data) {
-	        util.removeAllListeners('confirm-dialog').removeAllListeners('cancel-dialog');
-	        util.emit('alert-dialog', data);
-	        return this;
-	    },
-	    confirm: function confirm(fn) {
-	        util.removeAllListeners('confirm-dialog');
-	        util.on('confirm-dialog', fn);
-	    },
-	    cancel: function cancel(fn) {
-	        util.on('cancel-dialog', fn);
-	        return this;
-	    }
-	};
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(36)
+	__vue_script__ = __webpack_require__(32)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\login.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(37)
+	__vue_template__ = __webpack_require__(33)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25232,7 +24983,7 @@
 	})()}
 
 /***/ },
-/* 36 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25360,10 +25111,253 @@
 	};
 
 /***/ },
-/* 37 */
+/* 33 */
 /***/ function(module, exports) {
 
 	module.exports = "<!--start 登录页面-->\r\n<div class=\"signin-box animated fadeInUp\" id=\"login-form\" @click=\"cancelBubble\">\r\n    <div class=\"sigin-left\">\r\n      <!--   <div class=\"signin-account clearfix\">\r\n            <h4 class=\"social-signin-heading\">社交帐号登录</h4>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-btn social-wechat\">\r\n            使用 微信 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession\" class=\"social-btn social-weibo\">\r\n            使用 微博 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://graph.qq.com/oauth2.0/authorize?which=Login&amp;display=pc&amp;client_id=100251437&amp;response_type=code&amp;redirect_uri=www.qiushibaike.com/new4/session?src=qq\" class=\"social-btn social-qq\">\r\n            使用 QQ 账号 </a>\r\n        </div> -->\r\n        <div class=\"signin-form clearfix\" v-show=\"isLogin && !isShowResetPwd\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号登录</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"loginData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\" v-model=\"loginData.password\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\"  class=\"form-submit\" @click=\"login()\">登录</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\" v-show=\"isLogin\">\r\n                <a rel=\"nofollow\" class=\"fetch-password f-l\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showRegister()\">注册</a>\r\n            </div>\r\n        \r\n        <div class=\"register-box\" v-show=\"!isLogin && !isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号注册</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"registerData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\"\r\n                        v-model=\"registerData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\" v-model=\"registerData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"register()\">注册</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\" class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"register-box\" v-show=\"isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台重置密码</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\"\r\n                        v-model=\"resetData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"新密码\"\r\n                        v-model=\"resetData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\"\r\n                        v-model=\"resetData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"reset()\">重置</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\"  class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<!--end 登录页面-->\t\r\n";
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	module.exports = "<app-header></app-header>\r\n\r\n<router-view></router-view>\r\n\r\n<div id=\"login-box\" @click=\"closeLoginBox()\" v-show=\"store.showLoginForm\">\r\n\t<login-box></login-box>\r\n</div>\r\n\r\n<app-footer></app-footer>\r\n";
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	var __vue_styles__ = {}
+	__vue_script__ = __webpack_require__(36)
+	if (__vue_script__ &&
+	    __vue_script__.__esModule &&
+	    Object.keys(__vue_script__).length > 1) {
+	  console.warn("[vue-loader] src\\app\\components\\Index.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(38)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
+	if (__vue_template__) {
+	__vue_options__.template = __vue_template__
+	}
+	if (!__vue_options__.computed) __vue_options__.computed = {}
+	Object.keys(__vue_styles__).forEach(function (key) {
+	var module = __vue_styles__[key]
+	__vue_options__.computed[key] = function () { return module }
+	})
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), false)
+	  if (!hotAPI.compatible) return
+	  var id = "_v-32542ffa/Index.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _vue = __webpack_require__(2);
+	
+	var _vue2 = _interopRequireDefault(_vue);
+	
+	var _util = __webpack_require__(37);
+	
+	var _util2 = _interopRequireDefault(_util);
+	
+	var _index = __webpack_require__(23);
+	
+	var _index2 = _interopRequireDefault(_index);
+	
+	var _service = __webpack_require__(26);
+	
+	var _service2 = _interopRequireDefault(_service);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+		replace: true,
+	
+		name: 'Index',
+	
+		data: function data() {
+			return {
+				store: _index2.default,
+				funnyThingsList: [],
+				page: {
+					cur: 1,
+					totalNum: 0,
+					totalPage: 0
+				}
+			};
+		},
+		ready: function ready() {
+			var self = this;
+			self.getFunnyThingsList(self.page);
+		},
+	
+	
+		methods: {
+	
+			getFunnyThingsList: function getFunnyThingsList() {
+				var self = this;
+				_service2.default.getFunnyThingsList(self.page).done(function (res) {
+					self.funnyThingsList = res.data.list;
+					self.page.totalNum = res.data.totalNum;
+					self.page.totalPage = res.data.totalPage;
+				}).fail(function (res) {
+					_util2.default.dialog.alert({
+						msg: [res.msg]
+					});
+				});
+			},
+	
+			praiseUp: function praiseUp(id) {
+				var self = this;
+				_service2.default.praiseUp().done(function (res) {
+					alert('点赞成功！');
+				}).fail(function (res) {
+					_util2.default.dialog.alert({
+						msg: [res.msg]
+					});
+				});
+			},
+	
+			trampDown: function trampDown(id) {
+				var self = this;
+				_service2.default.trampDown().done(function (res) {
+					alert('踩成功！');
+				}).fail(function (res) {
+					_util2.default.dialog.alert({
+						msg: [res.msg]
+					});
+				});
+			},
+	
+			favorite: function favorite(id) {
+				var self = this;
+				_service2.default.trampDown().done(function (res) {
+					alert('收藏成功');
+				}).fail(function (res) {
+					_util2.default.dialog.alert({
+						msg: [res.msg]
+					});
+				});
+			}
+	
+		},
+	
+		watch: {
+			'store.showLoginForm': function storeShowLoginForm(val, oldVal) {
+				if (val) {
+					_index2.default.showLoginForm = true;
+				} else {
+					_index2.default.showLoginForm = false;
+				}
+			},
+			'page.cur': function pageCur(newVal, oldVal) {
+				var self = this;
+				self.page.cur = newVal;
+				self.getFunnyThingsList(self.page);
+			}
+	
+		}
+	
+	};
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _events = __webpack_require__(24);
+	
+	var _jquery = __webpack_require__(1);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var util = new _events.EventEmitter();
+	
+	exports.default = util;
+	
+	
+	util.ajax = function (opt, other) {
+	    var defer = _jquery2.default.Deferred();
+	    if (!opt.dataType) {
+	        opt.dataType = 'json';
+	    }
+	    if (other && other.loading) {
+	        (0, _jquery2.default)('.preloader').css('display', 'block');
+	    }
+	    _jquery2.default.ajax(opt).done(function (result) {
+	        if (opt.dataType === 'json' && result.code !== 0) {
+	            if (result.code === 2) {
+	                // code = 2 用于比较复杂的报错
+	                defer.reject(result);
+	            } else {
+	                defer.reject(result);
+	            }
+	        } else {
+	            defer.resolve(result);
+	        }
+	    }).fail(function () {
+	        defer.reject({
+	            msg: '网络出错'
+	        });
+	    }).always(function () {
+	        if (other && other.loading) {
+	            (0, _jquery2.default)('.preloader').css('display', 'none');
+	        }
+	    });;
+	
+	    return defer.promise();
+	};
+	
+	/*
+		对话框
+		data.msg	- 提示信息
+		data.title	- 标题
+		data.size	-	弹框大小，默认为sm
+		data.modal	-	显示的弹框类型	
+	*/
+	
+	util.dialog = {
+	    show: function show(data) {
+	        util.removeAllListeners('confirm-dialog').removeAllListeners('cancel-dialog');
+	        util.emit('show-dialog', data);
+	        return this;
+	    },
+	    alert: function alert(data) {
+	        util.removeAllListeners('confirm-dialog').removeAllListeners('cancel-dialog');
+	        util.emit('alert-dialog', data);
+	        return this;
+	    },
+	    confirm: function confirm(fn) {
+	        util.removeAllListeners('confirm-dialog');
+	        util.on('confirm-dialog', fn);
+	    },
+	    cancel: function cancel(fn) {
+	        util.on('cancel-dialog', fn);
+	        return this;
+	    }
+	};
 
 /***/ },
 /* 38 */

@@ -1,15 +1,16 @@
 <?php
 class thesisController extends \Core\BaseControllers {
     public function init() {
-        parent::init();
-        // $this->_cdnUrl = CDN_URL;
-        // $this->_domain = $_SERVER['SERVER_NAME'];
-        // $model = new \Web\DzzModel();
-        // $data = $model->getGameInfo();
-        // if($data['code']==201){
-        //     $this->error404Action();
-        // }        
+        parent::init();            
+    }
 
+    //判断用户是否登录
+    public function checkIsLogin(){
+        if($this->_uid <= 0){
+            $data['code'] = -1;
+            $data['msg'] = '请先登录';
+            echo json_encode($data);exit;
+        }  
     }
 
     //用户注册
@@ -38,7 +39,7 @@ class thesisController extends \Core\BaseControllers {
         $data = $model->login($oauthData);
 
         if($data['code'] == 200){             
-            $this->setOauthSession($data);
+            $this->setOauthAdminSession($data);
             $data['code'] = 0;
             $data['msg'] = '登录成功！';            
         }elseif($data['code'] == 201){
@@ -72,7 +73,8 @@ class thesisController extends \Core\BaseControllers {
     }
 
     //发表趣事
-    public function publishThingsAction(){        
+    public function publishThingsAction(){    
+        // $this->checkIsLogin();
         $param['things_content']=isset($this->_postData['things_content']) ? $this->_postData['things_content']: '';
         $param['things_img']=isset($this->_postData['things_img']) ? $this->_postData['things_img']: '';
         $param['is_anonymous']=isset($this->_postData['is_anonymous']) ? $this->_postData['is_anonymous']: '';
@@ -86,7 +88,7 @@ class thesisController extends \Core\BaseControllers {
             $data['msg'] = '发表趣事成功！';            
         }elseif($data['code'] == 201){
             $data['code'] = 1;
-            $data['msg'] = '请先登录！'; 
+            $data['msg'] = '用户不存在！'; 
         }else{
             $data['code'] = 1;
             $data['msg'] = '发表趣事失败，请重试'; 
@@ -96,20 +98,6 @@ class thesisController extends \Core\BaseControllers {
     //平台登出
     public function opLogoutAction(){
         $this->unsetOauthAdminSession();
-        $this->redirect("/admin/adminoauth/login");
-    }
-    //验证身份
-    public function verifyIdentity(){
-        if(ALLOW_OAUTH2){
-            $model=new \Addons\Oauth2\PDOOAuth2();
-            $token=$model->verifyAccessTokenJson();//oauth_token正确
-            $gameInfo=$model->getGameInfo($token['client_id']);
-            parent::verifySign($gameInfo['client_secret']);//签名正确
-            $this->_clientId=$token['client_id'];
-            $this->_clientSecret=$gameInfo['client_secret'];
-            unset($gameInfo['client_secret']);
-            $this->_gameInfo=$gameInfo;
-        }
     }
 
     //页面不存在

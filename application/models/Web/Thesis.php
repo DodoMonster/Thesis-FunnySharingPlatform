@@ -55,7 +55,6 @@ class ThesisModel extends \Core\BaseModels {
 
     //发表趣事
     public function publishThings($param,$user_id){ 
-    print_r($user_id);
         $options['table'] = 'user';        
         $options['where'] = array('user_id'=>'?');
         $options['param'] = array($user_id);

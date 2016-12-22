@@ -15,10 +15,7 @@ util.ajax = (opt, other) => {
     }
     $.ajax(opt).done((result) => {
         if (opt.dataType === 'json' && result.code !== 0) {
-            if (result.code === -1) {
-                localStorage.setItem('prevUrl', window.location.href);
-                window.location.href = '/login.html';
-            } else if (result.code === 2) {
+            if (result.code === 2) {
                 // code = 2 用于比较复杂的报错
                 defer.reject(result);
             } else {
