@@ -15,19 +15,13 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     protected $_httpReferer='';
     protected $_remoteIp='';
     protected $_realIp='';
-    protected $_channelId='';//渠道
-    protected $_module='';
-    protected $_controller='';
-    protected $_action='';
     protected $_returnFormat='json';
     protected $_sysVersion=0;//默认版本
-    //protected $_sessionObject=null; //session对象
     protected $_isAjax = FALSE;
      
     protected $_clientId='';
     protected $_clientSecret='';
     protected $_oauthToken='';
-    protected $_gameInfo=array();
 
     //初始化系统配置
     protected function init() {
@@ -43,8 +37,8 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         // $this->fitlerUserAgent();
         // $this->isDebug();
         $this->fitlerSession();
-        print_r($this->_uid);
-        print_r($this->_mid);
+        // print_r($this->_uid);
+        // print_r($this->_mid);
 
     }
     
@@ -113,47 +107,47 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     private function fitlerSession(){
         //TODO,COOKIE绑定登录记录
         //TODO有session的过滤方案(多次请求问题，恶意抓取问题) 
-        if(isset($_SESSION[SESSION_LOGGED_USERID]) && $_SESSION[SESSION_LOGGED_USERID]>0){
-            print_r('a');
-            if(isset($_COOKIE[COOKIE_LOGGED_USER])&&!empty($_COOKIE[COOKIE_LOGGED_USER])){
-                //$tmpValue=explode('#',filter_input(INPUT_COOKIE, 'LOGGED_USER'));
-                print_r('b');
-                $tmpValue=explode('#',$_COOKIE[COOKIE_LOGGED_USER]);
-                $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
-                if($loggedUser==$_SESSION[SESSION_LOGGED_USERID]){
-                    $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
-                }elseif($loggedUser>0){
-                    $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
-                    $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
-                }else{
-                    BaseErrors::ErrorHandler(5001);
-                }
-            }else{
-                print_r('c');
-                $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
-            }
-            return;
-        }else{
-            print_r('d');
-            if(isset($_COOKIE[COOKIE_LOGGED_USER])&&!empty($_COOKIE[COOKIE_LOGGED_USER])){
-                print_r('e');
-                $tmpValue=explode('#',$_COOKIE[COOKIE_LOGGED_USER]);
-                $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
-                if($loggedUser>0){
-                    print_r('g');
-                    $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
-                    $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
-                    return;
-                }else{
-                    print_r('f');
-                    BaseErrors::ErrorHandler(5001);
-                }
-            }
-        }
+        // if(isset($_SESSION[SESSION_LOGGED_USERID]) && $_SESSION[SESSION_LOGGED_USERID]>0){
+        //     print_r('a');
+        //     if(isset($_COOKIE[COOKIE_LOGGED_USER])&&!empty($_COOKIE[COOKIE_LOGGED_USER])){
+        //         //$tmpValue=explode('#',filter_input(INPUT_COOKIE, 'LOGGED_USER'));
+        //         print_r('b');
+        //         $tmpValue=explode('#',$_COOKIE[COOKIE_LOGGED_USER]);
+        //         $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
+        //         if($loggedUser==$_SESSION[SESSION_LOGGED_USERID]){
+        //             $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
+        //         }elseif($loggedUser>0){
+        //             $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
+        //             $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
+        //         }else{
+        //             BaseErrors::ErrorHandler(5001);
+        //         }
+        //     }else{
+        //         print_r('c');
+        //         $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
+        //     }
+        //     return;
+        // }else{
+        //     print_r('d');
+        //     if(isset($_COOKIE[COOKIE_LOGGED_USER])&&!empty($_COOKIE[COOKIE_LOGGED_USER])){
+        //         print_r('e');
+        //         $tmpValue=explode('#',$_COOKIE[COOKIE_LOGGED_USER]);
+        //         $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
+        //         if($loggedUser>0){
+        //             print_r('g');
+        //             $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
+        //             $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
+        //         }else{
+        //             print_r('f');
+        //             BaseErrors::ErrorHandler(5001);
+        //         }
+        //     }
+        // }
 
-        if(isset($_SESSION[SESSION_LOGGED_ADMIN_USERID]) && $_SESSION[SESSION_LOGGED_ADMIN_USERID]>0){
-            $this->_uid=$_SESSION[SESSION_LOGGED_ADMIN_USERID];
-        }        
+        if(isset($_SESSION[SESSION_LOGGED_USERID]) && $_SESSION[SESSION_LOGGED_USERID]>0){
+            $this->_uid = $_SESSION[SESSION_LOGGED_USERID];
+        }       
+        // print_r($this->_uid); 
     }
     
     
@@ -163,7 +157,9 @@ class BaseControllers extends \Yaf_Controller_Abstract{
             session_regenerate_id();
             $_SESSION=[];
             $_SESSION[SESSION_LOGGED_USERID] = $data['data']['user_id'];
+            $this->_uid = $_SESSION[SESSION_LOGGED_USERID];
         }        
+        // print_r($_SESSION[SESSION_LOGGED_USERID]);
     }
     
     //取消授权管理员会话
@@ -171,7 +167,7 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         if(filter_has_var(INPUT_COOKIE, session_name())){
             setcookie(session_name(),'',time() - 3600,'/');
         }
-        $_SESSION=array();
+        $_SESSION = array();
         session_destroy();
     }
 

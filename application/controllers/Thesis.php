@@ -74,7 +74,7 @@ class thesisController extends \Core\BaseControllers {
 
     //发表趣事
     public function publishThingsAction(){    
-        // $this->checkIsLogin();
+        $this->checkIsLogin();
         $param['things_content']=isset($this->_postData['things_content']) ? $this->_postData['things_content']: '';
         $param['things_img']=isset($this->_postData['things_img']) ? $this->_postData['things_img']: '';
         $param['is_anonymous']=isset($this->_postData['is_anonymous']) ? $this->_postData['is_anonymous']: '';
