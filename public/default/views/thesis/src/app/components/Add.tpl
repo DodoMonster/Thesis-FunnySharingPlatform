@@ -24,7 +24,7 @@
 					<textarea id="qiushi_text" class="wx600 p-m fs-s b-f-g b-lg bsi-l" name="article[content]" placeholder="分享一件新鲜事..." rows="15" required="required" v-model="publishData.content"></textarea>
 					<div class="clearfix mt-r3 mb-m p-m c-lg b-f-g b-lg">
 						<div class="f-r">
-							<input  type="checkbox"  value="1" v-model="publishData.is_anonymous">
+							<input  type="checkbox" v-model="publishData.is_anonymous" >
 							匿名投稿
 						</div>
 						<div class="f-l">

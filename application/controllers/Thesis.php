@@ -41,6 +41,7 @@ class thesisController extends \Core\BaseControllers {
         if($data['code'] == 200){             
             $this->setOauthAdminSession($data);
             $data['code'] = 0;
+            $data['data'] = $data;
             $data['msg'] = '登录成功！';            
         }elseif($data['code'] == 201){
             $data['code'] = 1;
@@ -76,8 +77,19 @@ class thesisController extends \Core\BaseControllers {
     public function publishThingsAction(){    
         $this->checkIsLogin();
         $param['things_content']=isset($this->_postData['things_content']) ? $this->_postData['things_content']: '';
-        $param['things_img']=isset($this->_postData['things_img']) ? $this->_postData['things_img']: '';
-        $param['is_anonymous']=isset($this->_postData['is_anonymous']) ? $this->_postData['is_anonymous']: '';
+        if($_FILES && $_FILES['things_img']['tmp_name']){
+            $tmp_name = $_FILES['things_img']['tmp_name'];
+            $template = $_FILES['things_img']['name'];
+            if(file_exists('things_img/'.$template)){
+                $data['code'] = 201;
+            }
+            //echo $tmp_name;exit;
+            $res = move_uploaded_file($tmp_name, 'things_img/'.$template);//将上传的文件移动到新位置
+            if(!$res){
+                $data['code'] = 2;
+            }
+        }
+        $param['is_anonymous'] = isset($this->_postData['is_anonymous']) ? $this->_postData['is_anonymous']: '';
         
         // print_r($param);die;
         $model = new \Web\ThesisModel();

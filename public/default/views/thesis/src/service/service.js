@@ -127,21 +127,6 @@ service.getFunnyThingsDetail = (id) => {
 }
 
 /**
- * 发表趣事
- */
-service.publishThings = (data) => {
-    return util.ajax({
-        url: '/thesis/publishThings',
-        type:'POST',
-        data: {
-            things_content: data.content,
-            things_img:data.img,
-            is_anonymous:data.is_anonymous
-        }
-    });
-}
-
-/**
  * 发表评论
  */
 service.getFunnyThingsDetail = (data) => {

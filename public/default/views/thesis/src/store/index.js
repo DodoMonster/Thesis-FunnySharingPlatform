@@ -12,6 +12,12 @@ export default store;
 /**
  * 存放页面信息
  */
+
+store.userInfo = {
+    user_id:'',
+    user_name:'',
+    user_photo:'',
+}
 store.setUserInfo = () => {
     store.userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 }
@@ -21,24 +27,7 @@ store.getUserInfo = () => {
 }
 
 store.showLoginForm = false;
-
-
-
-store.setToInsightInfo = (selectList) => {
-    selectList=JSON.stringify(selectList);
-    localStorage.setItem('searchToInsight',selectList);
-};
-store.getToInsightInfo = () => {
-    return JSON.parse(localStorage.getItem('searchToInsight') || '{}');
-};
-store.setToSearch = (selectList) => {
-    selectList=JSON.stringify(selectList);
-    localStorage.setItem('insightToSearch',selectList);
-};
-store.getToSearch = () => {
-    return JSON.parse(localStorage.getItem('insightToSearch') || '{}');
-};
-
+store.isLogin = false;
 
 /**
  * 存放页面信息

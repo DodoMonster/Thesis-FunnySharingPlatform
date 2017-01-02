@@ -23,7 +23,8 @@
         </ul>
 
         <div id="loginBtn">
-            <a href="javascript:;" @click="showLoginBox()">登录/注册</a>
+            <a href="javascript:;" @click="showLoginBox()" v-show="!isLogin">登录/注册</a>
+            <a v-link="{name:'userHome',params:userInfo.user_id}" v-show="isLogin">{{userInfo.user_name}}</a>
         </div>
     </div>
 </header>

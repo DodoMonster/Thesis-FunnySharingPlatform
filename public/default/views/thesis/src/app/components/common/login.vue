@@ -1,9 +1,8 @@
 <template src="./Login.tpl"></template>
 
-<style></style>
-
 <script>
 	import service from '../../../service/service.js';
+	import store from '../../../store/index.js';
 	export default {
 
 		replace: false,
@@ -12,7 +11,7 @@
 
 		data(){
 			return{
-				isLogin:true,
+				isLogin:store.isLogin,
 				isShowResetPwd:false,
 				loginData:{
 					username:'',
@@ -28,6 +27,7 @@
 					password:'',
 					passwordAgain:''
 				},
+				userInfo:store.userInfo,
 			}
 		},
 
@@ -66,6 +66,9 @@
 				}
 				service.login(self.loginData).done(function(res){
 					alert(res.msg);
+					localStorage.setItem('userInfo', JSON.stringify(res.data.data));
+					store.setUserInfo();
+					store.isLogin = true;
 				}).fail(function(res){
 					alert(res.msg);
 				});

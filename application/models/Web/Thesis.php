@@ -58,13 +58,12 @@ class ThesisModel extends \Core\BaseModels {
         $options['table'] = 'user';        
         $options['where'] = array('user_id'=>'?');
         $options['param'] = array($user_id);
-        $result=$this->db->find($options);
+        $result = $this->db->find($options);
         if(empty($result)){
             return $this->returnResult(201);
         }
-        $tmpData = array('things_content'=>'?','things_img'=>'?','is_anonymous'=>'?','publish_time'=>'?');
+        $tmpData = array('things_content'=>'?','things_image'=>'?','is_anonymous'=>'?','publish_time'=>'?','user_id'=>'?');
         $options1['table'] = 'things';        
-        $options1['where'] = array('user_id'=>'?');
         $options1['param'] = array($param['things_content'],$param['things_img'],$param['is_anonymous'],time(),$user_id);
         $info = $this->db->add($tmpData,$options1);
 
