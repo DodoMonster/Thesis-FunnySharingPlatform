@@ -11,7 +11,8 @@
 
 		data(){
 			return{
-				isLogin:store.isLogin,
+				store:store,
+				isLoginBox:true,
 				isShowResetPwd:false,
 				loginData:{
 					username:'',
@@ -31,6 +32,12 @@
 			}
 		},
 
+		ready(){
+			if(store.userInfo.user_id){
+				this.store.isLogin = true;
+			}
+		},
+
 		methods:{
 			cancelBubble:function(e){
 				if(e.stopPropagation){
@@ -42,18 +49,18 @@
 			},
 
 			showRegister:function(){
-				this.isLogin = false;
+				this.isLoginBox = false;
 				this.isShowResetPwd = false;
 			},
 
 			showLogin:function(){
-				this.isLogin = true;
+				this.isLoginBox = true;
 				this.isShowResetPwd = false;
 			},
 
 			showResetPwd:function(){
 				this.isShowResetPwd = true;
-				this.isLogin = false;
+				this.isLoginBox = false;
 			},
 			login:function(){
 				let self = this;
@@ -67,8 +74,9 @@
 				service.login(self.loginData).done(function(res){
 					alert(res.msg);
 					localStorage.setItem('userInfo', JSON.stringify(res.data.data));
-					store.setUserInfo();
-					store.isLogin = true;
+					store.setUserInfo();	
+					self.store.isLogin = true;				
+					store.showLoginForm = false;					
 				}).fail(function(res){
 					alert(res.msg);
 				});
@@ -90,6 +98,8 @@
 				}
 				service.reset(self.resetData).done(function(res){
 					alert(res.msg);
+					self.isShowResetPwd = false;
+					store.showLoginForm = false;
 				}).fail(function(res){
 					alert(res.msg);
 				});
@@ -111,11 +121,18 @@
 				}
 				service.register(self.registerData).done(function(res){
 					alert(res.msg);
+					store.showLoginForm = false;					
 				}).fail(function(res){
 					alert(res.msg);
 				});
 			},
 		},
+
+		watch:{
+			'store.isLogin':function(newVal,oldVal){
+				store.isLogin = newVal;
+			}
+		}
 
 	};
 

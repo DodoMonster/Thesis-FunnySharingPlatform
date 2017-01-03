@@ -19,20 +19,30 @@
             }
         },
 
+        data(){
+			return{
+				userInfo:store.userInfo,
+				store:store,
+			}
+		},
+
 		ready(){
 			$('#nav li').click(function(){
 				$(this).addClass('highlight').siblings('li').removeClass('highlight');
 			});
 		},
-		data(){
-			return{
-			}
-		},
+		
 
 		methods:{
 			showLoginBox:function(){
 				store.showLoginForm = true;
 			}
 		},
+
+		watch:{
+			'store.isLogin':function(newVal,oldVal){
+				this.isLogin = newVal;
+			}
+		}
 	}
 </script>

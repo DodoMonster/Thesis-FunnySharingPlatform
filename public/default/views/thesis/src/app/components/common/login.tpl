@@ -10,7 +10,7 @@
             <a rel="external nofollow" oauth_href="" href="https://graph.qq.com/oauth2.0/authorize?which=Login&amp;display=pc&amp;client_id=100251437&amp;response_type=code&amp;redirect_uri=www.qiushibaike.com/new4/session?src=qq" class="social-btn social-qq">
             使用 QQ 账号 </a>
         </div> -->
-        <div class="signin-form clearfix" v-show="isLogin && !isShowResetPwd">
+        <div class="signin-form clearfix" v-show="isLoginBox && !isShowResetPwd">
                 <h4 class="social-signin-heading">华农趣事平台账号登录</h4>
                 <form>
                     <div class="signin-section clearfix">
@@ -21,12 +21,12 @@
                     <button type="button"  class="form-submit" @click="login()">登录</button>
                 </form>
             </div>
-            <div class="signin-foot clearfix" v-show="isLogin">
+            <div class="signin-foot clearfix" v-show="isLoginBox">
                 <a rel="nofollow" class="fetch-password f-l" @click="showResetPwd()">忘记密码?</a>
                 <a rel="nofollow" class="fetch-password f-r" @click="showRegister()">注册</a>
             </div>
         
-        <div class="register-box" v-show="!isLogin && !isShowResetPwd">
+        <div class="register-box" v-show="!isLoginBox && !isShowResetPwd">
             <div class="signin-form clearfix">
                 <h4 class="social-signin-heading">华农趣事平台账号注册</h4>
                 <form>

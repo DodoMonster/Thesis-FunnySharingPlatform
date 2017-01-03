@@ -18,6 +18,7 @@ store.userInfo = {
     user_name:'',
     user_photo:'',
 }
+
 store.setUserInfo = () => {
     store.userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 }

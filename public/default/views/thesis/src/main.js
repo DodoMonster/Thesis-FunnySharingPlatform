@@ -49,6 +49,7 @@ router.map({
 		component: Add
 	},
 	'/userHome/:user_id': {
+		name:'userHome',
 		component: UserHome
 	},
 });

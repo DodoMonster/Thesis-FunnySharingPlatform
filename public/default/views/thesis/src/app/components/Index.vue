@@ -32,9 +32,6 @@
 			// showLoginBox:function(){
 			// 	store.showLoginForm = true;
 			// },
-
-			
-
 			getFunnyThingsList:function(){
 				let self = this;
 				service.getFunnyThingsList(self.page).done(function(res){

@@ -64,23 +64,23 @@
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	var _Index = __webpack_require__(36);
+	var _Index = __webpack_require__(39);
 	
 	var _Index2 = _interopRequireDefault(_Index);
 	
-	var _Add = __webpack_require__(39);
+	var _Add = __webpack_require__(42);
 	
 	var _Add2 = _interopRequireDefault(_Add);
 	
-	var _Comment = __webpack_require__(42);
+	var _Comment = __webpack_require__(45);
 	
 	var _Comment2 = _interopRequireDefault(_Comment);
 	
-	var _Edit = __webpack_require__(45);
+	var _Edit = __webpack_require__(48);
 	
 	var _Edit2 = _interopRequireDefault(_Edit);
 	
-	var _UserHome = __webpack_require__(48);
+	var _UserHome = __webpack_require__(51);
 	
 	var _UserHome2 = _interopRequireDefault(_UserHome);
 	
@@ -124,6 +124,7 @@
 			component: _Add2.default
 		},
 		'/userHome/:user_id': {
+			name: 'userHome',
 			component: _UserHome2.default
 		}
 	});
@@ -23516,7 +23517,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\app.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(35)
+	__vue_template__ = __webpack_require__(38)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -23578,6 +23579,13 @@
 			return {
 				store: _index2.default
 			};
+		},
+		ready: function ready() {
+			_index2.default.setUserInfo();
+			if (_index2.default.userInfo.user_id) {
+				_index2.default.isLogin = true;
+			}
+			console.log(_index2.default);
 		},
 	
 	
@@ -23678,19 +23686,28 @@
 			}
 		},
 	
+		data: function data() {
+			return {
+				userInfo: _index2.default.userInfo,
+				store: _index2.default
+			};
+		},
 		ready: function ready() {
 			(0, _jquery2.default)('#nav li').click(function () {
 				(0, _jquery2.default)(this).addClass('highlight').siblings('li').removeClass('highlight');
 			});
-		},
-		data: function data() {
-			return {};
 		},
 	
 	
 		methods: {
 			showLoginBox: function showLoginBox() {
 				_index2.default.showLoginForm = true;
+			}
+		},
+	
+		watch: {
+			'store.isLogin': function storeIsLogin(newVal, oldVal) {
+				this.isLogin = newVal;
 			}
 		}
 	};
@@ -23734,6 +23751,7 @@
 	    user_name: '',
 	    user_photo: ''
 	};
+	
 	store.setUserInfo = function () {
 	    store.userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 	};
@@ -24947,7 +24965,7 @@
 /* 28 */
 /***/ function(module, exports) {
 
-	module.exports = "<header>\r\n    <div id=\"header\" class=\"row clearfix\">\r\n        <div id=\"logo\">\r\n            <a href=\"./home#!/index/hot\"></a>\r\n        </div>\r\n        <ul id=\"nav\" class=\"menu-bar menu clearfix\">\r\n            <li :class=\"thingsType == 'hot' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'hot'}}\">热门</a>\r\n            </li>\r\n            <li :class=\"thingsType == 'fresh' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'fresh'}}\">新鲜</a>\r\n            </li>\r\n           \r\n            <li :class=\"thingsType == 'word' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'word'}}\">文字</a>\r\n            </li>\r\n            <li :class=\"thingsType == 'pic' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'pic'}}\">图片</a>\r\n            </li>         \r\n            <li>\r\n                <a v-link=\"{name:'add'}\">投稿</a>\r\n            </li>\r\n        </ul>\r\n\r\n        <div id=\"loginBtn\">\r\n            <a href=\"javascript:;\" @click=\"showLoginBox()\" v-show=\"!isLogin\">登录/注册</a>\r\n            <a v-link=\"{name:'userHome',params:userInfo.user_id}\" v-show=\"isLogin\">{{userInfo.user_name}}</a>\r\n        </div>\r\n    </div>\r\n</header>\r\n";
+	module.exports = "<header>\r\n    <div id=\"header\" class=\"row clearfix\">\r\n        <div id=\"logo\">\r\n            <a href=\"./home#!/index/hot\"></a>\r\n        </div>\r\n        <ul id=\"nav\" class=\"menu-bar menu clearfix\">\r\n            <li :class=\"thingsType == 'hot' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'hot'}}\">热门</a>\r\n            </li>\r\n            <li :class=\"thingsType == 'fresh' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'fresh'}}\">新鲜</a>\r\n            </li>\r\n           \r\n            <li :class=\"thingsType == 'word' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'word'}}\">文字</a>\r\n            </li>\r\n            <li :class=\"thingsType == 'pic' ? 'highlight' : ''\">\r\n                <a v-link=\"{name:'index',params:{thingsType:'pic'}}\">图片</a>\r\n            </li>         \r\n            <li>\r\n                <a v-link=\"{name:'add'}\">投稿</a>\r\n            </li>\r\n        </ul>\r\n\r\n        <div id=\"loginBtn\">\r\n            <a href=\"javascript:;\" @click=\"showLoginBox()\" v-show=\"!store.isLogin\">登录/注册</a>\r\n            <a v-link=\"{name:'userHome',params:{'user_id':store.userInfo.user_id}}\" v-show=\"store.isLogin\">{{store.userInfo.user_name}}</a>\r\n        </div>\r\n    </div>\r\n</header>\r\n";
 
 /***/ },
 /* 29 */
@@ -25018,7 +25036,7 @@
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\common\\login.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(34)
+	__vue_template__ = __webpack_require__(37)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25052,7 +25070,7 @@
 		value: true
 	});
 	
-	var _stringify = __webpack_require__(51);
+	var _stringify = __webpack_require__(34);
 	
 	var _stringify2 = _interopRequireDefault(_stringify);
 	
@@ -25074,7 +25092,8 @@
 	
 		data: function data() {
 			return {
-				isLogin: _index2.default.isLogin,
+				store: _index2.default,
+				isLoginBox: true,
 				isShowResetPwd: false,
 				loginData: {
 					username: '',
@@ -25093,6 +25112,11 @@
 				userInfo: _index2.default.userInfo
 			};
 		},
+		ready: function ready() {
+			if (_index2.default.userInfo.user_id) {
+				this.store.isLogin = true;
+			}
+		},
 	
 	
 		methods: {
@@ -25105,18 +25129,18 @@
 			},
 	
 			showRegister: function showRegister() {
-				this.isLogin = false;
+				this.isLoginBox = false;
 				this.isShowResetPwd = false;
 			},
 	
 			showLogin: function showLogin() {
-				this.isLogin = true;
+				this.isLoginBox = true;
 				this.isShowResetPwd = false;
 			},
 	
 			showResetPwd: function showResetPwd() {
 				this.isShowResetPwd = true;
-				this.isLogin = false;
+				this.isLoginBox = false;
 			},
 			login: function login() {
 				var self = this;
@@ -25131,7 +25155,8 @@
 					alert(res.msg);
 					localStorage.setItem('userInfo', (0, _stringify2.default)(res.data.data));
 					_index2.default.setUserInfo();
-					_index2.default.isLogin = true;
+					self.store.isLogin = true;
+					_index2.default.showLoginForm = false;
 				}).fail(function (res) {
 					alert(res.msg);
 				});
@@ -25153,6 +25178,8 @@
 				}
 				_service2.default.reset(self.resetData).done(function (res) {
 					alert(res.msg);
+					self.isShowResetPwd = false;
+					_index2.default.showLoginForm = false;
 				}).fail(function (res) {
 					alert(res.msg);
 				});
@@ -25174,9 +25201,16 @@
 				}
 				_service2.default.register(self.registerData).done(function (res) {
 					alert(res.msg);
+					_index2.default.showLoginForm = false;
 				}).fail(function (res) {
 					alert(res.msg);
 				});
+			}
+		},
+	
+		watch: {
+			'store.isLogin': function storeIsLogin(newVal, oldVal) {
+				_index2.default.isLogin = newVal;
 			}
 		}
 	
@@ -25184,28 +25218,51 @@
 
 /***/ },
 /* 34 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<!--start 登录页面-->\r\n<div class=\"signin-box animated fadeInUp\" id=\"login-form\" @click=\"cancelBubble\">\r\n    <div class=\"sigin-left\">\r\n      <!--   <div class=\"signin-account clearfix\">\r\n            <h4 class=\"social-signin-heading\">社交帐号登录</h4>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-btn social-wechat\">\r\n            使用 微信 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession\" class=\"social-btn social-weibo\">\r\n            使用 微博 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://graph.qq.com/oauth2.0/authorize?which=Login&amp;display=pc&amp;client_id=100251437&amp;response_type=code&amp;redirect_uri=www.qiushibaike.com/new4/session?src=qq\" class=\"social-btn social-qq\">\r\n            使用 QQ 账号 </a>\r\n        </div> -->\r\n        <div class=\"signin-form clearfix\" v-show=\"isLogin && !isShowResetPwd\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号登录</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"loginData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\" v-model=\"loginData.password\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\"  class=\"form-submit\" @click=\"login()\">登录</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\" v-show=\"isLogin\">\r\n                <a rel=\"nofollow\" class=\"fetch-password f-l\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showRegister()\">注册</a>\r\n            </div>\r\n        \r\n        <div class=\"register-box\" v-show=\"!isLogin && !isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号注册</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"registerData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\"\r\n                        v-model=\"registerData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\" v-model=\"registerData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"register()\">注册</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\" class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"register-box\" v-show=\"isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台重置密码</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\"\r\n                        v-model=\"resetData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"新密码\"\r\n                        v-model=\"resetData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\"\r\n                        v-model=\"resetData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"reset()\">重置</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\"  class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<!--end 登录页面-->\t\r\n";
+	module.exports = { "default": __webpack_require__(35), __esModule: true };
 
 /***/ },
 /* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var core  = __webpack_require__(36)
+	  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
+	module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
+	  return $JSON.stringify.apply($JSON, arguments);
+	};
+
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	var core = module.exports = {version: '2.4.0'};
+	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
+
+	module.exports = "<!--start 登录页面-->\r\n<div class=\"signin-box animated fadeInUp\" id=\"login-form\" @click=\"cancelBubble\">\r\n    <div class=\"sigin-left\">\r\n      <!--   <div class=\"signin-account clearfix\">\r\n            <h4 class=\"social-signin-heading\">社交帐号登录</h4>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-btn social-wechat\">\r\n            使用 微信 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fnew4%2Fsession\" class=\"social-btn social-weibo\">\r\n            使用 微博 账号</a>\r\n            <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://graph.qq.com/oauth2.0/authorize?which=Login&amp;display=pc&amp;client_id=100251437&amp;response_type=code&amp;redirect_uri=www.qiushibaike.com/new4/session?src=qq\" class=\"social-btn social-qq\">\r\n            使用 QQ 账号 </a>\r\n        </div> -->\r\n        <div class=\"signin-form clearfix\" v-show=\"isLoginBox && !isShowResetPwd\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号登录</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"loginData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\" v-model=\"loginData.password\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\"  class=\"form-submit\" @click=\"login()\">登录</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\" v-show=\"isLoginBox\">\r\n                <a rel=\"nofollow\" class=\"fetch-password f-l\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showRegister()\">注册</a>\r\n            </div>\r\n        \r\n        <div class=\"register-box\" v-show=\"!isLoginBox && !isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台账号注册</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\" v-model=\"registerData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"密码\"\r\n                        v-model=\"registerData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\" v-model=\"registerData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"register()\">注册</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\" class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"register-box\" v-show=\"isShowResetPwd\">\r\n            <div class=\"signin-form clearfix\">\r\n                <h4 class=\"social-signin-heading\">华农趣事平台重置密码</h4>\r\n                <form>\r\n                    <div class=\"signin-section clearfix\">\r\n                        <input type=\"text\" class=\"form-input form-input-first\" name=\"username\" placeholder=\"用户名\"\r\n                        v-model=\"resetData.username\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"password\" placeholder=\"新密码\"\r\n                        v-model=\"resetData.password\">\r\n                        <input type=\"password\" class=\"form-input\" name=\"passwordAgain\" placeholder=\"重复密码\"\r\n                        v-model=\"resetData.passwordAgain\">\r\n                    </div>\r\n                    <div class=\"signin-error\"></div>\r\n                    <button type=\"button\" class=\"form-submit\" @click=\"reset()\">重置</button>\r\n                </form>\r\n            </div>\r\n            <div class=\"signin-foot clearfix\">\r\n                <a rel=\"nofollow\"  class=\"fetch-password\" @click=\"showResetPwd()\">忘记密码?</a>\r\n                <a rel=\"nofollow\" class=\"fetch-password f-r\" @click=\"showLogin()\">登录</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<!--end 登录页面-->\t\r\n";
+
+/***/ },
+/* 38 */
 /***/ function(module, exports) {
 
 	module.exports = "<app-header></app-header>\r\n\r\n<router-view></router-view>\r\n\r\n<div id=\"login-box\" @click=\"closeLoginBox()\" v-show=\"store.showLoginForm\">\r\n\t<login-box></login-box>\r\n</div>\r\n\r\n<app-footer></app-footer>\r\n";
 
 /***/ },
-/* 36 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(37)
+	__vue_script__ = __webpack_require__(40)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Index.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(38)
+	__vue_template__ = __webpack_require__(41)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25230,7 +25287,7 @@
 	})()}
 
 /***/ },
-/* 37 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25280,7 +25337,6 @@
 	
 	
 		methods: {
-	
 			getFunnyThingsList: function getFunnyThingsList() {
 				var self = this;
 				_service2.default.getFunnyThingsList(self.page).done(function (res) {
@@ -25348,23 +25404,23 @@
 	};
 
 /***/ },
-/* 38 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\">\r\n\t\t\t\t\t<img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\">\r\n\t\t\t\t</a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"thumb\">\r\n\t\t\t\t<a href=\"index.php#!/comment\" target=\"_blank\">\r\n\t\t\t\t<img src=\"http://pic.qiushibaike.com/system/pictures/11803/118031114/medium/app118031114.jpg\" alt=\"朋友圈都乱了\">\r\n\t\t\t\t</a>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t</div>\r\n</div>\r\n\r\n";
 
 /***/ },
-/* 39 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(40)
+	__vue_script__ = __webpack_require__(43)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Add.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(41)
+	__vue_template__ = __webpack_require__(44)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25389,7 +25445,7 @@
 	})()}
 
 /***/ },
-/* 40 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25463,23 +25519,23 @@
 	};
 
 /***/ },
-/* 41 */
+/* 44 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\r\n\t\t<div class=\"clearfix mt-l mb-l p-xl b-w bs-l\">\r\n\t\t<!-- 返回信息 -->\r\n\r\n\t\t\t<!-- 发表表单 -->\r\n\t\t\t<div class=\"post-readme wx250 f-r\">\r\n\t\t\t\t<h3>投稿须知</h3>\r\n\t\t\t\t<ol>\r\n\t\t\t\t\t<li>自己的或朋友的糗事，真实有笑点，不含政治、色情、广告、诽谤、歧视等内容。</li>\r\n\t\t\t\t\t<li>糗事经过审核后发表。</li>\r\n\t\t\t\t\t<li>转载请注明出处。</li>\r\n\t\t\t\t\t<li>我已阅读并同意糗事百科的《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/agreement.html\" target=\"_blank\" rel=\"external nofollow\">用户协议</a>\r\n\t\t\t\t\t\t》以及《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/policy.html\" target=\"_blank\" rel=\"external nofollow\">隐私政策</a>\r\n\t\t\t\t\t\t》\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ol>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"wx600 f-l\">\r\n\t\t\t\t<form enctype=\"multipart/form-data\" id=\"new_article\" method=\"post\">\r\n\t\t\t\t\t<textarea id=\"qiushi_text\" class=\"wx600 p-m fs-s b-f-g b-lg bsi-l\" name=\"article[content]\" placeholder=\"分享一件新鲜事...\" rows=\"15\" required=\"required\" v-model=\"publishData.content\"></textarea>\r\n\t\t\t\t\t<div class=\"clearfix mt-r3 mb-m p-m c-lg b-f-g b-lg\">\r\n\t\t\t\t\t\t<div class=\"f-r\">\r\n\t\t\t\t\t\t\t<input  type=\"checkbox\" v-model=\"publishData.is_anonymous\" >\r\n\t\t\t\t\t\t\t匿名投稿\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"f-l\">\r\n\t\t\t\t\t\t\t<label>照片:</label>\r\n\t\t\t\t\t\t\t<input type=\"file\" id=\"article_picture\" v-model=\"publishData.img\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div id=\"length\" class=\"f-r\"></div><!--字数统计-->\r\n\t\t\t\t\t<button type=\"button\" class=\"p-xl ptb-m b-g fs-s c-w br-s bs-l\" id=\"article_submit\" name=\"commit\" @click=\"publishThings()\">\r\n\t\t\t\t\t投递\r\n\t\t\t\t\t</button>\r\n\t\t\t\t</form>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 42 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(43)
+	__vue_script__ = __webpack_require__(46)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Comment.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(44)
+	__vue_template__ = __webpack_require__(47)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25504,7 +25560,7 @@
 	})()}
 
 /***/ },
-/* 43 */
+/* 46 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25521,23 +25577,23 @@
 	};
 
 /***/ },
-/* 44 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<div id=\"content\" class=\"main\">\r\n    <div id=\"content-block\" class=\"clearfix\">\r\n        <div class=\"funny-things clearfix\">\r\n        \t<div class=\"author clearfix\">\r\n        \t\t<a href=\"\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n        \t\t<a href=\"\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n        \t</div>\r\n        \t<a href=\"\" class=\"contentHerf\">\r\n        \t\t<div class=\"funny-content\">\r\n        \t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n        \t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n        \t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n        \t\t\t</p>\r\n        \t\t</div>\r\n        \t</a>\r\n        \t<div class=\"stats\">\r\n        \t\t<span class=\"stats-vote\">\r\n        \t\t\t<i class=\"number\">4030</i>\r\n        \t\t\t好笑\r\n        \t\t</span>\r\n        \t\t<span class=\"stats-comments\">\r\n        \t\t\t<i class=\"dash\">·</i>\r\n        \t\t\t<a href=\"\">\r\n        \t\t\t\t<i class=\"number\">110</i>\r\n        \t\t\t\t评论\r\n        \t\t\t</a>\r\n        \t\t</span>\r\n        \t</div>\r\n        \t<div class=\"stats-buttons clearfix\">\r\n        \t\t<ul class=\"clearfix\">\r\n        \t\t\t<li class=\"up\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"down\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t\t<li class=\"comments\">\r\n        \t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n        \t\t\t</li>\r\n        \t\t</ul>\r\n        \t</div>\r\n        \t<div class=\"single-share\">\r\n        \t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n        \t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n        \t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n        \t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n        \t</div>\r\n        </div>\r\n        <div class=\"comments-wrap\">\r\n            <h3 class=\"comments-title fs-m\">评论（<em id=\"comments-num\">35</em>）</h3>\r\n            <div class=\"comments\">\r\n                <div class=\"comment-area\">\r\n                    <div id=\"length\" class=\"comment-limit-tips\">\r\n                        <strong>140</strong>\r\n                    </div>\r\n                    <input id=\"comment-input\" class=\"comment-input\"\r\n                        name=\"comment[content]\" autocomplete=\"off\" placeholder=\"我有话说...\"\r\n                        style=\"overflow: hidden;\">\r\n                    <button type=\"submit\" id=\"comment_submit\"\r\n                        class=\"comment-submit\">评论</button>\r\n                </div>\r\n\r\n                <div class=\"comments-list\">\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                    <div class=\"comment-block clearfix\">\r\n                        <div class=\"avatars\">\r\n                            <a href=\"\" target=\"_blank\">\r\n                                <img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\" title=\"用户头像\">\r\n                            </a>\r\n                        </div>\r\n                        <div class=\"replay\">\r\n                            <a href=\"\" target=\"_blank\" class=\"user-login\" title=\"我我我我是神仙\">我我我我是神仙</a>\r\n                            <span class=\"body\">回复 35楼：你孽狗</span>\r\n                        </div>\r\n                        <div class=\"report\">36</div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>";
 
 /***/ },
-/* 45 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(46)
+	__vue_script__ = __webpack_require__(49)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\Edit.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(47)
+	__vue_template__ = __webpack_require__(50)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25562,7 +25618,7 @@
 	})()}
 
 /***/ },
-/* 46 */
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25579,23 +25635,23 @@
 	};
 
 /***/ },
-/* 47 */
+/* 50 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"user-main clearfix\">\r\n    <div class=\"user-header\">\r\n        <a href=\"/users/29459066/\" class=\"user-header-avatar\">\r\n        <img src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\" alt=\"Dodo Monster\">\r\n        </a>\r\n        <div class=\"user-header-cover\">\r\n            <h2>Dodo Monster</h2>\r\n        </div>\r\n        <ul class=\"user-header-menu\">\r\n            <li>\r\n                <a href=\"/users/29459066/\" class=\"active\">主页</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/articles/\">糗事</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/comments/\">评论</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/my/edit\">设置</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"user-col-right\">\r\n\r\n        <div id=\"editInfo\" class=\"user-block user-setting clearfix\">\r\n            <h3>更换头像</h3>\r\n            <form action=\"/my/edit\" enctype=\"multipart/form-data\" id=\"edit_user_29459066\" method=\"post\">\r\n                <input type=\"hidden\" name=\"_xsrf\" value=\"2|4fca4c9c|8798c7b71eaba7bc1d8939b71abddac8|1478965973\">\r\n                <ul>\r\n                    <li>\r\n                        <img alt=\"Dodo Monster\" class=\"user-setting-avatar\" src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\">\r\n                    </li>\r\n                    <li>\r\n                        <input name=\"_method\" type=\"hidden\" value=\"put\">\r\n                        <input id=\"user_avatar\" name=\"user[avatar]\" size=\"30\" type=\"file\">\r\n                        <input id=\"user_submit\" name=\"commit\" type=\"submit\" value=\"确定上传\">\r\n                    </li>\r\n                    <li>\r\n                    图片支持JPG格式，尺寸小于200x200像素，文件容量2M以内。\r\n                    </li>\r\n                </ul>\r\n            </form>\r\n        </div>\r\n        <div class=\"user-block user-setting clearfix\">\r\n            <h3>账号绑定</h3>\r\n            <ul>\r\n                <li>\r\n                    <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://open.weixin.qq.com/connect/qrconnect?appid=wx559af2d26b56c655&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fmy%2Fedit%3Fsrc%3Dwx&amp;response_type=code&amp;scope=snsapi_login#wechat_redirect\" class=\"social-wechat\" name=\"third_account[‘type’]\">\r\n                    绑定微信账号\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a rel=\"external nofollow\" oauth_href=\"\" href=\"https://api.weibo.com/oauth2/authorize?client_id=63372306&amp;redirect_uri=http%3A%2F%2Fwww.qiushibaike.com%2Fmy%2Fedit\" class=\"social-weibo\" name=\"third_account[‘type’]\">\r\n                    绑定微博账号\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a class=\"social-btn social-qq\" rel=\"nofollow\">\r\n                    北城亂世Sum\r\n                    </a>\r\n                    <a href=\"javascript:;\" data-type=\"1\" rel=\"nofollow\">\r\n                    解绑\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a rel=\"external nofollow\" href=\"javascript:;\" class=\"social-email\" data-email=\"\" act_bind_email=\"\" bind-type=\"new\" title=\"\">\r\n                    绑定邮箱\r\n                    </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n        <div id=\"editPass\" class=\"user-block user-setting clearfix\">\r\n            <h3>修改密码</h3>\r\n            <form id=\"new_user\">\r\n                <ul>\r\n                    <li>\r\n                        <label for=\"old_password\" class=\"user-setting-inputlable\">当前密码</label>\r\n                        <input id=\"old_password\" name=\"old_password\" size=\"30\" type=\"password\">\r\n                    </li>\r\n                    <li>\r\n                        <label for=\"new_password\" class=\"user-setting-inputlable\">新密码</label>\r\n                        <input id=\"new_password\" name=\"password\" size=\"30\" type=\"password\">\r\n                    </li>\r\n                    <li>\r\n                        <label for=\"password_confirmation\" class=\"user-setting-inputlable\">重复新密码</label>\r\n                        <input id=\"password_confirmation\" name=\"password_confirmation\" size=\"30\" type=\"password\">\r\n                    </li>\r\n                    <li>\r\n                        <input name=\"commit\" action_change_pass=\"\" type=\"button\" value=\"确认修改\">\r\n                    </li>\r\n                </ul>\r\n            </form>\r\n        </div>\r\n        <div class=\"user-block user-setting clearfix\">\r\n            <h3>帐号</h3>\r\n            <ul>\r\n                <li>\r\n                    <a href=\"/new4/logout\" class=\"exit\" rel=\"nofollow\">退出登录</a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n        <!-- popup Start -->\r\n        <div id=\"bg\" class=\"mask\" style=\"height: 1677px;\"></div>\r\n        <div id=\"popDiv\" class=\"bind-email\"></div>\r\n        <div id=\"bind_email_tpl\" class=\"bind-email\">\r\n            <form>\r\n                <label>更换绑定邮箱</label>\r\n                <input type=\"text\" name=\"email_addr\" class=\"email-info\" value=\"新邮箱地址\" onfocus=\"if(this.value==this.defaultValue){this.value=''}\" onblur=\"if(!this.value){this.value=this.defaultValue;}\">\r\n                <input type=\"text\" class=\"email-pd txt_passwd\" value=\"糗事百科的密码\" onfocus=\"$(this).hide().next().show().focus();\">\r\n                <input type=\"password\" name=\"email_passwd\" class=\"email-pd\" id=\"email-sc2\" maxlength=\"30\" size=\"30\" onblur=\"if(this.value==''){$(this).hide().prev().show();}\">\r\n                <input type=\"button\" value=\"下一步\" class=\"next-st\" action_bind_email=\"\" style=\"color:#fff; font-weight: bold; border: none;width: 95px; line-height: 34px; text-align: center; height: 34px; padding-left: 0px;\">\r\n            </form>\r\n        </div>\r\n        <div id=\"unbind_tpl\" class=\"bind-email\" style=\"\">\r\n            <form onsubmit=\"return false\">\r\n                <label>解除绑定</label>\r\n                <input class=\"email-pd\" placeholder=\"糗事百科的密码\" type=\"password\">\r\n                <a class=\"next-st pop_btn\" action_unbind=\"\" rel=\"external nofollow\">解除绑定</a>\r\n            </form>\r\n        </div>\r\n        <div id=\"email_sended_tpl\" class=\"bind-email\">\r\n            <form>\r\n                <p>验证邮箱已发到邮箱<span email=\"\"></span>请前往邮箱收取，完成绑定</p>\r\n                <a class=\"next-st pop_btn\" action_go_verify=\"\">去验证</a>\r\n            </form>\r\n        </div>\r\n        <div id=\"error_msg\" class=\"bind-email\">\r\n            <span class=\"error-tips\"> </span>\r\n        </div>\r\n        <!-- popup End -->\r\n        <script async=\"\" src=\"https://www.google-analytics.com/analytics.js\"></script><script type=\"text/javascript\" src=\"http://static.qiushibaike.com/js/src/libs/jquery-1.8.2.min.js?v=cfa9051cc0b05eb519f1e16b2a6645d7\"></script>\r\n        <script type=\"text/javascript\" src=\"http://static.qiushibaike.com/js/src/web/my_edit.js?v=e049ac48a8b433f1c481ea7d10df5d94\"></script>\r\n\r\n    </div>\r\n    <div class=\"user-col-left\">\r\n        <div class=\"user-statis user-block\">\r\n            <h3>糗百指数</h3>\r\n            <ul>\r\n                <li><span>粉丝数:</span>0</li>\r\n                <li><span>关注数:</span>0</li>\r\n                <li><span>糗事:</span>0</li>\r\n                <li><span>评论:</span>0</li>\r\n                <li><span>笑脸:</span>0</li>\r\n                <li><span>糗事精选:</span>0</li>\r\n            </ul>\r\n        </div>\r\n        <div class=\"user-statis user-block\">\r\n            <h3>个人资料</h3>\r\n            <ul>\r\n                <li><span>婚姻:</span></li>\r\n                <li><span>星座:</span></li>\r\n                <li><span>职业:</span></li>\r\n                <li><span>故乡:</span></li>\r\n                <li><span>糗龄:</span>485天</li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>";
 
 /***/ },
-/* 48 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(49)
+	__vue_script__ = __webpack_require__(52)
 	if (__vue_script__ &&
 	    __vue_script__.__esModule &&
 	    Object.keys(__vue_script__).length > 1) {
 	  console.warn("[vue-loader] src\\app\\components\\UserHome.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(50)
+	__vue_template__ = __webpack_require__(53)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25620,7 +25676,7 @@
 	})()}
 
 /***/ },
-/* 49 */
+/* 52 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25637,33 +25693,10 @@
 	};
 
 /***/ },
-/* 50 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"user-main clearfix\">\r\n    <div class=\"user-header\">\r\n        <a href=\"/users/29459066/\" class=\"user-header-avatar\">\r\n        <img src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\" alt=\"Dodo Monster\">\r\n        </a>\r\n        <div class=\"user-header-cover\">\r\n            <h2>Dodo Monster</h2>\r\n        </div>\r\n        <ul class=\"user-header-menu\">\r\n            <li>\r\n                <a href=\"/users/29459066/\" class=\"active\">主页</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/articles/\">糗事</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/comments/\">评论</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/my/edit\">设置</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"user-col-right\">\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">\r\n                11\r\n                </span>\r\n                <span class=\"user-date-break\">\r\n                /\r\n                </span>\r\n                <span class=\"user-date-day\">\r\n                12\r\n                </span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                    <strong>这个名没有注册过</strong>\r\n                    评论了\r\n                    <strong>这个名没有注册过</strong>\r\n                    发表的糗事\r\n                </li>\r\n                <li class=\"user-comment-text\">\r\n                    回复 70楼：我都有盒子装回去的，有自己的房间的\r\n                </li>\r\n                <li class=\"user-comment-quote\">\r\n                    <ul>\r\n                        <li class=\"user-article-avatar\">\r\n                            <a href=\"/users/26861602/\" rel=\"nofollow\">\r\n                            <img src=\"http://pic.qiushibaike.com/system/avtnew/2686/26861602/thumb/20150322160702.jpg\" alt=\"这个名没有注册过\">\r\n                            </a>\r\n                            <a href=\"/users/26861602/\">\r\n                            这个名没有注册过\r\n                            </a>\r\n                        </li>\r\n                        <li class=\"user-article-text\">\r\n                            <a href=\"/article/117961121\" target=\"_blank\">\r\n                            最近买了一个新手机，就把旧手机扔在一边，没管它。手机每天自己定时开机关机，还准时闹铃，用着仅存的一格电努力辛勤地工作着，突然觉得好感动，觉得自己真残忍。\r\n                            </a>\r\n                        </li>\r\n\r\n                        <li class=\"user-article-stat\">\r\n                            1988 好笑 ⋅\r\n                            80 评论 ⋅\r\n                            发表于\r\n                            <a href=\"/history/772f17ed41cb8d53c3c7e8aa46693a3f/\" target=\"_blank\">\r\n                            2016-11-12\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">10</span>\r\n                <span class=\"user-date-break\">/</span>\r\n                <span class=\"user-date-day\">13</span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                <strong>\r\n                这个名没有注册过\r\n                </strong>\r\n                发表了糗事\r\n                </li>\r\n                <li class=\"user-article-text\">\r\n                <a href=\"/article/117741876\" target=\"_blank\">\r\n                老婆怀了二胎，宝宝胎动得厉害。晚上老婆睡不着，忍不住嘀咕了一句：“你说这孩子在里面干啥呢？一直没停！”老公想了想，回道：“可能因为是二手房，现在正忙着装修吧！”\r\n                </a>\r\n                </li>\r\n\r\n                <li class=\"user-article-stat\">\r\n                1699 好笑 ⋅\r\n                32 评论 ⋅\r\n                发表于\r\n                <a href=\"/history/c79391d5e2f856d66059cc5b83129098/\" target=\"_blank\">\r\n                2016-10-13\r\n                </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">\r\n                11\r\n                </span>\r\n                <span class=\"user-date-break\">\r\n                /\r\n                </span>\r\n                <span class=\"user-date-day\">\r\n                12\r\n                </span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                    <strong>这个名没有注册过</strong>\r\n                    评论了\r\n                    <strong>这个名没有注册过</strong>\r\n                    发表的糗事\r\n                </li>\r\n                <li class=\"user-comment-text\">\r\n                    回复 70楼：我都有盒子装回去的，有自己的房间的\r\n                </li>\r\n                <li class=\"user-comment-quote\">\r\n                    <ul>\r\n                        <li class=\"user-article-avatar\">\r\n                            <a href=\"/users/26861602/\" rel=\"nofollow\">\r\n                            <img src=\"http://pic.qiushibaike.com/system/avtnew/2686/26861602/thumb/20150322160702.jpg\" alt=\"这个名没有注册过\">\r\n                            </a>\r\n                            <a href=\"/users/26861602/\">\r\n                            这个名没有注册过\r\n                            </a>\r\n                        </li>\r\n                        <li class=\"user-article-text\">\r\n                            <a href=\"/article/117961121\" target=\"_blank\">\r\n                            最近买了一个新手机，就把旧手机扔在一边，没管它。手机每天自己定时开机关机，还准时闹铃，用着仅存的一格电努力辛勤地工作着，突然觉得好感动，觉得自己真残忍。\r\n                            </a>\r\n                        </li>\r\n\r\n                        <li class=\"user-article-stat\">\r\n                            1988 好笑 ⋅\r\n                            80 评论 ⋅\r\n                            发表于\r\n                            <a href=\"/history/772f17ed41cb8d53c3c7e8aa46693a3f/\" target=\"_blank\">\r\n                            2016-11-12\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    <div class=\"user-col-left\">\r\n        <div class=\"user-statis user-block\">\r\n            <h3>糗百指数</h3>\r\n            <ul>\r\n                <li><span>糗事:</span>0</li>\r\n                <li><span>评论:</span>0</li>\r\n                <li><span>笑脸:</span>0</li>\r\n            </ul>\r\n        </div>\r\n        <div class=\"user-statis user-block\">\r\n            <h3>个人资料</h3>\r\n            <ul>\r\n                <li><span>婚姻:</span></li>\r\n                <li><span>星座:</span></li>\r\n                <li><span>职业:</span></li>\r\n                <li><span>故乡:</span></li>\r\n                <li><span>糗龄:</span>485天</li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>";
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(52), __esModule: true };
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var core  = __webpack_require__(53)
-	  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
-	module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
-	  return $JSON.stringify.apply($JSON, arguments);
-	};
-
-/***/ },
 /* 53 */
 /***/ function(module, exports) {
 
-	var core = module.exports = {version: '2.4.0'};
-	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+	module.exports = "<div class=\"user-main clearfix\">\r\n    <div class=\"user-header\">\r\n        <a href=\"/users/29459066/\" class=\"user-header-avatar\">\r\n        <img src=\"http://pic.qiushibaike.com/system/avtnew/2945/29459066/medium/20150717105850.jpg\" alt=\"Dodo Monster\">\r\n        </a>\r\n        <div class=\"user-header-cover\">\r\n            <h2>Dodo Monster</h2>\r\n        </div>\r\n        <ul class=\"user-header-menu\">\r\n            <li>\r\n                <a href=\"/users/29459066/\" class=\"active\">主页</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/articles/\">糗事</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/users/29459066/comments/\">评论</a>\r\n            </li>\r\n            <li>\r\n                <a href=\"/my/edit\">设置</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <div class=\"user-col-right\">\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">\r\n                11\r\n                </span>\r\n                <span class=\"user-date-break\">\r\n                /\r\n                </span>\r\n                <span class=\"user-date-day\">\r\n                12\r\n                </span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                    <strong>这个名没有注册过</strong>\r\n                    评论了\r\n                    <strong>这个名没有注册过</strong>\r\n                    发表的糗事\r\n                </li>\r\n                <li class=\"user-comment-text\">\r\n                    回复 70楼：我都有盒子装回去的，有自己的房间的\r\n                </li>\r\n                <li class=\"user-comment-quote\">\r\n                    <ul>\r\n                        <li class=\"user-article-avatar\">\r\n                            <a href=\"/users/26861602/\" rel=\"nofollow\">\r\n                            <img src=\"http://pic.qiushibaike.com/system/avtnew/2686/26861602/thumb/20150322160702.jpg\" alt=\"这个名没有注册过\">\r\n                            </a>\r\n                            <a href=\"/users/26861602/\">\r\n                            这个名没有注册过\r\n                            </a>\r\n                        </li>\r\n                        <li class=\"user-article-text\">\r\n                            <a href=\"/article/117961121\" target=\"_blank\">\r\n                            最近买了一个新手机，就把旧手机扔在一边，没管它。手机每天自己定时开机关机，还准时闹铃，用着仅存的一格电努力辛勤地工作着，突然觉得好感动，觉得自己真残忍。\r\n                            </a>\r\n                        </li>\r\n\r\n                        <li class=\"user-article-stat\">\r\n                            1988 好笑 ⋅\r\n                            80 评论 ⋅\r\n                            发表于\r\n                            <a href=\"/history/772f17ed41cb8d53c3c7e8aa46693a3f/\" target=\"_blank\">\r\n                            2016-11-12\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">10</span>\r\n                <span class=\"user-date-break\">/</span>\r\n                <span class=\"user-date-day\">13</span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                <strong>\r\n                这个名没有注册过\r\n                </strong>\r\n                发表了糗事\r\n                </li>\r\n                <li class=\"user-article-text\">\r\n                <a href=\"/article/117741876\" target=\"_blank\">\r\n                老婆怀了二胎，宝宝胎动得厉害。晚上老婆睡不着，忍不住嘀咕了一句：“你说这孩子在里面干啥呢？一直没停！”老公想了想，回道：“可能因为是二手房，现在正忙着装修吧！”\r\n                </a>\r\n                </li>\r\n\r\n                <li class=\"user-article-stat\">\r\n                1699 好笑 ⋅\r\n                32 评论 ⋅\r\n                发表于\r\n                <a href=\"/history/c79391d5e2f856d66059cc5b83129098/\" target=\"_blank\">\r\n                2016-10-13\r\n                </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n\r\n        <div class=\"user-block user-feed\">\r\n            <div class=\"user-date\">\r\n                <span class=\"user-date-month\">\r\n                11\r\n                </span>\r\n                <span class=\"user-date-break\">\r\n                /\r\n                </span>\r\n                <span class=\"user-date-day\">\r\n                12\r\n                </span>\r\n            </div>\r\n            <ul class=\"user-indent\">\r\n                <li class=\"user-comment-info\">\r\n                    <strong>这个名没有注册过</strong>\r\n                    评论了\r\n                    <strong>这个名没有注册过</strong>\r\n                    发表的糗事\r\n                </li>\r\n                <li class=\"user-comment-text\">\r\n                    回复 70楼：我都有盒子装回去的，有自己的房间的\r\n                </li>\r\n                <li class=\"user-comment-quote\">\r\n                    <ul>\r\n                        <li class=\"user-article-avatar\">\r\n                            <a href=\"/users/26861602/\" rel=\"nofollow\">\r\n                            <img src=\"http://pic.qiushibaike.com/system/avtnew/2686/26861602/thumb/20150322160702.jpg\" alt=\"这个名没有注册过\">\r\n                            </a>\r\n                            <a href=\"/users/26861602/\">\r\n                            这个名没有注册过\r\n                            </a>\r\n                        </li>\r\n                        <li class=\"user-article-text\">\r\n                            <a href=\"/article/117961121\" target=\"_blank\">\r\n                            最近买了一个新手机，就把旧手机扔在一边，没管它。手机每天自己定时开机关机，还准时闹铃，用着仅存的一格电努力辛勤地工作着，突然觉得好感动，觉得自己真残忍。\r\n                            </a>\r\n                        </li>\r\n\r\n                        <li class=\"user-article-stat\">\r\n                            1988 好笑 ⋅\r\n                            80 评论 ⋅\r\n                            发表于\r\n                            <a href=\"/history/772f17ed41cb8d53c3c7e8aa46693a3f/\" target=\"_blank\">\r\n                            2016-11-12\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    <div class=\"user-col-left\">\r\n        <div class=\"user-statis user-block\">\r\n            <h3>糗百指数</h3>\r\n            <ul>\r\n                <li><span>糗事:</span>0</li>\r\n                <li><span>评论:</span>0</li>\r\n                <li><span>笑脸:</span>0</li>\r\n            </ul>\r\n        </div>\r\n        <div class=\"user-statis user-block\">\r\n            <h3>个人资料</h3>\r\n            <ul>\r\n                <li><span>婚姻:</span></li>\r\n                <li><span>星座:</span></li>\r\n                <li><span>职业:</span></li>\r\n                <li><span>故乡:</span></li>\r\n                <li><span>糗龄:</span>485天</li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</div>";
 
 /***/ }
 /******/ ]);
