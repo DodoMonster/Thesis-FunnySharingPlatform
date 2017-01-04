@@ -49,8 +49,11 @@
 		        xhr.onload = function() {
 		            if (this.status == 200) {
 		                var res = JSON.parse(this.response);
-		            	// alert('发表成功！');
-		            	console.log(res);
+		                if(res.code !== 0){
+		            		alert(res.msg);
+		                }else{
+		                	
+		                }
 		            }		                		                
 		            }
 		        xhr.send(fd);

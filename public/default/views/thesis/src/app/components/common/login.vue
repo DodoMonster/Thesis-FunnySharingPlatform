@@ -75,7 +75,8 @@
 					alert(res.msg);
 					localStorage.setItem('userInfo', JSON.stringify(res.data.data));
 					store.setUserInfo();	
-					self.store.isLogin = true;				
+					self.store.isLogin = true;	
+					self.isLoginBox = true;			
 					store.showLoginForm = false;					
 				}).fail(function(res){
 					alert(res.msg);
@@ -100,6 +101,8 @@
 					alert(res.msg);
 					self.isShowResetPwd = false;
 					store.showLoginForm = false;
+					self.isLoginBox = true;			
+					self.isShowResetPwd = false;
 				}).fail(function(res){
 					alert(res.msg);
 				});
@@ -121,7 +124,9 @@
 				}
 				service.register(self.registerData).done(function(res){
 					alert(res.msg);
-					store.showLoginForm = false;					
+					store.showLoginForm = false;
+					self.isLoginBox = true;			
+					self.isShowResetPwd = false;					
 				}).fail(function(res){
 					alert(res.msg);
 				});

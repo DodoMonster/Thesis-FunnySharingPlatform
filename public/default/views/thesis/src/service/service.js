@@ -53,6 +53,16 @@ service.login = (data) => {
 }
 
 /**
+ * 登出
+ */
+service.logout = () => {
+    return util.ajax({
+        url: '/thesis/opLogout',
+        type:'POST',
+    });
+}
+
+/**
  * 获取趣事列表
  */
 service.getFunnyThingsList = (page,type) => {

@@ -40,6 +40,7 @@ class thesisController extends \Core\BaseControllers {
 
         if($data['code'] == 200){             
             $this->setOauthAdminSession($data);
+            // print_r($this->_uid);
             $data['code'] = 0;
             $data['data'] = $data;
             $data['msg'] = '登录成功！';            
@@ -80,14 +81,16 @@ class thesisController extends \Core\BaseControllers {
         if($_FILES && $_FILES['things_img']['tmp_name']){
             $tmp_name = $_FILES['things_img']['tmp_name'];
             $template = $_FILES['things_img']['name'];
-            if(file_exists('things_img/'.$template)){
-                $data['code'] = 201;
-            }
+            // if(file_exists('/uploads/things_img/'.$template)){
+            //     $data['code'] = 201;
+            // }
             //echo $tmp_name;exit;
             $res = move_uploaded_file($tmp_name, 'things_img/'.$template);//将上传的文件移动到新位置
             if(!$res){
                 $data['code'] = 2;
             }
+        }else{
+            $param['things_img'] = '';
         }
         $param['is_anonymous'] = isset($this->_postData['is_anonymous']) ? $this->_postData['is_anonymous']: '';
         
@@ -110,6 +113,9 @@ class thesisController extends \Core\BaseControllers {
     //平台登出
     public function opLogoutAction(){
         $this->unsetOauthAdminSession();
+        $data['code'] = 0;
+        $data['msg'] = '退出成功！'; 
+        echo json_encode($data);           
     }
 
     //页面不存在

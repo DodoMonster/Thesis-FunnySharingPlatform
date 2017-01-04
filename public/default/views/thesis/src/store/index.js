@@ -23,6 +23,15 @@ store.setUserInfo = () => {
     store.userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 }
 
+store.clearUserInfo = () => {
+    store.userInfo = {
+        user_id:'',
+        user_name:'',
+        user_photo:'',
+    };
+    localStorage.clear();;
+}
+
 store.getUserInfo = () => {
     return JSON.parse(localStorage.getItem('userInfo') || '{}');
 }
@@ -45,3 +54,10 @@ store.pageData = {
         store.emit('currentPageName-updated');
     },
 };
+
+function isEmptyObject(obj) {
+  for (var key in obj) {
+    return false;
+  }
+  return true;
+}

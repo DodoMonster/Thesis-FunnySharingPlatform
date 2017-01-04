@@ -23,7 +23,6 @@
 			if(store.userInfo.user_id){
 				store.isLogin = true;
 			}
-			console.log(store);
 		},
 
 		methods:{

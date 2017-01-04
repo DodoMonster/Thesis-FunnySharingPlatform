@@ -13,10 +13,7 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     protected $_userAgent='';
     protected $_httpUserAgent='';
     protected $_httpReferer='';
-    protected $_remoteIp='';
-    protected $_realIp='';
     protected $_returnFormat='json';
-    protected $_sysVersion=0;//默认版本
     protected $_isAjax = FALSE;
      
     protected $_clientId='';
@@ -26,9 +23,6 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     //初始化系统配置
     protected function init() {
         $this->fitlerHTTPValue();
-        $this->_httpReferer=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
-        $this->_remoteIp=isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:'';
-        $this->_realIp=$this->getRealIp();
         //TODO跨域请求设置
         //$this->_isAjax=$this->getRequest()->isXmlHttpRequest();
         $this->_count=intval(isset($this->_postData['count'])>0?$this->_postData['count']:(isset($this->_getData['count'])>0?$this->_getData['count']:20));
@@ -37,8 +31,7 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         // $this->fitlerUserAgent();
         // $this->isDebug();
         $this->fitlerSession();
-        // print_r($this->_uid);
-        // print_r($this->_mid);
+       
 
     }
     
@@ -105,49 +98,9 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     
     //过滤会话//设置mid,uid
     private function fitlerSession(){
-        //TODO,COOKIE绑定登录记录
-        //TODO有session的过滤方案(多次请求问题，恶意抓取问题) 
-        // if(isset($_SESSION[SESSION_LOGGED_USERID]) && $_SESSION[SESSION_LOGGED_USERID]>0){
-        //     print_r('a');
-        //     if(isset($_COOKIE[COOKIE_LOGGED_USER])&&!empty($_COOKIE[COOKIE_LOGGED_USER])){
-        //         //$tmpValue=explode('#',filter_input(INPUT_COOKIE, 'LOGGED_USER'));
-        //         print_r('b');
-        //         $tmpValue=explode('#',$_COOKIE[COOKIE_LOGGED_USER]);
-        //         $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
-        //         if($loggedUser==$_SESSION[SESSION_LOGGED_USERID]){
-        //             $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
-        //         }elseif($loggedUser>0){
-        //             $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
-        //             $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
-        //         }else{
-        //             BaseErrors::ErrorHandler(5001);
-        //         }
-        //     }else{
-        //         print_r('c');
-        //         $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
-        //     }
-        //     return;
-        // }else{
-        //     print_r('d');
-        //     if(isset($_COOKIE[COOKIE_LOGGED_USER])&&!empty($_COOKIE[COOKIE_LOGGED_USER])){
-        //         print_r('e');
-        //         $tmpValue=explode('#',$_COOKIE[COOKIE_LOGGED_USER]);
-        //         $loggedUser=isset($tmpValue[1])?base64_decode($tmpValue[1]):0;
-        //         if($loggedUser>0){
-        //             print_r('g');
-        //             $_SESSION[SESSION_LOGGED_USERID]=$loggedUser;
-        //             $this->_mid=$_SESSION[SESSION_LOGGED_USERID];
-        //         }else{
-        //             print_r('f');
-        //             BaseErrors::ErrorHandler(5001);
-        //         }
-        //     }
-        // }
-
         if(isset($_SESSION[SESSION_LOGGED_USERID]) && $_SESSION[SESSION_LOGGED_USERID]>0){
             $this->_uid = $_SESSION[SESSION_LOGGED_USERID];
-        }       
-        // print_r($this->_uid); 
+        }    
     }
     
     
@@ -155,11 +108,10 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     protected function setOauthAdminSession($data){ 
         if($data['code']==200 && isset($data['data']['user_id']) && $data['data']['user_id']>0){
             session_regenerate_id();
-            $_SESSION=[];
+            $_SESSION = [];
             $_SESSION[SESSION_LOGGED_USERID] = $data['data']['user_id'];
             $this->_uid = $_SESSION[SESSION_LOGGED_USERID];
-        }        
-        // print_r($_SESSION[SESSION_LOGGED_USERID]);
+        }               
     }
     
     //取消授权管理员会话

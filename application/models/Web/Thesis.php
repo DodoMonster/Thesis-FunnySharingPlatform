@@ -5,8 +5,9 @@ class ThesisModel extends \Core\BaseModels {
      //注册
     public function register($param){
         $options['table'] = 'user';
-        $tmpData = array('user_name'=>'?','user_password'=>'?');
-        $options['param'] = array($param['username'],md5($param['password']));
+        $photo = '/uploads/avatar/default-avatar.png';
+        $tmpData = array('user_name'=>'?','user_password'=>'?','user_photo'=>'?');
+        $options['param'] = array($param['username'],md5($param['password']),$photo);
         $status = $this->db->add($tmpData,$options);
         // print_r($info);exit;
         if($status !== FALSE){
