@@ -69,7 +69,7 @@ class thesisController extends \Core\BaseControllers {
             $data['msg'] = '账号不存在！'; 
         }else{
             $data['code'] = 1;
-            $data['msg'] = '登录失败，请重试'; 
+            $data['msg'] = '重置密码失败，请重试'; 
         }
         echo json_encode($data);
     }
@@ -81,13 +81,13 @@ class thesisController extends \Core\BaseControllers {
         if($_FILES && $_FILES['things_img']['tmp_name']){
             $tmp_name = $_FILES['things_img']['tmp_name'];
             $template = $_FILES['things_img']['name'];
-            // if(file_exists('/uploads/things_img/'.$template)){
-            //     $data['code'] = 201;
-            // }
-            //echo $tmp_name;exit;
-            $res = move_uploaded_file($tmp_name, 'things_img/'.$template);//将上传的文件移动到新位置
+            $res = move_uploaded_file($tmp_name, 'uploads/things_img/'.$template);//将上传的文件移动到新位置
             if(!$res){
-                $data['code'] = 2;
+                $data['code'] = 1;
+                $data['msg'] = '图片上传失败，请重试！';
+                echo json_encode($data);
+            }else{
+                $param['things_img'] = '/uploads/avatar/' . $template;
             }
         }else{
             $param['things_img'] = '';
@@ -110,6 +110,80 @@ class thesisController extends \Core\BaseControllers {
         }
         echo json_encode($data);
     }
+
+    //修改头像
+    public function changeAvatarAction(){
+        if($_FILES && $_FILES['photo']['tmp_name']){
+            $tmp_name = $_FILES['photo']['tmp_name'];
+            $photo = $_FILES['photo']['name'];
+            $res = move_uploaded_file($tmp_name, 'uploads/avatar/' . $photo);//将上传的文件移动到新位置
+            if(!$res){
+                $data['code'] = 1;
+                $data['msg'] = '图片上传失败，请重试！';
+                echo json_encode($data);die;
+            }else{
+                $photo = '/uploads/avatar/' . $photo;
+            }
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '上传的头像不能为空！'; 
+            echo json_encode($data);die;
+        }
+        $user_id = isset($this->_postData['user_id']) ? $this->_postData['user_id']: '';
+        $model = new \Web\ThesisModel();
+        $data = $model->changeAvatar($user_id,$photo);
+
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '修改头像成功！';            
+        }elseif($data['code'] == 201){
+            $data['code'] = 1;
+            $data['msg'] = '账号不存在！'; 
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '修改头像失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //修改密码
+    public function changePwdAction(){
+        $oauthData['user_id']=isset($this->_postData['user_id']) ? $this->_postData['user_id']: '';
+        $oauthData['originPwd']=isset($this->_postData['originPwd']) ? $this->_postData['originPwd']: '';
+        $oauthData['password']=isset($this->_postData['password']) ? $this->_postData['password']: '';
+        $model = new \Web\ThesisModel();
+        $data = $model->changePwd($oauthData);
+
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '修改密码成功！';            
+        }elseif($data['code'] == 201){
+            $data['code'] = 1;
+            $data['msg'] = '原始密码不正确！'; 
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '修改密码失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //获取用户信息
+    public function getUserInfoAction(){
+        $uid = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->getUserInfo($uid);
+
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取用户信息成功！'; 
+            $data['data'] = $data['data'];
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取用户信息失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
     //平台登出
     public function opLogoutAction(){
         $this->unsetOauthAdminSession();

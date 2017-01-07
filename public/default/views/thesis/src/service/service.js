@@ -58,7 +58,7 @@ service.login = (data) => {
 service.logout = () => {
     return util.ajax({
         url: '/thesis/opLogout',
-        type:'POST',
+        type:'GET',
     });
 }
 
@@ -81,6 +81,7 @@ service.getFunnyThingsList = (page,type) => {
 service.praiseUp = (id) => {
     return util.ajax({
         url: '/thesis/praiseUp',
+        type:'POST',        
         data: {
             things_id: id,
         }
@@ -93,6 +94,7 @@ service.praiseUp = (id) => {
 service.trampDown = (id) => {
     return util.ajax({
         url: '/thesis/trampDown',
+        type:'POST',        
         data: {
             things_id: id,
         }
@@ -105,6 +107,7 @@ service.trampDown = (id) => {
 service.favorite = (id) => {
     return util.ajax({
         url: '/thesis/favorite',
+        type:'POST',        
         data: {
             things_id: id,
         }
@@ -118,6 +121,7 @@ service.favorite = (id) => {
 service.favorite = (id) => {
     return util.ajax({
         url: '/thesis/favorite',
+        type:'POST',        
         data: {
             things_id: id,
         }
@@ -142,6 +146,7 @@ service.getFunnyThingsDetail = (id) => {
 service.getFunnyThingsDetail = (data) => {
     return util.ajax({
         url: '/thesis/getFunnyThingsDetail',
+        type:'POST',
         data: {
             user_id: data.uid,
             things_id:data.thingsId,
@@ -154,11 +159,26 @@ service.getFunnyThingsDetail = (data) => {
 /**
  * 获取个人详细信息
  */
-service.getPersonalDetail = (uid) => {
+service.getUserInfo = (id) => {
     return util.ajax({
-        url: '/thesis/getPersonalDetail',
+        url: '/thesis/getUserInfo',
         data: {
-            user_id: uid,
+            user_id: id,
+        }
+    });
+}
+
+/**
+ * 修改密码
+ */
+service.changePwd = (id,data) => {
+    return util.ajax({
+        url: '/thesis/changePwd',
+        type:'POST',
+        data: {
+            user_id:id,
+            originPwd:data.originPwd,
+            password: data.newPwd,
         }
     });
 }

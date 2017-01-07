@@ -135,17 +135,18 @@
     </div>
     <div class="user-col-left">
         <div class="user-statis user-block">
-            <h3>糗百指数</h3>
+            <h3>农趣指数</h3>
             <ul>
-                <li><span>粉丝数:</span>0</li>
-                <li><span>关注数:</span>0</li>
+                <!-- <li><span>粉丝数:</span>0</li> -->
+                <!-- <li><span>关注数:</span>0</li> -->
                 <li><span>糗事:</span>0</li>
                 <li><span>评论:</span>0</li>
                 <li><span>笑脸:</span>0</li>
-                <li><span>糗事精选:</span>0</li>
+                <li><span>糗龄:</span>485天</li>
+                <!-- <li><span>糗事精选:</span>0</li> -->
             </ul>
         </div>
-        <div class="user-statis user-block">
+<!--         <div class="user-statis user-block">
             <h3>个人资料</h3>
             <ul>
                 <li><span>婚姻:</span></li>
@@ -154,6 +155,6 @@
                 <li><span>故乡:</span></li>
                 <li><span>糗龄:</span>485天</li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </div>

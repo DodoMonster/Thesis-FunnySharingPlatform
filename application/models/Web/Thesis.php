@@ -74,6 +74,51 @@ class ThesisModel extends \Core\BaseModels {
             return $this->returnResult(4000);
         }
     }
+
+    //获取用户信息
+    public function getUserInfo($user_id){
+        $options['table'] = 'user';
+        $options['where'] = array('user_id'=>'?');
+        $options['param'] = array($user_id);
+        $info = $this->db->find($options);
+        // print_r($info);exit;
+        if(empty($info)){
+            return $this->returnResult(201);
+        }else{
+            return $this->returnResult(200,$info);
+        }
+        
+    }
+
+
+    //修改头像
+    public function changeAvatar($user_id,$photo){
+        $options['table'] = 'user';
+        $tmpData = array('user_photo'=>'?');
+        $options['where'] = array('user_id'=>'?');
+        $options['param'] = array($photo,$user_id);
+        $info = $this->db->save($tmpData,$options);
+        if($info !== FALSE){
+            return $this->returnResult(200,$info);            
+        }else{
+            return $this->returnResult(201);            
+        }
+    }
+
+    //修改密码
+    public function changePwd($param){
+        $options['table'] = 'user';
+        $tmpData = array('user_password'=>'?');
+        $options['where'] = array('user_id'=>'?','user_password'=>'?');
+        $options['param'] = array(md5($param['password']),$param['user_id'],md5($param['originPwd']));
+        $info = $this->db->save($tmpData,$options);
+        if($info != FALSE){
+            return $this->returnResult(200,$info);            
+        }else{
+            return $this->returnResult(201);            
+        }
+    }
+
     // 获取热门趣事
     public function getHotThings(){
         $options['table'] = 'things';
@@ -98,6 +143,11 @@ class ThesisModel extends \Core\BaseModels {
         }
     }
     
+     //退出登录
+    public function logoutAction(){
+        $this->unsetOauthAdminSession();
+    }
+
     //获取文字趣事
     public function getWordThings($type){ 
         $options['table'] = 'things';
