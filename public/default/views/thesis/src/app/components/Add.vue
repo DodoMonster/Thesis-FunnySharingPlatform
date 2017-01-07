@@ -21,9 +21,9 @@
 			publishThings:function(){
 				let self = this;
 				if(self.publishData.is_anonymous){
-					self.publishData.is_anonymous = 1;
+					self.publishData.is_anonymous = 1;//1为匿名
 				}else{
-					self.publishData.is_anonymous = 0;
+					self.publishData.is_anonymous = 0;//0为不匿名
 				}
 				var file = document.querySelector('#article_picture').files[0];
 		        var fd = new FormData();
@@ -49,10 +49,12 @@
 		        xhr.onload = function() {
 		            if (this.status == 200) {
 		                var res = JSON.parse(this.response);
-		                if(res.code !== 0){
-		            		alert(res.msg);
+		                if(res.code === 0){
+		            		alert('趣事发表成功！');
+		            		let router = new Router();
+		            		router.go('/index/fresh');
 		                }else{
-		                	
+		                	alert(res.msg);
 		                }
 		            }		                		                
 		            }

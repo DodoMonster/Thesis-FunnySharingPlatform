@@ -20,7 +20,7 @@ store.userInfo = {
 }
 
 store.setUserInfo = () => {
-    store.userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    store.userInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
 }
 
 store.clearUserInfo = () => {
@@ -29,11 +29,11 @@ store.clearUserInfo = () => {
         user_name:'',
         user_photo:'',
     };
-    localStorage.clear();;
+    sessionStorage.clear();;
 }
 
 store.getUserInfo = () => {
-    return JSON.parse(localStorage.getItem('userInfo') || '{}');
+    return JSON.parse(sessionStorage.getItem('userInfo') || '{}');
 }
 
 store.showLoginForm = false;

@@ -23773,7 +23773,7 @@
 	};
 	
 	store.setUserInfo = function () {
-	    store.userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+	    store.userInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
 	};
 	
 	store.clearUserInfo = function () {
@@ -23782,11 +23782,11 @@
 	        user_name: '',
 	        user_photo: ''
 	    };
-	    localStorage.clear();;
+	    sessionStorage.clear();;
 	};
 	
 	store.getUserInfo = function () {
-	    return JSON.parse(localStorage.getItem('userInfo') || '{}');
+	    return JSON.parse(sessionStorage.getItem('userInfo') || '{}');
 	};
 	
 	store.showLoginForm = false;
@@ -25199,7 +25199,7 @@
 				}
 				_service2.default.login(self.loginData).done(function (res) {
 					alert(res.msg);
-					localStorage.setItem('userInfo', (0, _stringify2.default)(res.data.data));
+					sessionStorage.setItem('userInfo', (0, _stringify2.default)(res.data.data));
 					_index2.default.setUserInfo();
 					self.store.isLogin = true;
 					self.isLoginBox = true;
@@ -25558,9 +25558,13 @@
 				xhr.onload = function () {
 					if (this.status == 200) {
 						var res = JSON.parse(this.response);
-						if (res.code !== 0) {
+						if (res.code === 0) {
+							alert('趣事发表成功！');
+							var router = new Router();
+							router.go('/index/fresh');
+						} else {
 							alert(res.msg);
-						} else {}
+						}
 					}
 				};
 				xhr.send(fd);
