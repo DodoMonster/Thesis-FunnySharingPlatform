@@ -118,6 +118,18 @@ class ThesisModel extends \Core\BaseModels {
             return $this->returnResult(201);            
         }
     }
+    public function changeUname($param){
+        $options['table'] = 'user';
+        $tmpData = array('user_name'=>'?');
+        $options['where'] = array('user_id'=>'?');
+        $options['param'] = array($param['uname'],$param['user_id']);
+        $info = $this->db->save($tmpData,$options);
+        if($info != FALSE){
+            return $this->returnResult(200,$info);            
+        }else{
+            return $this->returnResult(201);            
+        }
+    }
 
     // 获取热门趣事
     public function getHotThings(){

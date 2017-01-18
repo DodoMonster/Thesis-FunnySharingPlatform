@@ -30,12 +30,13 @@
         			originPwd:'',
         			newPwd:'',
         			againPwd:''
-        		}
+        		},
+                newUname:'',
         	}
         },
 
         ready(){
-        	this.getUserInfo(this.userId);
+        	this.getUserInfo(this.userId);            
         	$('.user-header-menu a').click(function(){
         		$(this).addClass('active').parent('li').siblings().find('.active').removeClass('active');
         	})
@@ -46,6 +47,7 @@
         		let self = this;
         		service.getUserInfo(id).done(function(res){
         			self.userData = res.data;
+                    self.newUname = self.userData.user_name;
         		}).fail(function(res){
         			alert(res.msg);
         		})
@@ -117,9 +119,25 @@
         			}else{
         				alert('修改密码失败，请重试！');
         			}
-        		})
+        		});
         	},
-
+            changeUname:function(){
+                let self = this;
+                if(!self.newUname){
+                    alert('用户名不能为空');
+                    return false;
+                }                
+                service.changeUname(self.userData.user_id,self.newUname).done(function(res){
+                    alert('修改用户名成功！');
+                    self.getUserInfo(self.userData.user_id);
+                }).fail(function(res){
+                    if(res.msg){
+                        alert(res.msg);
+                    }else{
+                        alert('修改密码失败，请重试！');
+                    }
+                })
+            },
         	logout:function(){
 				let self = this;
 				service.logout().done(function(res){
@@ -128,7 +146,7 @@
 					store.isLogin = false;
 					store.clearUserInfo();	
 					let router = new Router;
-					router.go('/inedx/hot');
+					router.go('/index/hot');
 				}).fail(function(res){
 					alert(res.msg);
 				});

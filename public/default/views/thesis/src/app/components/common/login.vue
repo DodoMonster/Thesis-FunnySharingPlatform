@@ -72,9 +72,9 @@
 					return false;
 				}
 				service.login(self.loginData).done(function(res){
-					alert(res.msg);
-					sessionStorage.setItem('userInfo', JSON.stringify(res.data.data));
-					store.setUserInfo();	
+					alert(res.msg);					
+					store.setUserInfo(res.data.data);	
+					store.getUserInfo();
 					self.store.isLogin = true;	
 					self.isLoginBox = true;			
 					store.showLoginForm = false;					

@@ -26,7 +26,7 @@
             <a href="javascript:;" @click="showLoginBox()" v-show="!store.isLogin">登录/注册</a>
             <a v-link="{name:'userHome',params:{'user_id':store.userInfo.user_id}}" v-show="store.isLogin" class="userinfo">
                 <!-- <img v-bind:src="store.userInfo.user_photo" alt="用户头像"> -->
-                <img src="/uploads/avatar/default-avatar.png" alt="">
+                <img :src="store.userInfo.user_photo" alt="">
             {{store.userInfo.user_name}}</a>
             <a class="logout-btn" @click="logout" v-show="store.isLogin">退出</a>
         </div>

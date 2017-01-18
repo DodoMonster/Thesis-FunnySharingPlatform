@@ -19,8 +19,8 @@ store.userInfo = {
     user_photo:'',
 }
 
-store.setUserInfo = () => {
-    store.userInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
+store.setUserInfo = (userInfo) => {
+    store.userInfo = JSON.parse(sessionStorage.setItem('userInfo', JSON.stringify(userInfo)) || '{}');
 }
 
 store.clearUserInfo = () => {

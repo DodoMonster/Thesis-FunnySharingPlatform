@@ -202,6 +202,20 @@
             </ul>
         </div>
         <div id="editPass" class="user-block user-setting clearfix">
+            <h3>修改用户名</h3>
+            <form id="new_user">
+                <ul>
+                    <li>
+                        <label for="old_password" class="user-setting-inputlable">请输入用户名</label>
+                        <input size="30" type="text" v-model="newUname">
+                    </li>                   
+                    <li>
+                        <input  type="button" value="确认修改" @click="changeUname()">
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div id="editPass" class="user-block user-setting clearfix">
             <h3>修改密码</h3>
             <form id="new_user">
                 <ul>

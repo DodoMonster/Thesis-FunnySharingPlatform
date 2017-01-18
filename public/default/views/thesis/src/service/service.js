@@ -184,6 +184,19 @@ service.changePwd = (id,data) => {
 }
 
 /**
+ * 修改用户名
+ */
+service.changeUname = (id,data) => {
+    return util.ajax({
+        url: '/thesis/changeUname',
+        type:'POST',
+        data: {
+            user_id:id,
+            uname:data
+        }
+    });
+}
+/**
  * 获取我的收藏
  */
 service.getMyFavorite = (uid) => {

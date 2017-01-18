@@ -148,7 +148,7 @@ class thesisController extends \Core\BaseControllers {
 
     //修改密码
     public function changePwdAction(){
-        $oauthData['user_id']=isset($this->_postData['user_id']) ? $this->_postData['user_id']: '';
+        $oauthData['user_id']=isset($this->_postData['user_id']) ? $this->_postData['user_id']: $this->_uid;
         $oauthData['originPwd']=isset($this->_postData['originPwd']) ? $this->_postData['originPwd']: '';
         $oauthData['password']=isset($this->_postData['password']) ? $this->_postData['password']: '';
         $model = new \Web\ThesisModel();
@@ -167,6 +167,23 @@ class thesisController extends \Core\BaseControllers {
         echo json_encode($data);
     }
 
+    //修改用户名
+    public function changeUnameAction(){
+        $oauthData['user_id'] = isset($this->_postData['user_id']) ? $this->_postData['user_id']: $this->_uid;
+        $oauthData['uname']=isset($this->_postData['uname']) ? $this->_postData['uname']: '';
+       
+        $model = new \Web\ThesisModel();
+        $data = $model->changeUname($oauthData);
+
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '修改用户名成功！';            
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '修改用户名失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
     //获取用户信息
     public function getUserInfoAction(){
         $uid = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
