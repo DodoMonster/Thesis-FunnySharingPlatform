@@ -32,6 +32,7 @@
         			againPwd:''
         		},
                 newUname:'',
+                store:store,
         	}
         },
 
@@ -46,8 +47,10 @@
         	getUserInfo:function(id){
         		let self = this;
         		service.getUserInfo(id).done(function(res){
-        			self.userData = res.data;
+        			self.userData = res.data || {};
                     self.newUname = self.userData.user_name;
+                    store.setUserInfo(self.userData);   
+                    store.userInfo = store.getUserInfo();
         		}).fail(function(res){
         			alert(res.msg);
         		})

@@ -34,7 +34,7 @@
 			// },
 			getFunnyThingsList:function(){
 				let self = this;
-				service.getFunnyThingsList(self.page).done(function(res){
+				service.getFunnyThingsList(self.page.cur).done(function(res){
 					self.funnyThingsList = res.data.list;
 					self.page.totalNum = res.data.totalNum;
 					self.page.totalPage = res.data.totalPage;

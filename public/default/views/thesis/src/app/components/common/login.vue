@@ -74,7 +74,7 @@
 				service.login(self.loginData).done(function(res){
 					alert(res.msg);					
 					store.setUserInfo(res.data.data);	
-					store.getUserInfo();
+					store.userInfo = store.getUserInfo();
 					self.store.isLogin = true;	
 					self.isLoginBox = true;			
 					store.showLoginForm = false;					

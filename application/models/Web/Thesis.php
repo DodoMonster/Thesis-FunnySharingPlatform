@@ -130,30 +130,65 @@ class ThesisModel extends \Core\BaseModels {
             return $this->returnResult(201);            
         }
     }
+    // 获取趣事
+    public function getFunnyThingsList($page){
+        $options['table'] = 'user';
+        $user_list = $this->db->select($options);  
 
-    // 获取热门趣事
-    public function getHotThings(){
-        $options['table'] = 'things';
-        $options['order'] = 'comment_num desc';
-        $hot_things = $this->db->select($options);       
-        if(empty($hot_things)){
-            return $this->returnResult(201);die;
-        }else{
-            return $this->returnResult(200,$hot_things);
+        $options1['table'] = 'things';
+        $options1['order'] = 'comment_num desc';
+        $hot_things = $this->db->select($options1);   
+        // print_r($hot_things);
+        foreach($hot_things as $hot_k=>$hot_v){
+            foreach($user_list as $user_k=>$user_v){
+                if($hot_things[$hot_k]['user_id'] = $user_list[$user_k]['user_id']){
+                    $hot_things[$hot_k]['user_info'] = $user_list[$user_k];
+                }
+            }
+           
         }
-    }
 
-    //获取新鲜趣事
-    public function getFreshThings(){
-        $options['table'] = 'things';
-        $options['order'] = 'publish_time desc';
-        $fresh_things = $this->db->select($options);       
-        if(empty($fresh_things)){
-            return $this->returnResult(201);die;
-        }else{
-            return $this->returnResult(200,$fresh_things);
+        $options2['table'] = 'things';
+        $options2['order'] = 'publish_time desc';
+        $fresh_things = $this->db->select($options2);       
+        foreach($fresh_things as $hot_k=>$hot_v){
+            foreach($user_list as $user_k=>$user_v){
+                if($fresh_things[$hot_k]['user_id'] = $user_list[$user_k]['user_id']){
+                    $fresh_things[$hot_k]['user_info'] = $user_list[$user_k];
+                }
+            }
+           
         }
+
+        $list = array(
+            'fresh_things'=>$fresh_things,//推荐的播放视频
+            'hot_things'=>$hot_things,//轮播图                    
+        );
+        return $this->returnResult(200,$list);
     }
+    // // 获取热门趣事
+    // public function getHotThings(){
+    //     $options['table'] = 'things';
+    //     $options['order'] = 'comment_num desc';
+    //     $hot_things = $this->db->select($options);       
+    //     if(empty($hot_things)){
+    //         return $this->returnResult(201);die;
+    //     }else{
+    //         return $this->returnResult(200,$hot_things);
+    //     }
+    // }
+
+    // //获取新鲜趣事
+    // public function getFreshThings(){
+    //     $options['table'] = 'things';
+    //     $options['order'] = 'publish_time desc';
+    //     $fresh_things = $this->db->select($options);       
+    //     if(empty($fresh_things)){
+    //         return $this->returnResult(201);die;
+    //     }else{
+    //         return $this->returnResult(200,$fresh_things);
+    //     }
+    // }
     
      //退出登录
     public function logoutAction(){

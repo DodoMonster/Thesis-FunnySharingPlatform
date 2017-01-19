@@ -17,6 +17,12 @@
                 <a href="/users/29459066/comments/">评论</a>
             </li>
             <li>
+                <a href="/users/29459066/comments/">收藏</a>
+            </li>
+            <li v-if="store.userInfo.is_admin === 1">
+                <a href="/users/29459066/comments/">管理</a>
+            </li>
+            <li>
                 <a @click="changeType(2)">设置</a>
             </li>
         </ul>

@@ -37,7 +37,7 @@ class thesisController extends \Core\BaseControllers {
         // print_r($oauthData);
         $model = new \Web\ThesisModel();
         $data = $model->login($oauthData);
-
+        // print_r($data);
         if($data['code'] == 200){             
             $this->setOauthAdminSession($data);
             // print_r($this->_uid);
@@ -201,6 +201,25 @@ class thesisController extends \Core\BaseControllers {
         echo json_encode($data);
     }
 
+    public function getFunnyThingsListAction(){
+        $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->getFunnyThingsList($page);
+
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取趣事成功！'; 
+            $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
     //平台登出
     public function opLogoutAction(){
         $this->unsetOauthAdminSession();

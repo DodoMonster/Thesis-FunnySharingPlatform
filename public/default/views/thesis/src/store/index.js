@@ -20,7 +20,8 @@ store.userInfo = {
 }
 
 store.setUserInfo = (userInfo) => {
-    store.userInfo = JSON.parse(sessionStorage.setItem('userInfo', JSON.stringify(userInfo)) || '{}');
+    console.log(userInfo);
+    sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
 }
 
 store.clearUserInfo = () => {
@@ -33,7 +34,7 @@ store.clearUserInfo = () => {
 }
 
 store.getUserInfo = () => {
-    return JSON.parse(sessionStorage.getItem('userInfo') || '{}');
+    return JSON.parse(sessionStorage.getItem('userInfo') || '{}');   
 }
 
 store.showLoginForm = false;
