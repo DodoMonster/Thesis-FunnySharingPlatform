@@ -63,9 +63,14 @@ class ThesisModel extends \Core\BaseModels {
         if(empty($result)){
             return $this->returnResult(201);
         }
-        $tmpData = array('things_content'=>'?','things_image'=>'?','is_anonymous'=>'?','publish_time'=>'?','user_id'=>'?');
+        if(!empty($param['things_image'])){
+            $has_img = 1;
+        }else{
+            $has_img = 0;
+        }
+        $tmpData = array('things_content'=>'?','things_image'=>'?','is_anonymous'=>'?','publish_time'=>'?','user_id'=>'?','has_img'=>'?');
         $options1['table'] = 'things';        
-        $options1['param'] = array($param['things_content'],$param['things_img'],$param['is_anonymous'],time(),$user_id);
+        $options1['param'] = array($param['things_content'],$param['things_img'],$param['is_anonymous'],time(),$user_id,$has_img);
         $info = $this->db->add($tmpData,$options1);
 
         if($info!=FALSE){
@@ -118,6 +123,8 @@ class ThesisModel extends \Core\BaseModels {
             return $this->returnResult(201);            
         }
     }
+
+    //修改用户名
     public function changeUname($param){
         $options['table'] = 'user';
         $tmpData = array('user_name'=>'?');
@@ -130,100 +137,104 @@ class ThesisModel extends \Core\BaseModels {
             return $this->returnResult(201);            
         }
     }
+
     // 获取趣事
-    public function getFunnyThingsList($page){
+    public function getFunnyThingsList($page,$count){
+        //用户        
         $options['table'] = 'user';
         $user_list = $this->db->select($options);  
-
+        //热门 
         $options1['table'] = 'things';
+        $options1['where'] = array('is_approval'=>'?');
+        $options1['param'] =  array(1);    
+        $options1['limit'] = ($page-1)*$count.','.$count; 
+        $totalNum1=$this->db->count($options1);
+        $totalPage1=ceil($totalNum1/$count);   
         $options1['order'] = 'comment_num desc';
         $hot_things = $this->db->select($options1);   
-        // print_r($hot_things);
+
         foreach($hot_things as $hot_k=>$hot_v){
             foreach($user_list as $user_k=>$user_v){
                 if($hot_things[$hot_k]['user_id'] = $user_list[$user_k]['user_id']){
                     $hot_things[$hot_k]['user_info'] = $user_list[$user_k];
-                }
+                }                
             }
-           
+        
         }
+        $hot_things = array('totalPage'=>$totalPage1,'totalNum'=>$totalNum1,'page'=>$page,'list'=>$hot_things);
 
+
+        //新鲜
         $options2['table'] = 'things';
         $options2['order'] = 'publish_time desc';
+        $options2['limit'] = ($page-1)*$count.','.$count; 
+        $totalNum2=$this->db->count($options2);
+        $totalPage2=ceil($totalNum2/$count); 
+        $options2['where'] = array('is_approval'=>'?');
+        $options2['param'] =  array(1);  
         $fresh_things = $this->db->select($options2);       
-        foreach($fresh_things as $hot_k=>$hot_v){
+        foreach($fresh_things as $fresh_k=>$fresh_v){
             foreach($user_list as $user_k=>$user_v){
-                if($fresh_things[$hot_k]['user_id'] = $user_list[$user_k]['user_id']){
-                    $fresh_things[$hot_k]['user_info'] = $user_list[$user_k];
+                if($fresh_things[$fresh_k]['user_id'] = $user_list[$user_k]['user_id']){
+                    $fresh_things[$fresh_k]['user_info'] = $user_list[$user_k];
                 }
             }
            
         }
+        $fresh_things = array('totalPage'=>$totalPage2,'totalNum'=>$totalNum2,'page'=>$page,'list'=>$fresh_things);
+
+        //带图 
+        $options3['table'] = 'things';
+        $options3['where'] = array('is_approval'=>'?','has_img'=>'?');
+        $options3['param'] =  array(1,1);    
+        $options3['limit'] = ($page-1)*$count.','.$count; 
+        $totalNum3=$this->db->count($options3);
+        $totalPage3=ceil($totalNum3/$count);   
+        $options3['order'] = 'comment_num desc';
+        $img_things = $this->db->select($options3);   
+
+        foreach($img_things as $hot_k=>$hot_v){
+            foreach($user_list as $user_k=>$user_v){
+                if($img_things[$hot_k]['user_id'] = $user_list[$user_k]['user_id']){
+                    $img_things[$hot_k]['user_info'] = $user_list[$user_k];
+                }                
+            }
+        
+        }
+        $img_things = array('totalPage'=>$totalPage3,'totalNum'=>$totalNum3,'page'=>$page,'list'=>$img_things);
+
+        //纯文 
+        $options4['table'] = 'things';
+        $options4['where'] = array('is_approval'=>'?','has_img'=>'?');
+        $options4['param'] =  array(1,0);    
+        $options4['limit'] = ($page-1)*$count.','.$count; 
+        $totalNum4=$this->db->count($options4);
+        $totalPage4=ceil($totalNum4/$count);   
+        $options4['order'] = 'comment_num desc';
+        $word_things = $this->db->select($options4);   
+
+        foreach($word_things as $word_k=>$word_v){
+            foreach($user_list as $user_k=>$user_v){
+                if($word_things[$word_k]['user_id'] = $user_list[$user_k]['user_id']){
+                    $word_things[$word_k]['user_info'] = $user_list[$user_k];
+                }                
+            }
+        
+        }
+        $word_things = array('totalPage'=>$totalPage4,'totalNum'=>$totalNum4,'page'=>$page,'list'=>$word_things);
 
         $list = array(
-            'fresh_things'=>$fresh_things,//推荐的播放视频
-            'hot_things'=>$hot_things,//轮播图                    
+            'fresh_things'=>$fresh_things,//新鲜
+            'hot_things'=>$hot_things,//热门    
+            'img_things'=>$img_things,//带图
+            'word_things'=>$word_things,//纯文字
         );
         return $this->returnResult(200,$list);
     }
-    // // 获取热门趣事
-    // public function getHotThings(){
-    //     $options['table'] = 'things';
-    //     $options['order'] = 'comment_num desc';
-    //     $hot_things = $this->db->select($options);       
-    //     if(empty($hot_things)){
-    //         return $this->returnResult(201);die;
-    //     }else{
-    //         return $this->returnResult(200,$hot_things);
-    //     }
-    // }
-
-    // //获取新鲜趣事
-    // public function getFreshThings(){
-    //     $options['table'] = 'things';
-    //     $options['order'] = 'publish_time desc';
-    //     $fresh_things = $this->db->select($options);       
-    //     if(empty($fresh_things)){
-    //         return $this->returnResult(201);die;
-    //     }else{
-    //         return $this->returnResult(200,$fresh_things);
-    //     }
-    // }
     
      //退出登录
     public function logoutAction(){
         $this->unsetOauthAdminSession();
     }
-
-    //获取文字趣事
-    public function getWordThings($type){ 
-        $options['table'] = 'things';
-        $options['where'] = array('things_type'=>'?');
-        $options['order'] = 'publish_time desc';
-        $options['param'] = array($type);
-        $word_things = $this->db->select($options);       
-        if(empty($word_things)){
-            return $this->returnResult(201);die;
-        }else{
-            return $this->returnResult(200,$fresh_things);
-        }
-    }
-
-    //获取图片趣事
-    public function getPictureThings($type){ 
-        $options['table'] = 'things';
-        $options['where'] = array('things_type'=>'?');
-        $options['order'] = 'publish_time desc';
-        $options['param'] = array($type);
-        $picture_things = $this->db->select($options);       
-        if(empty($picture_things)){
-            return $this->returnResult(201);die;
-        }else{
-            return $this->returnResult(200,$picture_things);
-        }       
-
-    }
-
-   
 
 }

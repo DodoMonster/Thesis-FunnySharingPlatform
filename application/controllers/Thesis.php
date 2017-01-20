@@ -200,12 +200,11 @@ class thesisController extends \Core\BaseControllers {
         }
         echo json_encode($data);
     }
-
+    //获取趣事
     public function getFunnyThingsListAction(){
         $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
         $model = new \Web\ThesisModel();
-        $data = $model->getFunnyThingsList($page);
-
+        $data = $model->getFunnyThingsList($page,$this->_count);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '获取趣事成功！'; 

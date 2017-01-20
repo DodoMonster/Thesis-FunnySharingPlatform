@@ -11,10 +11,20 @@
 
 		name: 'Index',
 
+		route:{
+            canReuse: false,
+            data ({ to }) {
+                this.type = to.params.thingsType;                
+            }
+        },
+
 		data () {
 			return {				
 				store : store,
+				funnyThings:{},
 				funnyThingsList:[],
+				thingsData:{},
+				type:'hot',
 				page:{
 					cur:1,
 					totalNum:0,
@@ -25,7 +35,7 @@
 
 		ready(){
 			var self = this;
-			self.getFunnyThingsList(self.page);
+			self.getFunnyThingsList(self.page);			
 		},
 
 		methods:{
@@ -35,9 +45,27 @@
 			getFunnyThingsList:function(){
 				let self = this;
 				service.getFunnyThingsList(self.page.cur).done(function(res){
-					self.funnyThingsList = res.data.list;
-					self.page.totalNum = res.data.totalNum;
-					self.page.totalPage = res.data.totalPage;
+					self.thingsData = res.data;
+					switch(self.type) {
+						case 'hot':
+							self.funnyThings = self.thingsData.hot_things;
+							break;
+						case 'fresh':
+							self.funnyThings = self.thingsData.fresh_things;
+							break;
+						case 'pic':
+							self.funnyThings = self.thingsData.img_things;
+							break;
+						case 'word':
+							self.funnyThings = self.thingsData.word_things;
+							break;
+						default:
+							self.funnyThings = self.thingsData.hot_things;
+							break;
+					}
+					self.funnyThingsList = self.funnyThings.list;
+					self.page.totalNum = self.funnyThings.totalNum;
+					self.page.totalPage = self.funnyThings.totalPage;
 				}).fail(function(res){
 					util.dialog.alert({
 						msg:[res.msg],
@@ -95,6 +123,37 @@
 				let self = this;
 				self.page.cur = newVal;
 				self.getFunnyThingsList(self.page);
+			},
+			'type':function(newVal,oldVal){
+				let self = this;
+				console.log(self.thingsData);
+				switch(newVal) {
+						case 'hot':
+						console.log(1);
+							self.funnyThings = self.thingsData.hot_things;
+							break;
+						case 'fresh':
+						console.log(2);
+							self.funnyThings = self.thingsData.fresh_things;
+							break;
+						case 'pic':
+						console.log(3);
+							self.funnyThings = self.thingsData.img_things;
+							break;
+						case 'word':
+						console.log(4);
+							self.funnyThings = self.thingsData.word_things;
+							break;
+						default:
+						console.log(5);
+							self.funnyThings = self.thingsData.hot_things;
+							break;
+					}
+					console.log(self.thingsData.fresh_things);
+					console.log(self.funnyThings);
+					self.funnyThingsList = self.funnyThings.list;
+					self.page.totalNum = self.funnyThings.totalNum;
+					self.page.totalPage = self.funnyThings.totalPage;
 			}
 
 		},
