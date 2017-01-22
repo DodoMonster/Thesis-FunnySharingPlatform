@@ -12,6 +12,11 @@
 					<p>{{things.things_content}}</p>
 				</div>
 			</a>
+			<div class="thumb" v-if="things.things_image">
+				<a href="index.php#!/comment" target="_blank">
+				<img :src="things.things_image" alt="{{things.things_content}}" style="width: 40%;">
+				</a>
+			</div>
 			<div class="stats">
 				<span class="stats-vote">
 					<i class="number">{{things.funny_num}}</i>
@@ -28,10 +33,10 @@
 			<div class="stats-buttons clearfix">
 				<ul class="clearfix">
 					<li class="up">
-						<a href="javascript:;" class="voting"><i></i></a>
+						<a href="javascript:;" class="voting" @click="praiseUp(things.things.id)"><i></i></a>
 					</li>
 					<li class="down">
-						<a href="javascript:;" class="voting"><i></i></a>
+						<a href="javascript:;" class="voting"  @click="trampDown(things.things.id)><i></i></a>
 					</li>
 					<li class="comments">
 						<a href="" class="voting"><i></i></a>
@@ -45,6 +50,10 @@
 				<a href="" class="share-weibo" title="分享到微博"></a>
 			</div>
 		</div>
+	</div>
+</div>
+
+
 <!-- 
 		<div class="funny-things clearfix">
 			<div class="author clearfix">

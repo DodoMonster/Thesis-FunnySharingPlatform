@@ -232,6 +232,31 @@ class ThesisModel extends \Core\BaseModels {
         return $this->returnResult(200,$list);
     }
     
+    //点赞趣事
+    public function praiseUp($things_id,$user_id){
+        $options['table'] = 'funny_things';
+        $tmpData = array('user_id'=>'?','things_id'=>'?');
+        $options['where'] = array('user_id'=>'?','things_id'=>'?');
+        $options['param'] = array($user_id,$things_id));
+        $res = $this->db->add($tmpData,$options);
+        if($res != FALSE){
+            $options1['table'] = 'things';
+            $tmpData1 = array('funny_num'=>'?');
+            $options1['where'] = array('things_id'=>'?');
+            $options1['param'] = array($funny_num,$things_id));
+            $info = $this->db->save($tmpData1,$options1);
+            // if($info != FALSE){
+            //     return $this->returnResult(200,$info);            
+            // }else{
+            //     return $this->returnResult(201);            
+            // }
+            // return $this->returnResult(200,$res);            
+        }else{
+            return $this->returnResult(201);            
+        }
+
+        
+    }
      //退出登录
     public function logoutAction(){
         $this->unsetOauthAdminSession();

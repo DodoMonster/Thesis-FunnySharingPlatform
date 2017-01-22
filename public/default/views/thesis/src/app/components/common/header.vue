@@ -6,28 +6,20 @@
 	import $ from 'jquery';
 	export default {
 
-		replace: false,
+		replace: true,
 
 		name: 'Header',
-
-		route: {
-            canReuse: false, //决定组件是否可以被重用
-            data ({ to }) {
-                let id = to.params.thingsType;
-                let self = this;
-                self.thingsType = id;
-                console.info(to.params.thingsType);
-            }
-        },
 
         data(){
 			return{
 				userInfo:store.userInfo,
 				store:store,
+				thingsType:'hot',
 			}
 		},
 
 		ready(){
+			this.thingsType = this.$route.params.thingsType;
 			$('#nav li').click(function(){
 				$(this).addClass('highlight').siblings('li').removeClass('highlight');
 			});

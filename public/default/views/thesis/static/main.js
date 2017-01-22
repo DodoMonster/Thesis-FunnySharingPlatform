@@ -23674,28 +23674,19 @@
 	
 	exports.default = {
 	
-		replace: false,
+		replace: true,
 	
 		name: 'Header',
-	
-		route: {
-			canReuse: false, data: function data(_ref) {
-				var to = _ref.to;
-	
-				var id = to.params.thingsType;
-				var self = this;
-				self.thingsType = id;
-				console.info(to.params.thingsType);
-			}
-		},
 	
 		data: function data() {
 			return {
 				userInfo: _index2.default.userInfo,
-				store: _index2.default
+				store: _index2.default,
+				thingsType: 'hot'
 			};
 		},
 		ready: function ready() {
+			this.thingsType = this.$route.params.thingsType;
 			(0, _jquery2.default)('#nav li').click(function () {
 				(0, _jquery2.default)(this).addClass('highlight').siblings('li').removeClass('highlight');
 			});
@@ -25440,7 +25431,7 @@
 	
 			praiseUp: function praiseUp(id) {
 				var self = this;
-				_service2.default.praiseUp().done(function (res) {
+				_service2.default.praiseUp(id).done(function (res) {
 					alert('点赞成功！');
 				}).fail(function (res) {
 					_util2.default.dialog.alert({
@@ -25451,7 +25442,7 @@
 	
 			trampDown: function trampDown(id) {
 				var self = this;
-				_service2.default.trampDown().done(function (res) {
+				_service2.default.trampDown(id).done(function (res) {
 					alert('踩成功！');
 				}).fail(function (res) {
 					_util2.default.dialog.alert({
@@ -25488,34 +25479,28 @@
 			},
 			'type': function type(newVal, oldVal) {
 				var self = this;
-				console.log(self.thingsData);
-				switch (newVal) {
-					case 'hot':
-						console.log(1);
-						self.funnyThings = self.thingsData.hot_things;
-						break;
-					case 'fresh':
-						console.log(2);
-						self.funnyThings = self.thingsData.fresh_things;
-						break;
-					case 'pic':
-						console.log(3);
-						self.funnyThings = self.thingsData.img_things;
-						break;
-					case 'word':
-						console.log(4);
-						self.funnyThings = self.thingsData.word_things;
-						break;
-					default:
-						console.log(5);
-						self.funnyThings = self.thingsData.hot_things;
-						break;
+				if (self.thingsData.hot_things) {
+					switch (newVal) {
+						case 'hot':
+							self.funnyThings = self.thingsData.hot_things;
+							break;
+						case 'fresh':
+							self.funnyThings = self.thingsData.fresh_things;
+							break;
+						case 'pic':
+							self.funnyThings = self.thingsData.img_things;
+							break;
+						case 'word':
+							self.funnyThings = self.thingsData.word_things;
+							break;
+						default:
+							self.funnyThings = self.thingsData.hot_things;
+							break;
+					}
+					self.funnyThingsList = self.funnyThings.list;
+					self.page.totalNum = self.funnyThings.totalNum;
+					self.page.totalPage = self.funnyThings.totalPage;
 				}
-				console.log(self.thingsData.fresh_things);
-				console.log(self.funnyThings);
-				self.funnyThingsList = self.funnyThings.list;
-				self.page.totalNum = self.funnyThings.totalNum;
-				self.page.totalPage = self.funnyThings.totalPage;
 			}
 	
 		}
@@ -25526,7 +25511,7 @@
 /* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\t\t<div class=\"funny-things clearfix\" v-for=\"things in funnyThingsList\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\">\r\n\t\t\t\t\t<img :src=\"things.user_info.user_photo\" alt=\"用户头像\">\r\n\t\t\t\t</a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>{{things.user_info.user_name}}</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>{{things.things_content}}</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">{{things.funny_num}}</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">{{things.unfunny_num}}</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n<!-- \r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"thumb\">\r\n\t\t\t\t<a href=\"index.php#!/comment\" target=\"_blank\">\r\n\t\t\t\t<img src=\"http://pic.qiushibaike.com/system/pictures/11803/118031114/medium/app118031114.jpg\" alt=\"朋友圈都乱了\">\r\n\t\t\t\t</a>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div> -->\r\n\r\n\t</div>\r\n</div>\r\n\r\n";
+	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\t\t<div class=\"funny-things clearfix\" v-for=\"things in funnyThingsList\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\">\r\n\t\t\t\t\t<img :src=\"things.user_info.user_photo\" alt=\"用户头像\">\r\n\t\t\t\t</a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>{{things.user_info.user_name}}</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>{{things.things_content}}</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"thumb\" v-if=\"things.things_image\">\r\n\t\t\t\t<a href=\"index.php#!/comment\" target=\"_blank\">\r\n\t\t\t\t<img :src=\"things.things_image\" alt=\"{{things.things_content}}\" style=\"width: 40%;\">\r\n\t\t\t\t</a>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">{{things.funny_num}}</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">{{things.unfunny_num}}</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\" @click=\"praiseUp(things.things.id)\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"  @click=\"trampDown(things.things.id)><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n\r\n\r\n<!-- \r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"funny-things clearfix\">\r\n\t\t\t<div class=\"author clearfix\">\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><img src=\"" + __webpack_require__(17) + "\" alt=\"用户头像\"></a>\r\n\t\t\t\t<a href=\"index.php#!/userHome\" target=\"_blank\"><h2>挖鼻孔的老虎</h2></a>\r\n\t\t\t</div>\r\n\t\t\t<a href=\"index.php#!/comment\" class=\"contentHerf\">\r\n\t\t\t\t<div class=\"funny-content\">\r\n\t\t\t\t\t<p>借了老板的大奔去同学聚会。<br>\r\n\t\t\t\t\t   刚停好车就碰到了班花，然后她一晚上粘着我，聚会结束了让我送她回家，还请我进屋坐坐……<br>\r\n\t\t\t\t\t   从她家出来，我手上多了一个三百多块的汽车香水座，她老公推销的。\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</div>\r\n\t\t\t</a>\r\n\t\t\t<div class=\"thumb\">\r\n\t\t\t\t<a href=\"index.php#!/comment\" target=\"_blank\">\r\n\t\t\t\t<img src=\"http://pic.qiushibaike.com/system/pictures/11803/118031114/medium/app118031114.jpg\" alt=\"朋友圈都乱了\">\r\n\t\t\t\t</a>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats\">\r\n\t\t\t\t<span class=\"stats-vote\">\r\n\t\t\t\t\t<i class=\"number\">4030</i>\r\n\t\t\t\t\t好笑\r\n\t\t\t\t</span>\r\n\t\t\t\t<span class=\"stats-comments\">\r\n\t\t\t\t\t<i class=\"dash\">·</i>\r\n\t\t\t\t\t<a href=\"index.php#!/comment\">\r\n\t\t\t\t\t\t<i class=\"number\">110</i>\r\n\t\t\t\t\t\t评论\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"stats-buttons clearfix\">\r\n\t\t\t\t<ul class=\"clearfix\">\r\n\t\t\t\t\t<li class=\"up\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"down\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"comments\">\r\n\t\t\t\t\t\t<a href=\"javascript:;\" class=\"voting\"><i></i></a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"single-share\">\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-wechat\" title=\"分享到微信\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qq\" title=\"分享到QQ\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-qzone\" title=\"分享到空间\"></a>\r\n\t\t\t\t<a href=\"javascript:;\" class=\"share-weibo\" title=\"分享到微博\"></a>\r\n\t\t\t</div>\r\n\t\t</div> -->\r\n\r\n\t</div>\r\n</div>\r\n\r\n";
 
 /***/ },
 /* 39 */

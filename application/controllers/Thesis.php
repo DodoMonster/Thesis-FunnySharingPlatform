@@ -87,7 +87,7 @@ class thesisController extends \Core\BaseControllers {
                 $data['msg'] = '图片上传失败，请重试！';
                 echo json_encode($data);
             }else{
-                $param['things_img'] = '/uploads/avatar/' . $template;
+                $param['things_img'] = '/uploads/things_img/' . $template;
             }
         }else{
             $param['things_img'] = '';
@@ -216,6 +216,68 @@ class thesisController extends \Core\BaseControllers {
         }else{
             $data['code'] = 1;
             $data['msg'] = '获取趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //踩
+    public function trampDownAction(){
+        $this->checkIsLogin();
+        $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->trampDown($things_id,$this->_uid);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '踩趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 0;
+            $data['msg'] = '踩趣事成功！'; 
+            $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '踩趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+    //点赞
+    public function praiseUpAction(){
+        $this->checkIsLogin();
+        $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->praiseUp($things_id,$this->_uid);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '点赞趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 0;
+            $data['msg'] = '点赞趣事成功！'; 
+            $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '点赞趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+     //收藏趣事
+    public function favoriteAction(){
+        $this->checkIsLogin();
+        $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->praiseUp($things_id,$this->_uid);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '收藏趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 0;
+            $data['msg'] = '收藏趣事成功！'; 
+            $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '收藏趣事失败，请重试'; 
         }
         echo json_encode($data);
     }

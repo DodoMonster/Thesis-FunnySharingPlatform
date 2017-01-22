@@ -14,7 +14,7 @@
 		route:{
             canReuse: false,
             data ({ to }) {
-                this.type = to.params.thingsType;                
+                this.type = to.params.thingsType; 
             }
         },
 
@@ -63,7 +63,7 @@
 							self.funnyThings = self.thingsData.hot_things;
 							break;
 					}
-					self.funnyThingsList = self.funnyThings.list;
+					self.funnyThingsList = self.funnyThings.list;				
 					self.page.totalNum = self.funnyThings.totalNum;
 					self.page.totalPage = self.funnyThings.totalPage;
 				}).fail(function(res){
@@ -76,7 +76,7 @@
 			//好笑
 			praiseUp:function(id){
 				let self = this;
-				service.praiseUp().done(function(res){
+				service.praiseUp(id).done(function(res){
 					alert('点赞成功！');
 				}).fail(function(res){
 					util.dialog.alert({
@@ -88,7 +88,7 @@
 			//不好笑
 			trampDown:function(id){
 				let self = this;
-				service.trampDown().done(function(res){
+				service.trampDown(id).done(function(res){
 					alert('踩成功！');
 				}).fail(function(res){
 					util.dialog.alert({
@@ -126,34 +126,29 @@
 			},
 			'type':function(newVal,oldVal){
 				let self = this;
-				console.log(self.thingsData);
-				switch(newVal) {
+				if(self.thingsData.hot_things){
+					switch(newVal) {
 						case 'hot':
-						console.log(1);
 							self.funnyThings = self.thingsData.hot_things;
 							break;
 						case 'fresh':
-						console.log(2);
 							self.funnyThings = self.thingsData.fresh_things;
 							break;
 						case 'pic':
-						console.log(3);
 							self.funnyThings = self.thingsData.img_things;
 							break;
 						case 'word':
-						console.log(4);
 							self.funnyThings = self.thingsData.word_things;
 							break;
 						default:
-						console.log(5);
 							self.funnyThings = self.thingsData.hot_things;
 							break;
-					}
-					console.log(self.thingsData.fresh_things);
-					console.log(self.funnyThings);
+					}					
 					self.funnyThingsList = self.funnyThings.list;
 					self.page.totalNum = self.funnyThings.totalNum;
 					self.page.totalPage = self.funnyThings.totalPage;
+				}
+				
 			}
 
 		},
