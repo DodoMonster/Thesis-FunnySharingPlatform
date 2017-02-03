@@ -2,6 +2,33 @@
 namespace Web;
 class ThesisModel extends \Core\BaseModels {
 
+    public function handleUser($funny_thing,$unfunny_thing,$thing){
+        // print_r($thing);
+        // print_r($funny_thing);
+        // print_r($unfunny_thing);
+
+        foreach ($thing as $t_key => $t_val) {
+            foreach ($funny_thing as $u_key => $u_val) {
+                if($thing[$t_key]['things_id'] == $funny_thing[$u_key]['things_id']){
+                    $thing[$t_key]['is_praise'] = true;
+                    continue;
+                }else{
+                    $thing[$t_key]['is_praise'] = false;
+                }
+            }
+            foreach ($unfunny_thing as $un_key => $un_val) {
+                if($thing[$t_key]['things_id'] == $unfunny_thing[$un_key]['things_id']){
+                    $thing[$t_key]['is_tramp'] = true;
+                    continue;                    
+                }else{
+                    $thing[$t_key]['is_tramp'] = false;
+                }
+            }
+        }
+        // print_r($thing);
+        return $thing;
+    }
+
      //注册
     public function register($param){
         $options['table'] = 'user';
@@ -139,10 +166,28 @@ class ThesisModel extends \Core\BaseModels {
     }
 
     // 获取趣事
-    public function getFunnyThingsList($page,$count){
+    public function getFunnyThingsList($page,$count,$uid){
         //用户        
         $options['table'] = 'user';
-        $user_list = $this->db->select($options);  
+        $user_list = $this->db->select($options); 
+
+        if($uid > 0){
+            //该用户点过赞的趣事
+            $options11['table'] = 'funny_things';
+            $options11['where'] = array('user_id'=>'?');
+            $options11['param'] =  array($uid); 
+            $funny_list = $this->db->select($options11);
+
+            // print_r($funny_list);die;
+             //该用户踩过的趣事
+            $options12['table'] = 'unfunny_things';
+            $options12['where'] = array('user_id'=>'?');
+            $options12['param'] =  array($uid); 
+            $unfunny_list = $this->db->select($options12);
+            // print_r($unfunny_list);die;
+
+        }
+        
         //热门 
         $options1['table'] = 'things';
         $options1['where'] = array('is_approval'=>'?');
@@ -158,8 +203,10 @@ class ThesisModel extends \Core\BaseModels {
                 if($hot_things[$hot_k]['user_id'] = $user_list[$user_k]['user_id']){
                     $hot_things[$hot_k]['user_info'] = $user_list[$user_k];
                 }                
-            }
-        
+            }        
+        }
+        if($uid > 0){
+            $hot_things = $this->handleUser($funny_list,$unfunny_list,$hot_things);
         }
         $hot_things = array('totalPage'=>$totalPage1,'totalNum'=>$totalNum1,'page'=>$page,'list'=>$hot_things);
 
@@ -181,6 +228,9 @@ class ThesisModel extends \Core\BaseModels {
             }
            
         }
+        if($uid > 0){
+            $fresh_things = $this->handleUser($funny_list,$unfunny_list,$fresh_things);
+        }
         $fresh_things = array('totalPage'=>$totalPage2,'totalNum'=>$totalNum2,'page'=>$page,'list'=>$fresh_things);
 
         //带图 
@@ -201,6 +251,9 @@ class ThesisModel extends \Core\BaseModels {
             }
         
         }
+        if($uid > 0){
+            $img_things = $this->handleUser($funny_list,$unfunny_list,$img_things);
+        }
         $img_things = array('totalPage'=>$totalPage3,'totalNum'=>$totalNum3,'page'=>$page,'list'=>$img_things);
 
         //纯文 
@@ -220,6 +273,9 @@ class ThesisModel extends \Core\BaseModels {
                 }                
             }
         
+        }
+        if($uid > 0){
+            $word_things = $this->handleUser($funny_list,$unfunny_list,$word_things);
         }
         $word_things = array('totalPage'=>$totalPage4,'totalNum'=>$totalNum4,'page'=>$page,'list'=>$word_things);
 

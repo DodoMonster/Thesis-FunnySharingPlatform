@@ -25,7 +25,7 @@
 				<span class="stats-comments">
 					<i class="dash">·</i>
 					<a href="index.php#!/comment">
-						<i class="number">{{things.unfunny_num}}</i>
+						<i class="number">{{things.comment_num}}</i>
 						评论
 					</a>
 				</span>
@@ -33,10 +33,10 @@
 			<div class="stats-buttons clearfix">
 				<ul class="clearfix">
 					<li class="up">
-						<a href="javascript:;" class="voting" @click="praiseUp(things.things_id,$event)"><i></i></a>
+						<a href="javascript:;" class="voting" :class="[things.is_praise ? 'voted' : '']"@click="praiseUp(things.things_id,$event)"><i></i></a>
 					</li>
 					<li class="down">
-						<a href="javascript:;" class="voting"  @click="trampDown(things.things_id,$event)"><i></i></a>
+						<a href="javascript:;" class="voting" :class="[things.is_tramp ? 'voted' : '']"  @click="trampDown(things.things_id,$event)"><i></i></a>
 					</li>
 					<li class="comments">
 						<a href="" class="voting"><i></i></a>

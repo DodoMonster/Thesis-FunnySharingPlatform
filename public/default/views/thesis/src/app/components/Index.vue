@@ -75,22 +75,34 @@
 
 			//好笑
 			praiseUp:function(id,event){
-				let self = this;
-				$(event.currentTarget).addClass('voted');									
-				service.praiseUp(id).done(function(res){
-				}).fail(function(res){
-					alert(res.msg);
-				});
+				let self = this,
+					$this = $(event.currentTarget);
+				if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
+					return false;
+
+				}else{
+					service.praiseUp(id).done(function(res){
+				    	$this.addClass('voted');													
+					}).fail(function(res){
+						alert(res.msg);
+					});
+				}						
+				
 			},
 
 			//不好笑
 			trampDown:function(id,event){
-				let self = this;
-				$(event.currentTarget).addClass('voted');									
-				service.trampDown(id).done(function(res){
-				}).fail(function(res){
-					alert(res.msg);
-				});
+				let self = this,
+					$this = $(event.currentTarget);
+				if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
+					return false;
+				}else{									
+					service.trampDown(id).done(function(res){
+						$this.addClass('voted');
+					}).fail(function(res){
+						alert(res.msg);
+					});
+				}
 			},
 
 			//收藏
