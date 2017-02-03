@@ -5,17 +5,15 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     protected $_postData=array();//post数据
     protected $_getData=array();//get数据
     protected $_paramData=array();//路由数据
-    protected $_mid=0;//当前登录用户uid
-    protected $_uid=0;//当前登录admin用户uid
-    protected $_uidLevel=0;//当前登录admin用户权限
+    protected $_aid=0;//当前登录管理后台用户aid
+    protected $_uid=0;//当前登录用户uid
     protected $_count=20;//默认个数
     protected $_page=1;//默认页数
     protected $_userAgent='';
     protected $_httpUserAgent='';
     protected $_httpReferer='';
     protected $_returnFormat='json';
-    protected $_isAjax = FALSE;
-     
+    protected $_isAjax = FALSE;     
     protected $_clientId='';
     protected $_clientSecret='';
     protected $_oauthToken='';
@@ -31,8 +29,6 @@ class BaseControllers extends \Yaf_Controller_Abstract{
         // $this->fitlerUserAgent();
         // $this->isDebug();
         $this->fitlerSession();
-       
-
     }
     
     //参数过滤
@@ -100,12 +96,16 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     private function fitlerSession(){
         if(isset($_SESSION[SESSION_LOGGED_USERID]) && $_SESSION[SESSION_LOGGED_USERID]>0){
             $this->_uid = $_SESSION[SESSION_LOGGED_USERID];
-        }    
+        }  
+
+        // elseif(isset($_SESSION[SESSION_LOGGED_ADMIN_USERID]) && $_SESSION[SESSION_LOGGED_ADMIN_USERID]>0){
+        //     $this->_aid = $_SESSION[SESSION_LOGGED_ADMIN_USERID];
+        // }   
     }
     
     
     //设置授权管理员会话
-    protected function setOauthAdminSession($data){ 
+    protected function setWebSession($data){ 
         if($data['code']==200 && isset($data['data']['user_id']) && $data['data']['user_id']>0){
             session_regenerate_id();
             $_SESSION = [];
@@ -115,7 +115,26 @@ class BaseControllers extends \Yaf_Controller_Abstract{
     }
     
     //取消授权管理员会话
-    protected function unsetOauthAdminSession(){
+    protected function unsetWebSession(){
+        if(filter_has_var(INPUT_COOKIE, session_name())){
+            setcookie(session_name(),'',time() - 3600,'/');
+        }
+        $_SESSION = array();
+        session_destroy();
+    }
+
+    // 设置后台管理系统授权管理员会话
+    protected function setAdminSession($data){ 
+        if($data['code']==200 && isset($data['data']['admin_id']) && $data['data']['admin_id']>0){
+            session_regenerate_id();
+            $_SESSION = [];
+            $_SESSION[SESSION_LOGGED_ADMIN_USERID] = $data['data']['admin_id'];
+            $this->_uid = $_SESSION[SESSION_LOGGED_ADMIN_USERID];
+        }               
+    }
+    
+    //取消后台管理系统授权管理员会话
+    protected function unsetAdminSession(){
         if(filter_has_var(INPUT_COOKIE, session_name())){
             setcookie(session_name(),'',time() - 3600,'/');
         }

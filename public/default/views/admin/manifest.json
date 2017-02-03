@@ -1,0 +1,10 @@
+{
+  "name": "lib",
+  "content": {
+    "./node_modules/vue/dist/vue.common.js": 1,
+    "./node_modules/webpack/node_modules/node-libs-browser/node_modules/process/browser.js": 2,
+    "./node_modules/jquery/dist/jquery.js": 3,
+    "./node_modules/vue-router/dist/vue-router.js": 4,
+    "./node_modules/hdp-vue-components/dist/hdp-vue-components.js": 5
+  }
+}

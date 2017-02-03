@@ -39,7 +39,7 @@ class thesisController extends \Core\BaseControllers {
         $data = $model->login($oauthData);
         // print_r($data);
         if($data['code'] == 200){             
-            $this->setOauthAdminSession($data);
+            $this->setWebSession($data);
             // print_r($this->_uid);
             $data['code'] = 0;
             $data['data'] = $data;
@@ -224,15 +224,16 @@ class thesisController extends \Core\BaseControllers {
     public function trampDownAction(){
         $this->checkIsLogin();
         $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+        $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
         $model = new \Web\ThesisModel();
-        $data = $model->trampDown($things_id,$this->_uid);
+        $data = $model->trampDown($things_id,$uid);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '踩趣事成功！'; 
             $data['data'] = $data['data'];
         }elseif($data['code'] == 201){ 
-            $data['code'] = 0;
-            $data['msg'] = '踩趣事成功！'; 
+            $data['code'] = 1;
+            $data['msg'] = '您已踩过该趣事！'; 
             $data['data'] = array();
         }else{
             $data['code'] = 1;
@@ -244,15 +245,16 @@ class thesisController extends \Core\BaseControllers {
     public function praiseUpAction(){
         $this->checkIsLogin();
         $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+        $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
         $model = new \Web\ThesisModel();
-        $data = $model->praiseUp($things_id,$this->_uid);
+        $data = $model->praiseUp($things_id,$uid);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '点赞趣事成功！'; 
             $data['data'] = $data['data'];
         }elseif($data['code'] == 201){ 
-            $data['code'] = 0;
-            $data['msg'] = '点赞趣事成功！'; 
+            $data['code'] = 1;
+            $data['msg'] = '您已点赞过该趣事！'; 
             $data['data'] = array();
         }else{
             $data['code'] = 1;
@@ -265,15 +267,44 @@ class thesisController extends \Core\BaseControllers {
     public function favoriteAction(){
         $this->checkIsLogin();
         $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+        $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
         $model = new \Web\ThesisModel();
-        $data = $model->praiseUp($things_id,$this->_uid);
+        $data = $model->favorite($things_id,$uid);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '收藏趣事成功！'; 
             $data['data'] = $data['data'];
         }elseif($data['code'] == 201){ 
+            $data['code'] = 1;
+            $data['msg'] = '您已收藏过该趣事！'; 
+            $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '收藏趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+     //评论趣事
+    public function commentAction(){
+        $this->checkIsLogin();
+        $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+        $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
+        $content = isset($this->_postData['content']) ? $this->_postData['content'] : '';
+        if(empty($content)){
+            $data['code'] = 1;
+            $data['msg'] = '评论不能为空！'; 
+            $data['data'] = $data['data'];
+        }
+        $model = new \Web\ThesisModel();
+        $data = $model->comment($things_id,$uid,$content);
+        if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '收藏趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 1;
+            $data['msg'] = '您已收藏过该趣事！'; 
             $data['data'] = array();
         }else{
             $data['code'] = 1;
@@ -283,7 +314,7 @@ class thesisController extends \Core\BaseControllers {
     }
     //平台登出
     public function opLogoutAction(){
-        $this->unsetOauthAdminSession();
+        $this->unsetWebSession();
         $data['code'] = 0;
         $data['msg'] = '退出成功！'; 
         echo json_encode($data);           

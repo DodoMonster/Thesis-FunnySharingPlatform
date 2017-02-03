@@ -9,5 +9,14 @@ class IndexController extends \Core\BaseControllers{
         $this->forward("Thesis","home");        
     }
     
+    public function indexAction(){
+    	// echo "hello world";
+        $this->forward("Admin","index");        
+    }
+
+    public function loginAction(){
+        echo "hello world";
+        // $this->forward("Adminlogin","login");        
+    }
 }
 

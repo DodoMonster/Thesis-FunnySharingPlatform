@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Meta tags -->
+		<<head>
+		<!-- Meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="description" content="">
+		<link rel="stylesheet" href="<?php echo RESOURCE_PATH . '/views/admin/src/libs/vendor/bootstrap/css/bootstrap.min.css';?>">
+		<link rel="stylesheet" href="<?php echo RESOURCE_PATH . '/views/admin/src/libs/vendor/themify-icons/themify-icons.css';?>">
+		<link rel="stylesheet" href="<?php echo RESOURCE_PATH . '/views/admin/src/libs/css/core.css';?>">
+		
+
+		<!-- Title -->
+		<title>华农趣事平台-后台管理系统</title>
+</head>
+	<body class="auth-bg">
+		
+		<div class="auth">
+			<div class="auth-header">
+				<h1>华农趣事平台</h1>
+				<h6>Welcome! Sign in to access the admin panel</h6>
+			</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-4 offset-md-4">
+						<form method="post" action="/newadmin/newadminoauth/opLogin/" id="login_form">
+							<div class="form-group">
+								<div class="input-group">
+									<input type="text" class="form-control" name="account" placeholder="username" required autocomplete>
+									<div class="input-group-addon"><i class="ti-user"></i></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+								<input type="password" class="form-control" name="password" required placeholder="Password">
+									<div class="input-group-addon"><i class="ti-key"></i></div>
+								</div>
+							</div>
+							<div class="form-group clearfix">
+								<div class="pull-xs-left">
+									<input type="text" name="captcha" class="control-input " placeholder="varify code" required>
+								</div>
+								<div class="pull-xs-right">
+									<img class="code-img " src="/admin/adminlogin/getCaptcha" onclick="this.src='/admin/adminlogin/getCaptcha'">
+								</div>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-danger btn-block">登陆</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+</body>
+</html>

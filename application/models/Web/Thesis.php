@@ -6,8 +6,8 @@ class ThesisModel extends \Core\BaseModels {
     public function register($param){
         $options['table'] = 'user';
         $photo = '/uploads/avatar/default-avatar.png';
-        $tmpData = array('user_name'=>'?','user_password'=>'?','user_photo'=>'?');
-        $options['param'] = array($param['username'],md5($param['password']),$photo);
+        $tmpData = array('user_name'=>'?','user_password'=>'?','user_photo'=>'?','register_time');
+        $options['param'] = array($param['username'],md5($param['password']),$photo,time());
         $status = $this->db->add($tmpData,$options);
         // print_r($info);exit;
         if($status !== FALSE){
@@ -20,8 +20,8 @@ class ThesisModel extends \Core\BaseModels {
     //登陆
     public function login($param){
         $options['table'] = 'user';
-        $options['where'] = array('user_name'=>'?','user_password'=>'?');
-        $options['param'] = array($param['username'],md5($param['password']));
+        $options['where'] = array('user_name'=>'?','user_password'=>'?','is_delete');
+        $options['param'] = array($param['username'],md5($param['password']),0);
         // print_r($options);exit;
         $info = $this->db->find($options);
         // print_r($info);exit;
@@ -235,31 +235,62 @@ class ThesisModel extends \Core\BaseModels {
     //点赞趣事
     public function praiseUp($things_id,$user_id){
         $options['table'] = 'funny_things';
-        $tmpData = array('user_id'=>'?','things_id'=>'?');
         $options['where'] = array('user_id'=>'?','things_id'=>'?');
-        $options['param'] = array($user_id,$things_id));
-        $res = $this->db->add($tmpData,$options);
-        if($res != FALSE){
-            $options1['table'] = 'things';
-            $tmpData1 = array('funny_num'=>'?');
-            $options1['where'] = array('things_id'=>'?');
-            $options1['param'] = array($funny_num,$things_id));
-            $info = $this->db->save($tmpData1,$options1);
-            // if($info != FALSE){
-            //     return $this->returnResult(200,$info);            
-            // }else{
-            //     return $this->returnResult(201);            
-            // }
-            // return $this->returnResult(200,$res);            
+        $options['param'] = array($user_id,$things_id);
+        $res = $this->db->find($options);
+        if($res === FALSE){
+            $updateSql = "update things set funny_num = funny_num + 1 where things_id = $things_id"
+        //     $info = $this->db->exec($updateSql);
+        //     return $this->returnResult(200,$info);            
         }else{
             return $this->returnResult(201);            
-        }
-
-        
-    }
-     //退出登录
-    public function logoutAction(){
-        $this->unsetOauthAdminSession();
+        }    
     }
 
+    //踩趣事
+    public function trampDown($things_id,$user_id){
+        $options['table'] = 'unfunny_things';
+        $options['where'] = array('user_id'=>'?','things_id'=>'?');
+        $options['param'] = array($user_id,$things_id);
+        $res = $this->db->find($options);
+        if($res === FALSE){
+            $updateSql = "update things set funny_num = funny_num + 1 where things_id = $things_id"
+        //     $info = $this->db->exec($updateSql);
+        //     return $this->returnResult(200,$info);            
+        }else{
+            return $this->returnResult(201);            
+        }    
+    }
+
+    //收藏趣事
+    public function favorite($things_id,$user_id){
+        $options['table'] = 'favorite_things';
+        $options['where'] = array('user_id'=>'?','things_id'=>'?');
+        $options['param'] = array($user_id,$things_id);
+        $res = $this->db->find($options);
+        if($res === FALSE){
+            $updateSql = "update things set funny_num = funny_num + 1 where things_id = $things_id"
+        //     $info = $this->db->exec($updateSql);
+        //     return $this->returnResult(200,$info);            
+        }else{
+            return $this->returnResult(201);            
+        }    
+    }
+    //评论趣事
+    public function comment($things_id,$user_id,$content){
+        $options['table'] = 'comment_user';
+        $tmpData = array('user_id'=>'?','things_id'=>'?');
+        $options['param'] = array($user_id,$things_id);
+        $res = $this->db->add($tmpData,$options);
+
+        $options1['table'] = 'comment';
+        $tmpData1 = array('user_id'=>'?','things_id'=>'?','content'=>'?','comment_time'=>'?');
+        $options1['param'] = array($user_id,$things_id,$content,time());
+        $info = $this->db->add($tmpData1,$options1);
+        if($res !== FALSE && $info !== FALSE){           
+            return $this->returnResult(200,$info);            
+        }else{
+            return $this->returnResult(4000);            
+        }    
+    }
 }
