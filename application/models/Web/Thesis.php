@@ -6,7 +6,7 @@ class ThesisModel extends \Core\BaseModels {
     public function register($param){
         $options['table'] = 'user';
         $photo = '/uploads/avatar/default-avatar.png';
-        $tmpData = array('user_name'=>'?','user_password'=>'?','user_photo'=>'?','register_time');
+        $tmpData = array('user_name'=>'?','user_password'=>'?','user_photo'=>'?','register_time'=>'?');
         $options['param'] = array($param['username'],md5($param['password']),$photo,time());
         $status = $this->db->add($tmpData,$options);
         // print_r($info);exit;
@@ -20,7 +20,7 @@ class ThesisModel extends \Core\BaseModels {
     //登陆
     public function login($param){
         $options['table'] = 'user';
-        $options['where'] = array('user_name'=>'?','user_password'=>'?','is_delete');
+        $options['where'] = array('user_name'=>'?','user_password'=>'?','is_delete'=>'?');
         $options['param'] = array($param['username'],md5($param['password']),0);
         // print_r($options);exit;
         $info = $this->db->find($options);
@@ -237,11 +237,17 @@ class ThesisModel extends \Core\BaseModels {
         $options['table'] = 'funny_things';
         $options['where'] = array('user_id'=>'?','things_id'=>'?');
         $options['param'] = array($user_id,$things_id);
-        $res = $this->db->find($options);
-        if($res === FALSE){
-            $updateSql = "update things set funny_num = funny_num + 1 where things_id = $things_id"
-        //     $info = $this->db->exec($updateSql);
-        //     return $this->returnResult(200,$info);            
+        $res = $this->db->find($options);        
+
+        if(empty($res)){
+            $options1['table'] = 'funny_things';
+            $tmpData = array('user_id'=>'?','things_id'=>'?');
+            $options1['param'] = array($user_id,$things_id);
+            $res1 = $this->db->add($tmpData,$options1);
+
+            $updateSql = 'update things set funny_num = funny_num + 1 where things_id =  '.$things_id;
+            $info = $this->db->create($updateSql);
+            return $this->returnResult(200,$info);            
         }else{
             return $this->returnResult(201);            
         }    
@@ -253,13 +259,18 @@ class ThesisModel extends \Core\BaseModels {
         $options['where'] = array('user_id'=>'?','things_id'=>'?');
         $options['param'] = array($user_id,$things_id);
         $res = $this->db->find($options);
-        if($res === FALSE){
-            $updateSql = "update things set funny_num = funny_num + 1 where things_id = $things_id"
-        //     $info = $this->db->exec($updateSql);
-        //     return $this->returnResult(200,$info);            
+        if(empty($res)){
+            $options1['table'] = 'unfunny_things';
+            $tmpData = array('user_id'=>'?','things_id'=>'?');
+            $options1['param'] = array($user_id,$things_id);
+            $res1 = $this->db->add($tmpData,$options1);
+
+            $updateSql = 'update things set unfunny_num = unfunny_num + 1 where things_id =  '.$things_id;
+            $info = $this->db->create($updateSql);
+            return $this->returnResult(200,$info);            
         }else{
             return $this->returnResult(201);            
-        }    
+        }       
     }
 
     //收藏趣事
@@ -268,14 +279,20 @@ class ThesisModel extends \Core\BaseModels {
         $options['where'] = array('user_id'=>'?','things_id'=>'?');
         $options['param'] = array($user_id,$things_id);
         $res = $this->db->find($options);
-        if($res === FALSE){
-            $updateSql = "update things set funny_num = funny_num + 1 where things_id = $things_id"
-        //     $info = $this->db->exec($updateSql);
-        //     return $this->returnResult(200,$info);            
+        if(empty($res)){
+            $options1['table'] = 'favorite_things';
+            $tmpData = array('user_id'=>'?','things_id'=>'?');
+            $options1['param'] = array($user_id,$things_id);
+            $res1 = $this->db->add($tmpData,$options1);
+
+            $updateSql = 'update things set favorite_num = favorite_num + 1 where things_id =  '.$things_id;
+            $info = $this->db->create($updateSql);
+            return $this->returnResult(200,$info);            
         }else{
             return $this->returnResult(201);            
-        }    
+        }     
     }
+    
     //评论趣事
     public function comment($things_id,$user_id,$content){
         $options['table'] = 'comment_user';

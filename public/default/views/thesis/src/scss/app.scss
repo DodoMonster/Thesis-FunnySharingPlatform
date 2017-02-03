@@ -101,6 +101,7 @@ header{
 .author h2{
     color: #9b8878;
     font-weight: 400;
+    line-height: 35px;
 }
 .author img{
     width: 35px;
@@ -163,6 +164,12 @@ header{
 }
 .stats-buttons .comments a i {
     background-image: url('../../static/image/comment.png');
+}
+.stats-buttons .up .voted i {
+    background-image: url('../../static/image/funny_actived.png');
+}
+.stats-buttons .down .voted i {
+    background-image: url('../../static/image/not-funny_actived.png');
 }
 .single-share {
     float: right;

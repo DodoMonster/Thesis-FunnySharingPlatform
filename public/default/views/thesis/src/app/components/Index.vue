@@ -1,7 +1,7 @@
 <template src="./Index.tpl"></template>
 
 <script>
-	import vue from 'vue';
+	import $ from 'jquery';
 	import util from '../../libs/js/util.js';
 	import store from '../../store/index.js';
 	import service from '../../service/service.js';
@@ -74,26 +74,24 @@
 			},
 
 			//好笑
-			praiseUp:function(id){
+			praiseUp:function(id,event){
 				let self = this;
+				$(event.currentTarget).addClass('voted');									
 				service.praiseUp(id).done(function(res){
-					alert('点赞成功！');
+					alert(res.msg);
 				}).fail(function(res){
-					util.dialog.alert({
-						msg:[res.msg],
-					});
+					alert(res.msg);
 				});
 			},
 
 			//不好笑
-			trampDown:function(id){
+			trampDown:function(id,event){
 				let self = this;
+				$(event.currentTarget).addClass('voted');									
 				service.trampDown(id).done(function(res){
-					alert('踩成功！');
+					alert(res.msg);
 				}).fail(function(res){
-					util.dialog.alert({
-						msg:[res.msg]
-					});
+					alert(res.msg);
 				});
 			},
 
@@ -101,11 +99,9 @@
 			favorite:function(id){
 				let self = this;
 				service.trampDown().done(function(res){
-					alert('收藏成功');
+					alert(res.msg);
 				}).fail(function(res){
-					util.dialog.alert({
-						msg:[res.msg]
-					});
+					alert(res.msg);
 				});
 			}
 
