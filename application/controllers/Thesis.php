@@ -232,7 +232,7 @@ class thesisController extends \Core\BaseControllers {
             $data['msg'] = '踩趣事成功！'; 
             $data['data'] = $data['data'];
         }elseif($data['code'] == 201){ 
-            $data['code'] = 0;
+            $data['code'] = 1;
             $data['msg'] = '您已踩过该趣事！'; 
             $data['data'] = array();
         }else{
@@ -253,7 +253,7 @@ class thesisController extends \Core\BaseControllers {
             $data['msg'] = '点赞趣事成功！'; 
             $data['data'] = $data['data'];
         }elseif($data['code'] == 201){ 
-            $data['code'] = 0;
+            $data['code'] = 1;
             $data['msg'] = '您已点赞过该趣事！'; 
             $data['data'] = array();
         }else{
@@ -275,7 +275,7 @@ class thesisController extends \Core\BaseControllers {
             $data['msg'] = '收藏趣事成功！'; 
             $data['data'] = $data['data'];
         }elseif($data['code'] == 201){ 
-            $data['code'] = 0;
+            $data['code'] = 1;
             $data['msg'] = '您已收藏过该趣事！'; 
             $data['data'] = array();
         }else{

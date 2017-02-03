@@ -25432,9 +25432,7 @@
 			praiseUp: function praiseUp(id, event) {
 				var self = this;
 				(0, _jquery2.default)(event.currentTarget).addClass('voted');
-				_service2.default.praiseUp(id).done(function (res) {
-					alert(res.msg);
-				}).fail(function (res) {
+				_service2.default.praiseUp(id).done(function (res) {}).fail(function (res) {
 					alert(res.msg);
 				});
 			},
@@ -25442,18 +25440,14 @@
 			trampDown: function trampDown(id, event) {
 				var self = this;
 				(0, _jquery2.default)(event.currentTarget).addClass('voted');
-				_service2.default.trampDown(id).done(function (res) {
-					alert(res.msg);
-				}).fail(function (res) {
+				_service2.default.trampDown(id).done(function (res) {}).fail(function (res) {
 					alert(res.msg);
 				});
 			},
 	
 			favorite: function favorite(id) {
 				var self = this;
-				_service2.default.trampDown().done(function (res) {
-					alert(res.msg);
-				}).fail(function (res) {
+				_service2.default.trampDown().done(function (res) {}).fail(function (res) {
 					alert(res.msg);
 				});
 			}

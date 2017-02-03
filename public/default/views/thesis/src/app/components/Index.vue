@@ -78,7 +78,6 @@
 				let self = this;
 				$(event.currentTarget).addClass('voted');									
 				service.praiseUp(id).done(function(res){
-					alert(res.msg);
 				}).fail(function(res){
 					alert(res.msg);
 				});
@@ -89,7 +88,6 @@
 				let self = this;
 				$(event.currentTarget).addClass('voted');									
 				service.trampDown(id).done(function(res){
-					alert(res.msg);
 				}).fail(function(res){
 					alert(res.msg);
 				});
@@ -99,7 +97,6 @@
 			favorite:function(id){
 				let self = this;
 				service.trampDown().done(function(res){
-					alert(res.msg);
 				}).fail(function(res){
 					alert(res.msg);
 				});
