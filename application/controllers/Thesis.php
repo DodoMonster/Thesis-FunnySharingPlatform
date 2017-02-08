@@ -285,30 +285,67 @@ class thesisController extends \Core\BaseControllers {
         echo json_encode($data);
     }
 
-     //评论趣事
+    //获取单条趣事信息
+    public function getThingInfoAction(){
+        $thing_id = isset($this->_getData['thing_id']) ? $this->_getData['thing_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->getThingInfo($thing_id,$this->_uid);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取单条趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 1;
+            $data['msg'] = '没有该趣事！'; 
+            // $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取单条趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //获取评论列表
+    public function getCommentsListAction(){
+        $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
+        $thing_id = isset($this->_getData['thing_id']) ? $this->_getData['thing_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->getCommentsList($page,$thing_id,$this->_count);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取评论列表成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 1;
+            $data['msg'] = '评论列表为空！'; 
+            // $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取评论列表失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //评论趣事
     public function commentAction(){
         $this->checkIsLogin();
-        $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+        $things_id = isset($this->_postData['thing_id']) ? $this->_postData['thing_id'] : '';
         $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
         $content = isset($this->_postData['content']) ? $this->_postData['content'] : '';
         if(empty($content)){
             $data['code'] = 1;
-            $data['msg'] = '评论不能为空！'; 
+            $data['msg'] = '评论内容不能为空！'; 
             $data['data'] = $data['data'];
         }
         $model = new \Web\ThesisModel();
         $data = $model->comment($things_id,$uid,$content);
         if($data['code'] == 200){ 
             $data['code'] = 0;
-            $data['msg'] = '收藏趣事成功！'; 
+            $data['msg'] = '评论趣事成功！'; 
             $data['data'] = $data['data'];
-        }elseif($data['code'] == 201){ 
-            $data['code'] = 0;
-            $data['msg'] = '您已收藏过该趣事！'; 
-            $data['data'] = array();
         }else{
             $data['code'] = 1;
-            $data['msg'] = '收藏趣事失败，请重试'; 
+            $data['msg'] = '评论趣事失败，请重试'; 
         }
         echo json_encode($data);
     }

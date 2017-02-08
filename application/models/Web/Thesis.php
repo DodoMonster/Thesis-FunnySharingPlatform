@@ -1,31 +1,28 @@
 <?php
 namespace Web;
-class ThesisModel extends \Core\BaseModels {
-
+class ThesisModel extends \Core\BaseModels {    
     public function handleUser($funny_thing,$unfunny_thing,$thing){
-        // print_r($thing);
-        // print_r($funny_thing);
-        // print_r($unfunny_thing);
-
         foreach ($thing as $t_key => $t_val) {
-            foreach ($funny_thing as $u_key => $u_val) {
-                if($thing[$t_key]['things_id'] == $funny_thing[$u_key]['things_id']){
-                    $thing[$t_key]['is_praise'] = true;
-                    continue;
+            foreach ($funny_thing as $f_key => $f_val) {
+                if($thing[$t_key]['things_id'] == $funny_thing[$f_key]['things_id']){
+                    $thing[$t_key]['is_praise'] = 1;
+                    break;
                 }else{
-                    $thing[$t_key]['is_praise'] = false;
+                    $thing[$t_key]['is_praise'] = 0;                     
                 }
+
             }
             foreach ($unfunny_thing as $un_key => $un_val) {
                 if($thing[$t_key]['things_id'] == $unfunny_thing[$un_key]['things_id']){
-                    $thing[$t_key]['is_tramp'] = true;
-                    continue;                    
+                    $thing[$t_key]['is_tramp'] = 1;
+                    break;
                 }else{
-                    $thing[$t_key]['is_tramp'] = false;
-                }
-            }
+                    $thing[$t_key]['is_tramp'] = 0;
+                }          
+            }           
+            $thing[$t_key]['comment_param'] = $thing[$t_key]['comment_param'] . '_' . $thing[$t_key]['is_praise'] . '_' . $thing[$t_key]['is_tramp'];
         }
-        // print_r($thing);
+        // print_r($thing);die;
         return $thing;
     }
 
@@ -199,6 +196,7 @@ class ThesisModel extends \Core\BaseModels {
         $hot_things = $this->db->select($options1);   
 
         foreach($hot_things as $hot_k=>$hot_v){
+            $hot_things[$hot_k]['comment_param'] = $hot_things[$hot_k]['things_id'];
             foreach($user_list as $user_k=>$user_v){
                 if($hot_things[$hot_k]['user_id'] = $user_list[$user_k]['user_id']){
                     $hot_things[$hot_k]['user_info'] = $user_list[$user_k];
@@ -221,6 +219,7 @@ class ThesisModel extends \Core\BaseModels {
         $options2['param'] =  array(1);  
         $fresh_things = $this->db->select($options2);       
         foreach($fresh_things as $fresh_k=>$fresh_v){
+            $fresh_things[$fresh_k]['comment_param'] = $fresh_things[$fresh_k]['things_id'];
             foreach($user_list as $user_k=>$user_v){
                 if($fresh_things[$fresh_k]['user_id'] = $user_list[$user_k]['user_id']){
                     $fresh_things[$fresh_k]['user_info'] = $user_list[$user_k];
@@ -243,10 +242,11 @@ class ThesisModel extends \Core\BaseModels {
         $options3['order'] = 'comment_num desc';
         $img_things = $this->db->select($options3);   
 
-        foreach($img_things as $hot_k=>$hot_v){
+        foreach($img_things as $img_k=>$img_v){
+            $img_things[$img_k]['comment_param'] = $img_things[$img_k]['things_id'];            
             foreach($user_list as $user_k=>$user_v){
-                if($img_things[$hot_k]['user_id'] = $user_list[$user_k]['user_id']){
-                    $img_things[$hot_k]['user_info'] = $user_list[$user_k];
+                if($img_things[$img_k]['user_id'] = $user_list[$user_k]['user_id']){
+                    $img_things[$img_k]['user_info'] = $user_list[$user_k];
                 }                
             }
         
@@ -267,6 +267,7 @@ class ThesisModel extends \Core\BaseModels {
         $word_things = $this->db->select($options4);   
 
         foreach($word_things as $word_k=>$word_v){
+            $word_things[$word_k]['comment_param'] = $word_things[$word_k]['things_id'];                        
             foreach($user_list as $user_k=>$user_v){
                 if($word_things[$word_k]['user_id'] = $user_list[$user_k]['user_id']){
                     $word_things[$word_k]['user_info'] = $user_list[$user_k];
@@ -348,18 +349,92 @@ class ThesisModel extends \Core\BaseModels {
             return $this->returnResult(201);            
         }     
     }
-    
+    //根据趣事id获取单条趣事
+    public function getThingInfo($thing_id,$user_id){
+        $options['table'] = 'things';
+        $options['where'] = array('things_id'=>'?');
+        $options['param'] = array($thing_id);
+        $thing = $this->db->find($options);
+
+        if(empty($thing)){
+            return $this->returnResult(201);
+        }
+        // print_r($thing['user_id']);die;
+        $options1['table'] = 'user';
+        $options1['field'] = 'user_name,user_photo';
+        $options1['where'] = array('user_id'=>'?');
+        $options1['param'] = array($thing['user_id']);
+        $user = $this->db->find($options1);
+        if(empty($user)){
+            return $this->returnResult(201);
+        }
+        $thing['userInfo'] = $user;
+        return $this->returnResult(200,$thing);
+    }
+
+    //获取评论列表
+    public function getCommentsList($page,$thing_id,$count){
+        $options['table'] = 'comment';
+        $options['where'] = array('things_id'=>'?');
+        $options['param'] = array($thing_id);
+        $options['limit'] = ($page-1)*$count.','.$count;
+        $totalNum = $this->db->count($options);
+        $totalPage = ceil($totalNum/$count);   
+        $options['order'] = 'comment_time asc';
+        $comments = $this->db->select($options); 
+
+        if(empty($comments)){
+            return $this->returnResult(201);
+        }
+        // print_r($comments);die;
+        // $options1['table'] = 'comment_user';
+        // // $options1['field'] = 'user_id,user_name,user_photo';
+        // $options1['where'] = array('thing_id'=>'?');
+        // $options1['param'] = array($thing_id);
+        // $comment_users = $this->db->find($options1);
+        // if(empty($comment_users)){
+        //     return $this->returnResult(201);
+        // }
+
+        // $options2['table'] = 'user';
+        // $options2['field'] = 'user_id,user_name,user_photo';       
+        // $users = $this->db->select($options2);
+        // if(empty($users)){
+        //     return $this->returnResult(201);
+        // }
+
+        // $comments.foreach ($comment as $c_key => $v_value) {
+        //     $users.foreach ($user as $u_key => $u_value) {
+        //         if($comment[$c_key]['user_id'] ===  $user[$u_key]['user_id']){}
+        //     }
+        //     $users.foreach ($user as $u_key => $u_value) {
+        //         if($comment[$c_key]['user_id'] ===  $user[$u_key]['user_id']){}
+        //     }
+        // }
+        $data = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$comments);
+        return $this->returnResult(200,$data);
+    }
+
     //评论趣事
     public function comment($things_id,$user_id,$content){
-        $options['table'] = 'comment_user';
-        $tmpData = array('user_id'=>'?','things_id'=>'?');
-        $options['param'] = array($user_id,$things_id);
-        $res = $this->db->add($tmpData,$options);
+        $options['table'] = 'user';
+        $tmpData = array('user_id'=>'?');
+        $options['param'] = array($user_id);
+        $user = $this->db->find($options);
 
-        $options1['table'] = 'comment';
-        $tmpData1 = array('user_id'=>'?','things_id'=>'?','content'=>'?','comment_time'=>'?');
-        $options1['param'] = array($user_id,$things_id,$content,time());
-        $info = $this->db->add($tmpData1,$options1);
+        $options1['table'] = 'comment_user';
+        $tmpData1 = array('user_id'=>'?','things_id'=>'?');
+        $options1['param'] = array($user_id,$things_id);
+        $res = $this->db->add($tmpData1,$options1);
+
+        $options1['table'] = 'things';
+        $updateSql = 'update things set comment_num = comment_num + 1 where things_id =  '.$things_id;
+        $data = $this->db->create($updateSql);
+
+        $options2['table'] = 'comment';
+        $tmpData2 = array('user_id'=>'?','user_name'=>'?','user_photo'=>'?','things_id'=>'?','content'=>'?','comment_time'=>'?');
+        $options2['param'] = array($user_id,$user['user_name'],$user['user_photo'],$things_id,$content,time());
+        $info = $this->db->add($tmpData2,$options2);
         if($res !== FALSE && $info !== FALSE){           
             return $this->returnResult(200,$info);            
         }else{
