@@ -2,18 +2,18 @@
 	<div id="content-block" class="clearfix">
 		<div class="funny-things clearfix" v-for="things in funnyThingsList">
 			<div class="author clearfix">
-				<a href="index.php#!/userHome" target="_blank">
+				<a v-link="{name:'userHome',params:{user_id:things.user_id}}" target="_blank">
 					<img :src="things.user_info.user_photo" alt="用户头像">
 				</a>
-				<a href="index.php#!/userHome" target="_blank"><h2>{{things.user_info.user_name}}</h2></a>
+				<a v-link="{name:'userHome',params:{user_id:things.user_id}}" target="_blank"><h2>{{things.user_info.user_name}}</h2></a>
 			</div>
-			<a href="index.php#!/comment" class="contentHerf">
+			<a v-link="{name:'comment',params:{thing_id:things.comment_param}}" class="contentHerf">
 				<div class="funny-content">
 					<p>{{things.things_content}}</p>
 				</div>
 			</a>
 			<div class="thumb" v-if="things.things_image">
-				<a href="index.php#!/comment" target="_blank">
+				<a v-link="{name:'comment',params:{thing_id:things.comment_param}}" target="_blank">
 				<img :src="things.things_image" alt="{{things.things_content}}" style="width: 40%;">
 				</a>
 			</div>
@@ -24,7 +24,7 @@
 				</span>
 				<span class="stats-comments">
 					<i class="dash">·</i>
-					<a href="index.php#!/comment">
+					<a v-link="{name:'comment',params:{thing_id:things.comment_param}}">
 						<i class="number">{{things.comment_num}}</i>
 						评论
 					</a>
@@ -33,13 +33,13 @@
 			<div class="stats-buttons clearfix">
 				<ul class="clearfix">
 					<li class="up">
-						<a href="javascript:;" class="voting" :class="[things.is_praise ? 'voted' : '']"@click="praiseUp(things.things_id,$event)"><i></i></a>
+						<a href="javascript:;" class="voting" :class="[things.is_praise == 1? 'voted' : '']"@click="praiseUp(things.things_id,$event)"><i></i></a>
 					</li>
 					<li class="down">
-						<a href="javascript:;" class="voting" :class="[things.is_tramp ? 'voted' : '']"  @click="trampDown(things.things_id,$event)"><i></i></a>
+						<a href="javascript:;" class="voting" :class="[things.is_tramp == 1? 'voted' : '']"  @click="trampDown(things.things_id,$event)"><i></i></a>
 					</li>
 					<li class="comments">
-						<a href="" class="voting"><i></i></a>
+						<a v-link="{name:'comment',params:{thing_id:things.comment_param}}" class="voting"><i></i></a>
 					</li>
 				</ul>
 			</div>

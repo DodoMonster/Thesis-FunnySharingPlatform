@@ -249,3 +249,42 @@ service.sendThings = (data) => {
         }
     });
 }
+
+/**
+ * 获取趣事信息
+ */
+service.getThingInfo = (id) => {    
+    return util.ajax({
+        url: '/thesis/getThingInfo',
+        data: {
+            thing_id: id
+        }
+    });
+}
+
+/**
+ * 获取评论列表
+ */
+service.getCommentsList = (page,id) => {    
+    return util.ajax({
+        url: '/thesis/getCommentsList',
+        data: {
+            page: page,
+            thing_id:id
+        }
+    });
+}
+
+/**
+ * 评论趣事
+ */
+service.comment = (id,content) => {    
+    return util.ajax({
+        url: '/thesis/comment',
+        type:'POST',
+        data: {
+            content: content,
+            thing_id:id
+        }
+    });
+}

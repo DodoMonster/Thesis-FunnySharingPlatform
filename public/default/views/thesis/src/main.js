@@ -20,23 +20,11 @@ router.map({
 		name:'index',
 		component: Index
 	},
-	// '/index/:thingsType': {
-	// 	name:'fresh',
-	// 	component: Index
-	// },
-	// '/index/:thingsType': {
-	// 	name:'pic',
-	// 	component: Index
-	// },
-	// '/index/:thingsType': {
-	// 	name:'word',
-	// 	component: Index
-	// },
 	'/index/add': {
 		name:'add',
 		component: Add
 	},
-	'/comment': {
+	'/comment/:thing_id': {
 		name:'comment',
 		component: Comment
 	},
