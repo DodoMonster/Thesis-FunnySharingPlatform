@@ -20,6 +20,7 @@
 
 		ready(){
 			this.thingsType = this.$route.params.thingsType;
+			this.userInfo = store.getUserInfo();
 			$('#nav li').click(function(){
 				$(this).addClass('highlight').siblings('li').removeClass('highlight');
 			});

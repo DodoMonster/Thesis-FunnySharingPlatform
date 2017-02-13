@@ -200,6 +200,39 @@ class thesisController extends \Core\BaseControllers {
         }
         echo json_encode($data);
     }
+    //获取单个用户发表的趣事
+    public function getUserThingAction(){
+        $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
+        $page = isset($this->_getData['page']) ? $this->_getData['page'] : $this->page;
+        $model = new \Web\ThesisModel();
+        $data = $model->getUserThing($user_id,$page);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取用户趣事成功！'; 
+            $data['data'] = $data['data'];
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取用户趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //获取单个用户发表的评论
+    public function getUserCommentAction(){
+        $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
+        $page = isset($this->_getData['page']) ? $this->_getData['page'] : $this->page;
+        $model = new \Web\ThesisModel();
+        $data = $model->getUserComment($user_id,$page);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取用户评论成功！'; 
+            $data['data'] = $data['data'];
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取用户评论失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
     //获取趣事
     public function getFunnyThingsListAction(){
         $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
@@ -349,6 +382,7 @@ class thesisController extends \Core\BaseControllers {
         }
         echo json_encode($data);
     }
+
     //平台登出
     public function opLogoutAction(){
         $this->unsetWebSession();

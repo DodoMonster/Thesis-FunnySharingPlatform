@@ -11,16 +11,6 @@
 
 		name: 'UserHome',
 
-		route: {
-            canReuse: false, //决定组件是否可以被重用
-            data ({ to }) {
-                let id = to.params.user_id;
-                let self = this;
-                self.userId = id;
-                // console.info(to.params.articleId);
-            }
-        },
-
         data(){
         	return{
         		userId:'',
@@ -31,15 +21,23 @@
         			newPwd:'',
         			againPwd:''
         		},
+                userInfo:store.userInfo,
                 newUname:'',
                 store:store,
+                isSelf:false,
         	}
         },
 
         ready(){
-        	this.getUserInfo(this.userId);            
+            let self = this;
+            self.userId = self.$route.params.user_id;
+            self.userInfo = store.getUserInfo();
+        	self.getUserInfo(self.userId);
+            if(self.userInfo && self.userInfo.user_id && self.userInfo.user_id == userId){
+                self.isSelf = true;
+            }            
         	$('.user-header-menu a').click(function(){
-        		$(this).addClass('active').parent('li').siblings().find('.active').removeClass('active');
+        		$(self).addClass('active').parent('li').siblings().find('.active').removeClass('active');
         	})
         },
 

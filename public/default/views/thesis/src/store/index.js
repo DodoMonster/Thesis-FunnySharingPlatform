@@ -20,8 +20,16 @@ store.userInfo = {
 }
 
 store.setUserInfo = (userInfo) => {
-    console.log(userInfo);
-    sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+    try{
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+    }catch(e){
+        store.userInfo = {
+            user_id:'',
+            user_name:'',
+            user_photo:'',
+        }
+    }
 }
 
 store.clearUserInfo = () => {
@@ -30,11 +38,16 @@ store.clearUserInfo = () => {
         user_name:'',
         user_photo:'',
     };
-    sessionStorage.clear();;
+    localStorage.clear();;
 }
 
 store.getUserInfo = () => {
-    return JSON.parse(sessionStorage.getItem('userInfo') || '{}');   
+    try{
+        var userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    }catch(e){
+        var userInfo = JSON.parse('{}');
+    }
+    return userInfo;   
 }
 
 store.showLoginForm = false;
@@ -43,18 +56,6 @@ store.isLogin = false;
 /**
  * 存放页面信息
  */
-
-store.pageData = {   
-    setCurrentPath(path) {
-        this.currentPath = path;
-        store.emit('currentPath-updated');
-    },
-    setCurrentPageName(name, icon) {
-        this.currentPageName = name;
-        this.currentPageIcon = icon;
-        store.emit('currentPageName-updated');
-    },
-};
 
 function isEmptyObject(obj) {
   for (var key in obj) {

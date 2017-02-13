@@ -119,6 +119,39 @@ class ThesisModel extends \Core\BaseModels {
         
     }
 
+    //获取用户发表的趣事
+    public function getUserThing($user_id,$page){
+        $options['table'] = 'things';
+        $options['where'] = array('is_approval'=>'?','user_id');
+        $options['param'] =  array(1,$user_id);    
+        $options['limit'] = ($page-1)*$count.','.$count; 
+        $totalNum1=$this->db->count($options);
+        $totalPage1=ceil($totalNum1/$count);   
+        $options['order'] = 'publish_time desc';
+        $things = $this->db->select($options);
+        if(!empty($things)){
+            return $this->returnResult(200,$things); 
+        }else{
+            return $this->returnResult(201,$things); 
+        }
+    }
+
+    //获取用户发表的评论
+    public function getUserComment($user_id,$page){
+        $options['table'] = 'comment';
+        $options['where'] = array('is_approval'=>'?','user_id');
+        $options['param'] =  array(1,$user_id);    
+        $options['limit'] = ($page-1)*$count.','.$count; 
+        $totalNum1=$this->db->count($options);
+        $totalPage1=ceil($totalNum1/$count);   
+        $options['order'] = 'publish_time desc';
+        $comment = $this->db->select($options);
+        if(!empty($comment)){
+            return $this->returnResult(200,$things); 
+        }else{
+            return $this->returnResult(201,$things); 
+        }
+    }
 
     //修改头像
     public function changeAvatar($user_id,$photo){

@@ -19,10 +19,7 @@
             <li>
                 <a href="/users/29459066/comments/">收藏</a>
             </li>
-            <li v-if="store.userInfo.is_admin === 1">
-                <a href="/users/29459066/comments/">管理</a>
-            </li>
-            <li>
+            <li v-if="isSelf">
                 <a @click="changeType(2)">设置</a>
             </li>
         </ul>
