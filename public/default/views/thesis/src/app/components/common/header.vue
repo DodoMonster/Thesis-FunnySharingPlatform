@@ -19,12 +19,17 @@
 		},
 
 		ready(){
-			this.thingsType = this.$route.params.thingsType;
-			this.userInfo = store.getUserInfo();
+			let self = this;
+			if(self.$route.name !== 'userHome'){
+				self.thingsType = self.$route.params.thingsType;
+			}else{
+				self.thingsType = '';
+			}
+			self.userInfo = store.getUserInfo();
 			$('#nav li').click(function(){
-				$(this).addClass('highlight').siblings('li').removeClass('highlight');
+				$(self).addClass('highlight').siblings('li').removeClass('highlight');
 			});
-			if(this.userInfo.user_id){
+			if(self.userInfo.user_id){
 				store.isLogin = true;
 			}else{
 				store.isLogin = false;

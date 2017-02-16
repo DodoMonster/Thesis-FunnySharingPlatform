@@ -474,4 +474,32 @@ class ThesisModel extends \Core\BaseModels {
             return $this->returnResult(4000);            
         }    
     }
+
+    //获取单个用户发表的趣事
+    public function getUserThing($user_id,$page,$count){
+        $option['table'] = 'things';
+        $option['where'] = array('user_id'=>'?');
+        $options['param'] = array($user_id);
+        $option['limit'] = ($page-1)*$count.','.$count;
+        $totalNum = $this->db->count($options);
+        $totalPage = ceil($totalNum/$count);   
+        $options['order'] = 'publish_time desc';
+        $result = $this->db->select($option);
+
+        return $this->returnResult(200,$result);
+    }
+
+    //获取单个用户发表的评论
+    public function getUserComment($user_id,$page,$count){
+        $option['table'] = 'comment';
+        $option['where'] = array('user_id'=>'?');
+        $options['param'] = array($user_id);
+        $option['limit'] = ($page-1)*$count.','.$count;
+        $totalNum = $this->db->count($options);
+        $totalPage = ceil($totalNum/$count);   
+        $options['order'] = 'publish_time desc';
+        $result = $this->db->select($option);
+        
+        return $this->returnResult(200,$result);
+    }
 }

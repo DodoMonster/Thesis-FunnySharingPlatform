@@ -23686,12 +23686,17 @@
 			};
 		},
 		ready: function ready() {
-			this.thingsType = this.$route.params.thingsType;
-			this.userInfo = _index2.default.getUserInfo();
+			var self = this;
+			if (self.$route.name !== 'userHome') {
+				self.thingsType = self.$route.params.thingsType;
+			} else {
+				self.thingsType = '';
+			}
+			self.userInfo = _index2.default.getUserInfo();
 			(0, _jquery2.default)('#nav li').click(function () {
-				(0, _jquery2.default)(this).addClass('highlight').siblings('li').removeClass('highlight');
+				(0, _jquery2.default)(self).addClass('highlight').siblings('li').removeClass('highlight');
 			});
-			if (this.userInfo.user_id) {
+			if (self.userInfo.user_id) {
 				_index2.default.isLogin = true;
 			} else {
 				_index2.default.isLogin = false;

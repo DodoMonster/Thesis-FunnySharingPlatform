@@ -205,7 +205,7 @@ class thesisController extends \Core\BaseControllers {
         $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
         $page = isset($this->_getData['page']) ? $this->_getData['page'] : $this->page;
         $model = new \Web\ThesisModel();
-        $data = $model->getUserThing($user_id,$page);
+        $data = $model->getUserThing($user_id,$page,$this->_count);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '获取用户趣事成功！'; 
@@ -222,7 +222,7 @@ class thesisController extends \Core\BaseControllers {
         $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
         $page = isset($this->_getData['page']) ? $this->_getData['page'] : $this->page;
         $model = new \Web\ThesisModel();
-        $data = $model->getUserComment($user_id,$page);
+        $data = $model->getUserComment($user_id,$page,$this->_count);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '获取用户评论成功！'; 
@@ -233,6 +233,7 @@ class thesisController extends \Core\BaseControllers {
         }
         echo json_encode($data);
     }
+
     //获取趣事
     public function getFunnyThingsListAction(){
         $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
@@ -274,6 +275,7 @@ class thesisController extends \Core\BaseControllers {
         }
         echo json_encode($data);
     }
+
     //点赞
     public function praiseUpAction(){
         $this->checkIsLogin();
