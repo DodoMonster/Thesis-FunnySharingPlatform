@@ -8,19 +8,19 @@
         </div>
         <ul class="user-header-menu">
             <li>
-                <a  class="active">主页</a>
+                <a  class="active" @click="changeType(1)">主页</a>
             </li>
             <li>
-                <a href="/users/29459066/articles/">糗事</a>
+                <a @click="changeType(2)">糗事</a>
             </li>
             <li>
-                <a href="/users/29459066/comments/">评论</a>
+                <a @click="changeType(3)">评论</a>
             </li>
             <li>
-                <a href="/users/29459066/comments/">收藏</a>
+                <a @click="changeType(4)">收藏</a>
             </li>
             <li v-if="isSelf">
-                <a @click="changeType(2)">设置</a>
+                <a @click="changeType(5)">设置</a>
             </li>
         </ul>
     </div>
@@ -158,6 +158,112 @@
         </div>
     </div>
     <div class="user-col-right" v-show="pageType == 2">
+        <div id="content-block" class="clearfix" style="width: 700px;min-width: 700px">
+            <div class="funny-things clearfix" v-for="things in userThing" style="margin-top: 0">
+                <div class="author clearfix">
+                    <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank">
+                        <img :src="userInfo.user_photo" alt="用户头像">
+                    </a>
+                    <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank"><h2>{{userInfo.user_name}}</h2></a>
+                </div>
+                <a v-link="{name:'comment',params:{thing_id:things.comment_param}}" class="contentHerf">
+                    <div class="funny-content">
+                        <p>{{things.things_content}}</p>
+                    </div>
+                </a>
+                <div class="thumb" v-if="things.things_image">
+                    <a v-link="{name:'comment',params:{thing_id:things.comment_param}}" target="_blank">
+                    <img :src="things.things_image" alt="{{things.things_content}}" style="width: 40%;">
+                    </a>
+                </div>
+                <div class="stats">
+                    <span class="stats-vote">
+                        <i class="number">{{things.funny_num}}</i>
+                        好笑
+                    </span>
+                    <span class="stats-comments">
+                        <i class="dash">·</i>
+                        <a v-link="{name:'comment',params:{thing_id:things.comment_param}}">
+                            <i class="number">{{things.comment_num}}</i>
+                            评论
+                        </a>
+                    </span>
+                </div>
+                <div class="stats-buttons clearfix">
+                    <ul class="clearfix">
+                        <li class="up">
+                            <a href="javascript:;" class="voting" :class="[things.is_praise == 1? 'voted' : '']"@click="praiseUp(things.things_id,$event)"><i></i></a>
+                        </li>
+                        <li class="down">
+                            <a href="javascript:;" class="voting" :class="[things.is_tramp == 1? 'voted' : '']"  @click="trampDown(things.things_id,$event)"><i></i></a>
+                        </li>
+                        <li class="comments">
+                            <a v-link="{name:'comment',params:{thing_id:things.comment_param}}" class="voting"><i></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="single-share">
+                    <a href="" class="share-wechat" title="分享到微信"></a>
+                    <a href="" class="share-qq" title="分享到QQ"></a>
+                    <a href="" class="share-qzone" title="分享到空间"></a>
+                    <a href="" class="share-weibo" title="分享到微博"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="user-col-right" v-show="pageType == 3">
+        <div class="user-block user-feed" v-for="comment in userComment">
+            <div class="user-date">
+                <span class="user-date-month">
+                {{comment.month}}
+                </span>
+                <span class="user-date-break">
+                /
+                </span>
+                <span class="user-date-day">
+                {{comment.date}}
+                </span>
+            </div>
+            <ul class="user-indent">
+                <li class="user-comment-info">
+                    <strong>{{userInfo.user_name}}</strong>
+                    评论了
+                    <strong>{{comment.user_name}}</strong>
+                    发表的糗事
+                </li>
+                <li class="user-comment-text">
+                    {{comment.content}}
+                </li>
+                <li class="user-comment-quote">
+                    <ul>
+                        <li class="user-article-avatar">
+                            <a href="/users/26861602/" rel="nofollow">
+                            <img :src="comment.user_photo" alt="{{comment.user_name}}">
+                            </a>
+                            <a v-link="{name:'userHome',params:{'user_id':comment.user_id}}">
+                            {{comment.user_name}}
+                            </a>
+                        </li>
+                        <li class="user-article-text">
+                            <a href="/article/117961121" target="_blank">
+                            {{comment.content}}
+                            </a>
+                        </li>
+
+                        <li class="user-article-stat">
+                            1988 好笑 ⋅
+                            80 评论 ⋅
+                            发表于
+                            <a>
+                            2016-11-12
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="user-col-right" v-show="pageType == 5">
 
         <div id="editInfo" class="user-block user-setting clearfix">
             <h3>更换头像</h3>
@@ -249,8 +355,6 @@
             </ul>
         </div>
         <!-- popup Start -->
-<!--         <div id="bg" class="mask" style="height: 1677px;"></div>
-        <div id="popDiv" class="bind-email"></div> -->
         <div id="bind_email_tpl" class="bind-email" style="display: none;">
             <form>
                 <label>更换绑定邮箱</label>
@@ -278,6 +382,7 @@
         </div>
 
     </div>
+    
     <div class="user-col-left">
         <div class="user-statis user-block">
             <h3>农趣指数</h3>

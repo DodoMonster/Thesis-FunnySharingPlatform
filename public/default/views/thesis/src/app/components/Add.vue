@@ -2,6 +2,7 @@
 
 <script>
 	import service from '../../service/service.js';
+	import Router from 'vue-router';
 	export default {
 		replace: false,
 

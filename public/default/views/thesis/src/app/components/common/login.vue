@@ -33,7 +33,8 @@
 		},
 
 		ready(){
-			if(store.userInfo.user_id){
+			// this.userInfo = this.store.getUserInfo();
+			if(this.store.userInfo.user_id){
 				this.store.isLogin = true;
 			}
 		},
@@ -72,12 +73,12 @@
 					return false;
 				}
 				service.login(self.loginData).done(function(res){
-					alert(res.msg);					
 					store.setUserInfo(res.data.data);	
-					store.userInfo = store.getUserInfo();
-					self.store.isLogin = true;	
-					self.isLoginBox = true;			
-					store.showLoginForm = false;					
+					// store.userInfo = store.getUserInfo();
+					// self.store.isLogin = true;	
+					// self.isLoginBox = true;			
+					// store.showLoginForm = false;			
+					history.go(0);
 				}).fail(function(res){
 					alert(res.msg);
 				});

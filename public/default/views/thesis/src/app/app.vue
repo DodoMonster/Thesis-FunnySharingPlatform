@@ -19,7 +19,7 @@
 		},
 
 		ready(){			
-			store.setUserInfo();	
+			store.getUserInfo();	
 			if(store.userInfo.user_id){
 				store.isLogin = true;
 			}

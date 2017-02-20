@@ -21,7 +21,19 @@
         			newPwd:'',
         			againPwd:''
         		},
-                userInfo:store.userInfo,
+                thingPage:{
+                    cur:1,
+                    totalPage:0,
+                    totalNum:0,
+                },
+                commentPage:{
+                    cur:1,
+                    totalPage:0,
+                    totalNum:0,
+                },
+                userInfo:{},
+                userThing:[],
+                userComment:[],                
                 newUname:'',
                 store:store,
                 isSelf:false,
@@ -31,13 +43,14 @@
         ready(){
             let self = this;
             self.userId = self.$route.params.user_id;
-            self.userInfo = store.getUserInfo();
+            self.userInfo = store.userInfo;
+            // console.log(self.userInfo);
         	self.getUserInfo(self.userId);
-            if(self.userInfo && self.userInfo.user_id && self.userInfo.user_id == userId){
+            if(self.userInfo && self.userInfo.user_id && self.userInfo.user_id == this.userId){
                 self.isSelf = true;
             }            
         	$('.user-header-menu a').click(function(){
-        		$(self).addClass('active').parent('li').siblings().find('.active').removeClass('active');
+        		$(this).addClass('active').parent('li').siblings().find('.active').removeClass('active');
         	})
         },
 
@@ -47,12 +60,39 @@
         		service.getUserInfo(id).done(function(res){
         			self.userData = res.data || {};
                     self.newUname = self.userData.user_name;
-                    store.setUserInfo(self.userData);   
-                    store.userInfo = store.getUserInfo();
+                    self.getUserThing();
+                    self.getUserComment();
+                    // store.setUserInfo(self.userData);   
+                    // store.userInfo = store.getUserInfo();
         		}).fail(function(res){
         			alert(res.msg);
         		})
         	},
+            getUserThing:function(){
+                let self = this;
+                service.getUserThing(self.userId,self.thingPage.cur).done(function(res){
+                    self.userThing = res.data.list || {};
+                    self.thingPage.totalPage = res.data.totalPage;
+                    self.thingPage.totalNum = res.data.totalNum;
+                }).fail(function(res){
+                    alert(res.msg);
+                });
+            },
+            getUserComment:function(){
+                let self = this;
+                service.getUserComment(self.userId,self.commentPage.cur).done(function(res){
+                    self.userComment = res.data.list || {};
+                    self.userComment.forEach(function(item,index){
+                        var date = new Date(Number(item.comment_time)); 
+                        item.month = date.getMonth()+1;
+                        item.date = date.getDate();
+                    });
+                    self.commentPage.totalPage = res.data.totalPage;
+                    self.commentPage.totalNum = res.data.totalNum;
+                }).fail(function(res){
+                    alert(res.msg);
+                });
+            },
         	changeType:function(type){
         		let self = this;
         		self.pageType = type;
@@ -152,7 +192,7 @@
 					alert(res.msg);
 				});
         	}
-        }
+        },
 	};
 
 </script>

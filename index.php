@@ -4,8 +4,8 @@
     require_once APPLICATION_PATH.'/library/Core/BaseApplication.php';
     date_default_timezone_set('Asia/Shanghai');
     $app=new BaseApplication();
-    ini_set("display_errors", 1);
-    error_reporting(E_ALL | E_STRICT);
+    // ini_set("display_errors", 1);
+    // error_reporting(E_ALL | E_STRICT);
     $app->start();
 
    

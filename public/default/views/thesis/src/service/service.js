@@ -114,20 +114,6 @@ service.favorite = (id) => {
     });
 }
 
-
-/**
- * 收藏
- */
-service.favorite = (id) => {
-    return util.ajax({
-        url: '/thesis/favorite',
-        type:'POST',        
-        data: {
-            things_id: id,
-        }
-    });
-}
-
 /**
  * 获取趣事详情以及评论
  */
@@ -196,6 +182,7 @@ service.changeUname = (id,data) => {
         }
     });
 }
+
 /**
  * 获取我的收藏
  */
@@ -210,13 +197,27 @@ service.getMyFavorite = (uid) => {
 
 
 /**
- * 获取和我有关评论
+ * 获取我发表的趣事
  */
-service.getMyComment = (uid) => {
+service.getUserThing = (uid,page) => {
     return util.ajax({
-        url: '/thesis/getMyComment',
+        url: '/thesis/getUserThing',
         data: {
             user_id: uid,
+            page:page
+        }
+    });
+}
+
+/**
+ * 获取我发表的评论
+ */
+service.getUserComment = (uid,page) => {
+    return util.ajax({
+        url: '/thesis/getUserComment',
+        data: {
+            user_id: uid,
+            page:page
         }
     });
 }

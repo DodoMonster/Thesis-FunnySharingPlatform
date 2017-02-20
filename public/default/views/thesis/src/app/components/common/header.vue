@@ -25,11 +25,11 @@
 			}else{
 				self.thingsType = '';
 			}
-			self.userInfo = store.getUserInfo();
+			self.userInfo = store.userInfo;
 			$('#nav li').click(function(){
 				$(self).addClass('highlight').siblings('li').removeClass('highlight');
 			});
-			if(self.userInfo.user_id){
+			if(store.userInfo.user_id){
 				store.isLogin = true;
 			}else{
 				store.isLogin = false;

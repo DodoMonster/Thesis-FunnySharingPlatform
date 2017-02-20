@@ -215,7 +215,7 @@ class thesisController extends \Core\BaseControllers {
             $data['msg'] = '获取用户趣事失败，请重试'; 
         }
         echo json_encode($data);
-    }
+    }    
 
     //获取单个用户发表的评论
     public function getUserCommentAction(){
@@ -225,7 +225,7 @@ class thesisController extends \Core\BaseControllers {
         $data = $model->getUserComment($user_id,$page,$this->_count);
         if($data['code'] == 200){ 
             $data['code'] = 0;
-            $data['msg'] = '获取用户评论成功！'; 
+            $data['msg'] = '获取单个用户评论成功！'; 
             $data['data'] = $data['data'];
         }else{
             $data['code'] = 1;

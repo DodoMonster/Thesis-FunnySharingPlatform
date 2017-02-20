@@ -119,38 +119,35 @@ class ThesisModel extends \Core\BaseModels {
         
     }
 
-    //获取用户发表的趣事
-    public function getUserThing($user_id,$page){
-        $options['table'] = 'things';
-        $options['where'] = array('is_approval'=>'?','user_id');
-        $options['param'] =  array(1,$user_id);    
-        $options['limit'] = ($page-1)*$count.','.$count; 
-        $totalNum1=$this->db->count($options);
-        $totalPage1=ceil($totalNum1/$count);   
-        $options['order'] = 'publish_time desc';
-        $things = $this->db->select($options);
-        if(!empty($things)){
-            return $this->returnResult(200,$things); 
-        }else{
-            return $this->returnResult(201,$things); 
-        }
+    //获取单个用户发表的趣事
+    public function getUserThing($user_id,$page,$count){        
+        $option['table'] = 'things';
+        $option['where'] = array('user_id'=>'?','is_approval'=>'?');
+        $option['param'] = array($user_id,1);
+        $option['limit'] = ($page-1)*$count.','.$count;
+        $totalNum = $this->db->count($option);
+        $totalPage = ceil($totalNum/$count);   
+        $option['order'] = 'publish_time desc';
+        // print_r($option);
+        $result = $this->db->select($option);
+        $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$result);
+        return $this->returnResult(200,$list);
     }
 
-    //获取用户发表的评论
-    public function getUserComment($user_id,$page){
+    //获取单个用户发表的评论
+    public function getUserComment($user_id,$page,$count){
         $options['table'] = 'comment';
-        $options['where'] = array('is_approval'=>'?','user_id');
-        $options['param'] =  array(1,$user_id);    
+        $options['where'] = array('is_delete'=>'?','user_id'=>'?');
+        $options['param'] =  array(0,$user_id);    
         $options['limit'] = ($page-1)*$count.','.$count; 
-        $totalNum1=$this->db->count($options);
-        $totalPage1=ceil($totalNum1/$count);   
-        $options['order'] = 'publish_time desc';
+        $totalNum = $this->db->count($options);
+        $totalPage = ceil($totalNum/$count);   
+        $options['order'] = 'comment_time desc';
+        // print_r($options);
         $comment = $this->db->select($options);
-        if(!empty($comment)){
-            return $this->returnResult(200,$things); 
-        }else{
-            return $this->returnResult(201,$things); 
-        }
+        // print_r($comment);
+        $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$comment);
+        return $this->returnResult(200,$list); 
     }
 
     //修改头像
@@ -473,33 +470,5 @@ class ThesisModel extends \Core\BaseModels {
         }else{
             return $this->returnResult(4000);            
         }    
-    }
-
-    //获取单个用户发表的趣事
-    public function getUserThing($user_id,$page,$count){
-        $option['table'] = 'things';
-        $option['where'] = array('user_id'=>'?');
-        $options['param'] = array($user_id);
-        $option['limit'] = ($page-1)*$count.','.$count;
-        $totalNum = $this->db->count($options);
-        $totalPage = ceil($totalNum/$count);   
-        $options['order'] = 'publish_time desc';
-        $result = $this->db->select($option);
-
-        return $this->returnResult(200,$result);
-    }
-
-    //获取单个用户发表的评论
-    public function getUserComment($user_id,$page,$count){
-        $option['table'] = 'comment';
-        $option['where'] = array('user_id'=>'?');
-        $options['param'] = array($user_id);
-        $option['limit'] = ($page-1)*$count.','.$count;
-        $totalNum = $this->db->count($options);
-        $totalPage = ceil($totalNum/$count);   
-        $options['order'] = 'publish_time desc';
-        $result = $this->db->select($option);
-        
-        return $this->returnResult(200,$result);
-    }
+    }    
 }
