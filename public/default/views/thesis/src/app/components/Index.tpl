@@ -7,13 +7,13 @@
 				</a>
 				<a v-link="{name:'userHome',params:{user_id:things.user_id}}" target="_blank"><h2>{{things.user_info.user_name}}</h2></a>
 			</div>
-			<a v-link="{name:'comment',params:{thing_id:things.comment_param}}" class="contentHerf">
+			<a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}" class="contentHerf">
 				<div class="funny-content">
 					<p>{{things.things_content}}</p>
 				</div>
 			</a>
 			<div class="thumb" v-if="things.things_image">
-				<a v-link="{name:'comment',params:{thing_id:things.comment_param}}" target="_blank">
+				<a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}" target="_blank">
 				<img :src="things.things_image" alt="{{things.things_content}}" style="width: 40%;">
 				</a>
 			</div>
@@ -24,7 +24,7 @@
 				</span>
 				<span class="stats-comments">
 					<i class="dash">·</i>
-					<a v-link="{name:'comment',params:{thing_id:things.comment_param}}">
+					<a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}">
 						<i class="number">{{things.comment_num}}</i>
 						评论
 					</a>

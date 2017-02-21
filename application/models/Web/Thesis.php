@@ -1,9 +1,9 @@
 <?php
 namespace Web;
 class ThesisModel extends \Core\BaseModels {    
-    public function handleUser($funny_thing,$unfunny_thing,$thing){      
+    public function handleUser($funny_thing,$unfunny_thing,$thing){
         foreach ($thing as $t_key => $t_val) {
-            if(!empty($funny_thing)){
+            // if(!empty($funny_thing)){
                 foreach ($funny_thing as $f_key => $f_val) {
                     if($thing[$t_key]['things_id'] == $funny_thing[$f_key]['things_id']){
                         $thing[$t_key]['is_praise'] = 1;
@@ -13,8 +13,8 @@ class ThesisModel extends \Core\BaseModels {
                     }
 
                 }
-            }
-            if(!empty($unfunny_things)){
+            // }
+            // if(!empty($unfunny_things)){
                 foreach ($unfunny_thing as $un_key => $un_val) {
                     if($thing[$t_key]['things_id'] == $unfunny_thing[$un_key]['things_id']){
                         $thing[$t_key]['is_tramp'] = 1;
@@ -23,9 +23,7 @@ class ThesisModel extends \Core\BaseModels {
                         $thing[$t_key]['is_tramp'] = 0;
                     }          
                 } 
-            }
-                            
-            $thing[$t_key]['comment_param'] = $thing[$t_key]['comment_param'] . '_' . $thing[$t_key]['is_praise'] . '_' . $thing[$t_key]['is_tramp'];
+            // }
         }
         // print_r($thing);die;
         return $thing;
@@ -165,14 +163,15 @@ class ThesisModel extends \Core\BaseModels {
         // print_r($option);
         $funny_things = $this->db->select($option1);
 
-        print_r($funny_things);
+        // print_r($funny_things);
         $option2['table'] = 'unfunny_things';
         $option2['where'] = array('user_id'=>'?');
         $option2['param'] = array($other_user); 
         // print_r($option);
         $unfunny_things = $this->db->select($option2);
-
-        $result = $this->handleUser($funny_thing,$unfunny_things,$result);
+        // print_r($unfunny_things);
+        $result = $this->handleUser($funny_things,$unfunny_things,$result);
+        // print_r($result);
         $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$result);
         return $this->returnResult(200,$list);
     }
@@ -249,7 +248,6 @@ class ThesisModel extends \Core\BaseModels {
         //用户        
         $options['table'] = 'user';
         $user_list = $this->db->select($options); 
-
         if($uid > 0){
             //该用户点过赞的趣事
             $options11['table'] = 'funny_things';
@@ -432,7 +430,7 @@ class ThesisModel extends \Core\BaseModels {
         }     
     }
     //根据趣事id获取单条趣事
-    public function getThingInfo($thing_id,$user_id){
+    public function getThingInfo($thing_id){
         $options['table'] = 'things';
         $options['where'] = array('things_id'=>'?');
         $options['param'] = array($thing_id);

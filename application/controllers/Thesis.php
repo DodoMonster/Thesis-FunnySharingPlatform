@@ -238,8 +238,9 @@ class thesisController extends \Core\BaseControllers {
     //获取趣事
     public function getFunnyThingsListAction(){
         $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
+        $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
         $model = new \Web\ThesisModel();
-        $data = $model->getFunnyThingsList($page,$this->_count,$this->_uid);
+        $data = $model->getFunnyThingsList($page,$this->_count,$user_id);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '获取趣事成功！'; 
@@ -257,7 +258,7 @@ class thesisController extends \Core\BaseControllers {
 
     //踩
     public function trampDownAction(){
-        $this->checkIsLogin();
+        // $this->checkIsLogin();
         $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
         $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
         $model = new \Web\ThesisModel();
@@ -279,7 +280,7 @@ class thesisController extends \Core\BaseControllers {
 
     //点赞
     public function praiseUpAction(){
-        $this->checkIsLogin();
+        // $this->checkIsLogin();
         $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
         $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
         $model = new \Web\ThesisModel();
@@ -301,7 +302,7 @@ class thesisController extends \Core\BaseControllers {
 
      //收藏趣事
     public function favoriteAction(){
-        $this->checkIsLogin();
+        // $this->checkIsLogin();
         $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
         $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
         $model = new \Web\ThesisModel();
@@ -325,7 +326,7 @@ class thesisController extends \Core\BaseControllers {
     public function getThingInfoAction(){
         $thing_id = isset($this->_getData['thing_id']) ? $this->_getData['thing_id'] : '';
         $model = new \Web\ThesisModel();
-        $data = $model->getThingInfo($thing_id,$this->_uid);
+        $data = $model->getThingInfo($thing_id);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '获取单条趣事成功！'; 
@@ -352,7 +353,7 @@ class thesisController extends \Core\BaseControllers {
             $data['msg'] = '获取评论列表成功！'; 
             $data['data'] = $data['data'];
         }elseif($data['code'] == 201){ 
-            $data['code'] = 1;
+            $data['code'] = 0;
             $data['msg'] = '评论列表为空！'; 
             // $data['data'] = array();
         }else{

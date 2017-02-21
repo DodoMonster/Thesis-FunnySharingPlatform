@@ -65,12 +65,12 @@ service.logout = () => {
 /**
  * 获取趣事列表
  */
-service.getFunnyThingsList = (page,type) => {
+service.getFunnyThingsList = (page,user_id) => {
     return util.ajax({
         url: '/thesis/getFunnyThingsList',
         data: {
             page:page,
-            type:type
+            user_id:user_id
         }
     });
 }
@@ -78,12 +78,13 @@ service.getFunnyThingsList = (page,type) => {
 /**
  * 点赞
  */
-service.praiseUp = (id) => {
+service.praiseUp = (id,user_id) => {
     return util.ajax({
         url: '/thesis/praiseUp',
         type:'POST',        
         data: {
             things_id: id,
+            user_id:user_id
         }
     });
 }
@@ -91,12 +92,13 @@ service.praiseUp = (id) => {
 /**
  * 踩
  */
-service.trampDown = (id) => {
+service.trampDown = (id,user_id) => {
     return util.ajax({
         url: '/thesis/trampDown',
         type:'POST',        
         data: {
             things_id: id,
+            user_id:user_id
         }
     });
 }
@@ -104,12 +106,13 @@ service.trampDown = (id) => {
 /**
  * 收藏
  */
-service.favorite = (id) => {
+service.favorite = (id,user_id) => {
     return util.ajax({
         url: '/thesis/favorite',
         type:'POST',        
         data: {
             things_id: id,
+            user_id:user_id
         }
     });
 }

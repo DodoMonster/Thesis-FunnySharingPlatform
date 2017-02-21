@@ -167,13 +167,13 @@
                     <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank" style="margin-top: -10px;"><h2>{{userInfo.user_name}}</h2></a>
                     <p class="publish-time">{{things.publish_time}}</p>                    
                 </div>
-                <a v-link="{name:'comment',params:{thing_id:things.comment_param}}" class="contentHerf">
+                <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}" class="contentHerf">
                     <div class="funny-content">
                         <p>{{things.things_content}}</p>
                     </div>
                 </a>
                 <div class="thumb" v-if="things.things_image">
-                    <a v-link="{name:'comment',params:{thing_id:things.comment_param}}" target="_blank">
+                    <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}" target="_blank">
                     <img :src="things.things_image" alt="{{things.things_content}}" style="width: 40%;">
                     </a>
                 </div>
@@ -193,7 +193,7 @@
                 <div class="stats-buttons clearfix">
                     <ul class="clearfix">
                         <li class="up">
-                            <a href="javascript:;" class="voting" :class="[things.is_praise == 1? 'voted' : '']"@click="praiseUp(things.things_id,$event)"><i></i></a>
+                            <a href="javascript:;" class="voting" :class="[things.is_praise == 1? 'voted' : '']" @click="praiseUp(things.things_id,$event)"><i></i></a>
                         </li>
                         <li class="down">
                             <a href="javascript:;" class="voting" :class="[things.is_tramp == 1? 'voted' : '']"  @click="trampDown(things.things_id,$event)"><i></i></a>

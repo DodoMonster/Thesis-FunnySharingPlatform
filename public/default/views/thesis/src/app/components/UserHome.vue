@@ -174,6 +174,46 @@
                     }
                 })
             },
+            //好笑
+            praiseUp:function(id,event){
+                let self = this,
+                    $this = $(event.currentTarget);
+                if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
+                    return false;
+
+                }else{
+                    service.praiseUp(id,self.userInfo.user_id).done(function(res){
+                        $this.addClass('voted');                                                    
+                    }).fail(function(res){
+                        alert(res.msg);
+                    });
+                }                       
+                
+            },
+
+            //不好笑
+            trampDown:function(id,event){
+                let self = this,
+                    $this = $(event.currentTarget);
+                if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
+                    return false;
+                }else{                                  
+                    service.trampDown(id,self.userInfo.user_id).done(function(res){
+                        $this.addClass('voted');
+                    }).fail(function(res){
+                        alert(res.msg);
+                    });
+                }
+            },
+
+            //收藏
+            favorite:function(id){
+                let self = this;
+                service.trampDown(id,self.userInfo.user_id).done(function(res){
+                }).fail(function(res){
+                    alert(res.msg);
+                });
+            },
         	logout:function(){
 				let self = this;
 				service.logout().done(function(res){

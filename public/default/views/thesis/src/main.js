@@ -24,7 +24,7 @@ router.map({
 		name:'add',
 		component: Add
 	},
-	'/comment/:thing_id': {
+	'/comment': {
 		name:'comment',
 		component: Comment
 	},

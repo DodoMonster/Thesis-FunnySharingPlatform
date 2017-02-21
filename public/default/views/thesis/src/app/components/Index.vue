@@ -29,7 +29,8 @@
 					cur:1,
 					totalNum:0,
 					totalPage:0,
-				}
+				},
+				userInfo:store.userInfo
 			}
 		},
 
@@ -44,7 +45,7 @@
 			// },
 			getFunnyThingsList:function(){
 				let self = this;
-				service.getFunnyThingsList(self.page.cur).done(function(res){
+				service.getFunnyThingsList(self.page.cur,self.userInfo.user_id).done(function(res){
 					self.thingsData = res.data;
 					switch(self.type) {
 						case 'hot':
@@ -81,7 +82,7 @@
 					return false;
 
 				}else{
-					service.praiseUp(id).done(function(res){
+					service.praiseUp(id,self.userInfo.user_id).done(function(res){
 				    	$this.addClass('voted');													
 					}).fail(function(res){
 						alert(res.msg);
@@ -97,7 +98,7 @@
 				if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
 					return false;
 				}else{									
-					service.trampDown(id).done(function(res){
+					service.trampDown(id,self.userInfo.user_id).done(function(res){
 						$this.addClass('voted');
 					}).fail(function(res){
 						alert(res.msg);
@@ -108,7 +109,7 @@
 			//收藏
 			favorite:function(id){
 				let self = this;
-				service.trampDown().done(function(res){
+				service.trampDown(id,self.userInfo.user_id).done(function(res){
 				}).fail(function(res){
 					alert(res.msg);
 				});

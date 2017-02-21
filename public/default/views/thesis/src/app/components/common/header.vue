@@ -27,7 +27,7 @@
 			}
 			self.userInfo = store.userInfo;
 			$('#nav li').click(function(){
-				$(self).addClass('highlight').siblings('li').removeClass('highlight');
+				$(this).addClass('highlight').siblings('li').removeClass('highlight');
 			});
 			if(store.userInfo.user_id){
 				store.isLogin = true;

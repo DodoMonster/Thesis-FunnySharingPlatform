@@ -11,13 +11,6 @@
 
 		name: 'Comment',
 
-		// route:{
-  //           canReuse: false,
-  //           data ({ to }) {
-  //               this.thing_id = to.params.thing_id;
-  //           }
-  //       },
-
 		data(){
 			return{
 				thingInfo:{},
@@ -29,6 +22,7 @@
 					totalPage:0,
 					totalNum:0
 				},
+				userInfo:store.userInfo,
 				commentContent:'',
 				commentsList:[],
 			}
@@ -36,23 +30,9 @@
 
 		ready(){			
 			let self = this;
-			self.thing_id = this.$route.params.thing_id;
-		    if(self.thing_id.indexOf('_') !== -1){
-		        var arr = self.thing_id.split('_');
-		        self.thing_id = arr[0];
-		        self.is_praise = arr[1]
-		        self.is_tramp = arr[2];
-		        if(self.is_tramp == 0){
-		        	self.is_tramp = false;
-		        }else{
-		        	self.is_tramp = true;
-		        }
-		        if(self.is_praise == 0){
-		        	self.is_praise = false;
-		        }else{
-		        	self.is_praise = true;
-		        }
-		    }
+			self.thing_id = this.$route.query.thing_id;
+			self.is_praise = this.$route.query.is_praise;
+	        self.is_tramp = this.$route.query.is_tramp;		    
 			this.getThingInfo();
 			this.getCommentsList(true);
 			console.log(this.thing_id);
@@ -105,7 +85,7 @@
 					return false;
 
 				}else{
-					service.praiseUp(self.thing_id).done(function(res){
+					service.praiseUp(self.thing_id,self.userInfo.user_id).done(function(res){
 				    	$this.addClass('voted');													
 					}).fail(function(res){
 						alert(res.msg);
@@ -121,7 +101,7 @@
 				if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
 					return false;
 				}else{									
-					service.trampDown(self.thing_id).done(function(res){
+					service.trampDown(self.thing_id,self.userInfo.user_id).done(function(res){
 						$this.addClass('voted');
 					}).fail(function(res){
 						alert(res.msg);
