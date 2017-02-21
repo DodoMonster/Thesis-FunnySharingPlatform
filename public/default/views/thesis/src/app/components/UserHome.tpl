@@ -164,7 +164,8 @@
                     <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank">
                         <img :src="userInfo.user_photo" alt="用户头像">
                     </a>
-                    <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank"><h2>{{userInfo.user_name}}</h2></a>
+                    <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank" style="margin-top: -10px;"><h2>{{userInfo.user_name}}</h2></a>
+                    <p class="publish-time">{{things.publish_time}}</p>                    
                 </div>
                 <a v-link="{name:'comment',params:{thing_id:things.comment_param}}" class="contentHerf">
                     <div class="funny-content">
@@ -202,12 +203,12 @@
                         </li>
                     </ul>
                 </div>
-                <div class="single-share">
+<!--                 <div class="single-share">
                     <a href="" class="share-wechat" title="分享到微信"></a>
                     <a href="" class="share-qq" title="分享到QQ"></a>
                     <a href="" class="share-qzone" title="分享到空间"></a>
                     <a href="" class="share-weibo" title="分享到微博"></a>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -237,25 +238,25 @@
                 <li class="user-comment-quote">
                     <ul>
                         <li class="user-article-avatar">
-                            <a href="/users/26861602/" rel="nofollow">
+                            <a v-link="{name:'userHome',params:{'user_id':comment.user_id}}"  rel="nofollow" target="_blank">
                             <img :src="comment.user_photo" alt="{{comment.user_name}}">
                             </a>
-                            <a v-link="{name:'userHome',params:{'user_id':comment.user_id}}">
+                            <a v-link="{name:'userHome',params:{'user_id':comment.user_id}}" target="_blank">
                             {{comment.user_name}}
                             </a>
                         </li>
                         <li class="user-article-text">
-                            <a href="/article/117961121" target="_blank">
-                            {{comment.content}}
+                            <a v-link="{name:'comment',params:{'thing_id':comment.things_id}}" target="_blank">
+                            {{comment.things_content}}
                             </a>
                         </li>
 
                         <li class="user-article-stat">
-                            1988 好笑 ⋅
-                            80 评论 ⋅
+                            {{comment.funny_num}} 好笑 ⋅
+                            {{comment.comment_num}} 评论 ⋅
                             发表于
                             <a>
-                            2016-11-12
+                            {{comment.publish_time}}
                             </a>
                         </li>
                     </ul>
@@ -387,9 +388,9 @@
         <div class="user-statis user-block">
             <h3>农趣指数</h3>
             <ul>
-                <li><span>糗事:</span>0</li>
-                <li><span>评论:</span>0</li>
-                <li><span>笑脸:</span>0</li>
+                <li><span>糗事:</span>{{thingPage.totalNum}}</li>
+                <li><span>评论:</span>{{userData.comment_num}}</li>
+                <li><span>笑脸:</span>{{userData.funny_num}}</li>
                 <li><span>糗龄:</span>485天</li>                
             </ul>
         </div>

@@ -19,9 +19,10 @@
 		},
 
 		ready(){			
-			store.getUserInfo();	
-			if(store.userInfo.user_id){
-				store.isLogin = true;
+			if(store.getUserInfo()){
+				if(store.userInfo.user_id){
+					store.isLogin = true;										
+				}
 			}
 		},
 

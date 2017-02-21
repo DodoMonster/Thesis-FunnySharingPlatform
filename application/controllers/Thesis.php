@@ -204,8 +204,9 @@ class thesisController extends \Core\BaseControllers {
     public function getUserThingAction(){
         $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
         $page = isset($this->_getData['page']) ? $this->_getData['page'] : $this->page;
+        $other_user = isset($this->_getData['other_user']) ? $this->_getData['other_user'] : '';
         $model = new \Web\ThesisModel();
-        $data = $model->getUserThing($user_id,$page,$this->_count);
+        $data = $model->getUserThing($user_id,$other_user,$page,$this->_count);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '获取用户趣事成功！'; 

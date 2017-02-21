@@ -1,25 +1,30 @@
 <?php
 namespace Web;
 class ThesisModel extends \Core\BaseModels {    
-    public function handleUser($funny_thing,$unfunny_thing,$thing){
+    public function handleUser($funny_thing,$unfunny_thing,$thing){      
         foreach ($thing as $t_key => $t_val) {
-            foreach ($funny_thing as $f_key => $f_val) {
-                if($thing[$t_key]['things_id'] == $funny_thing[$f_key]['things_id']){
-                    $thing[$t_key]['is_praise'] = 1;
-                    break;
-                }else{
-                    $thing[$t_key]['is_praise'] = 0;                     
-                }
+            if(!empty($funny_thing)){
+                foreach ($funny_thing as $f_key => $f_val) {
+                    if($thing[$t_key]['things_id'] == $funny_thing[$f_key]['things_id']){
+                        $thing[$t_key]['is_praise'] = 1;
+                        break;
+                    }else{
+                        $thing[$t_key]['is_praise'] = 0;                     
+                    }
 
+                }
             }
-            foreach ($unfunny_thing as $un_key => $un_val) {
-                if($thing[$t_key]['things_id'] == $unfunny_thing[$un_key]['things_id']){
-                    $thing[$t_key]['is_tramp'] = 1;
-                    break;
-                }else{
-                    $thing[$t_key]['is_tramp'] = 0;
-                }          
-            }           
+            if(!empty($unfunny_things)){
+                foreach ($unfunny_thing as $un_key => $un_val) {
+                    if($thing[$t_key]['things_id'] == $unfunny_thing[$un_key]['things_id']){
+                        $thing[$t_key]['is_tramp'] = 1;
+                        break;
+                    }else{
+                        $thing[$t_key]['is_tramp'] = 0;
+                    }          
+                } 
+            }
+                            
             $thing[$t_key]['comment_param'] = $thing[$t_key]['comment_param'] . '_' . $thing[$t_key]['is_praise'] . '_' . $thing[$t_key]['is_tramp'];
         }
         // print_r($thing);die;
@@ -111,16 +116,34 @@ class ThesisModel extends \Core\BaseModels {
         $options['param'] = array($user_id);
         $info = $this->db->find($options);
         // print_r($info);exit;
+
+        $options1['table'] = 'things';
+        $options1['where'] = array('user_id'=>'?');
+        $options1['field'] = array('comment_num','funny_num');
+        $options1['param'] = array($user_id);
+        $num = $this->db->select($options1);
+        $funny_num = 0;
+        $comment_num = 0;
+
+        if(!empty($num)){
+            foreach ($num as $key => $value) {
+                $funny_num = $value['funny_num'] + $funny_num;
+                $comment_num = $value['comment_num'] + $comment_num;
+            }
+        }
+        
         if(empty($info)){
             return $this->returnResult(201);
         }else{
+            $info['funny_num'] = $funny_num;
+            $info['comment_num'] = $comment_num;
             return $this->returnResult(200,$info);
         }
         
     }
 
     //获取单个用户发表的趣事
-    public function getUserThing($user_id,$page,$count){        
+    public function getUserThing($user_id,$other_user,$page,$count){        
         $option['table'] = 'things';
         $option['where'] = array('user_id'=>'?','is_approval'=>'?');
         $option['param'] = array($user_id,1);
@@ -130,14 +153,35 @@ class ThesisModel extends \Core\BaseModels {
         $option['order'] = 'publish_time desc';
         // print_r($option);
         $result = $this->db->select($option);
+        if(!empty($result)){
+            foreach ($result as $key => $value) {
+                $result[$key]['publish_time'] = date('Y-m-d H:i:s',$value['publish_time']);
+            }
+        }
+
+        $option1['table'] = 'funny_things';
+        $option1['where'] = array('user_id'=>'?');
+        $option1['param'] = array($other_user); 
+        // print_r($option);
+        $funny_things = $this->db->select($option1);
+
+        print_r($funny_things);
+        $option2['table'] = 'unfunny_things';
+        $option2['where'] = array('user_id'=>'?');
+        $option2['param'] = array($other_user); 
+        // print_r($option);
+        $unfunny_things = $this->db->select($option2);
+
+        $result = $this->handleUser($funny_thing,$unfunny_things,$result);
         $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$result);
         return $this->returnResult(200,$list);
     }
 
     //获取单个用户发表的评论
     public function getUserComment($user_id,$page,$count){
-        $options['table'] = 'comment';
-        $options['where'] = array('is_delete'=>'?','user_id'=>'?');
+        $options['table'] = 'comment as A';
+        $options['join'] = 'things as B on A.things_id = B.things_id';
+        $options['where'] = array('A.is_delete'=>'?','A.user_id'=>'?');
         $options['param'] =  array(0,$user_id);    
         $options['limit'] = ($page-1)*$count.','.$count; 
         $totalNum = $this->db->count($options);
@@ -146,6 +190,14 @@ class ThesisModel extends \Core\BaseModels {
         // print_r($options);
         $comment = $this->db->select($options);
         // print_r($comment);
+        if(!empty($comment)){
+            foreach ($comment as $key => $value) {
+                $comment[$key]['comment_time'] = date('Y-m-d H:i:s',$value['comment_time']);
+                $comment[$key]['publish_time'] = date('Y-m-d H:i:s',$value['publish_time']);
+                $comment[$key]['month'] = date('m',$value['comment_time']);
+                $comment[$key]['date'] = date('d',$value['comment_time']);                
+            }
+        }
         $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$comment);
         return $this->returnResult(200,$list); 
     }

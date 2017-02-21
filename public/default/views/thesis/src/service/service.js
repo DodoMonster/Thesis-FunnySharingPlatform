@@ -199,12 +199,13 @@ service.getMyFavorite = (uid) => {
 /**
  * 获取我发表的趣事
  */
-service.getUserThing = (uid,page) => {
+service.getUserThing = (uid,page,other) => {
     return util.ajax({
         url: '/thesis/getUserThing',
         data: {
             user_id: uid,
-            page:page
+            page:page,
+            other_user:other
         }
     });
 }

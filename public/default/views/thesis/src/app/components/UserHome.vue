@@ -70,7 +70,7 @@
         	},
             getUserThing:function(){
                 let self = this;
-                service.getUserThing(self.userId,self.thingPage.cur).done(function(res){
+                service.getUserThing(self.userId,self.thingPage.cur,self.userInfo.user_id).done(function(res){
                     self.userThing = res.data.list || {};
                     self.thingPage.totalPage = res.data.totalPage;
                     self.thingPage.totalNum = res.data.totalNum;
@@ -82,11 +82,6 @@
                 let self = this;
                 service.getUserComment(self.userId,self.commentPage.cur).done(function(res){
                     self.userComment = res.data.list || {};
-                    self.userComment.forEach(function(item,index){
-                        var date = new Date(Number(item.comment_time)); 
-                        item.month = date.getMonth()+1;
-                        item.date = date.getDate();
-                    });
                     self.commentPage.totalPage = res.data.totalPage;
                     self.commentPage.totalNum = res.data.totalNum;
                 }).fail(function(res){

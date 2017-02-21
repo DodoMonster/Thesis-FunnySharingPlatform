@@ -20,7 +20,7 @@
 
 		ready(){
 			let self = this;
-			if(self.$route.name !== 'userHome'){
+			if(self.$route.name !== 'userHome' && self.$route.params.thingsType){
 				self.thingsType = self.$route.params.thingsType;
 			}else{
 				self.thingsType = '';
