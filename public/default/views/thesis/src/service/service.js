@@ -104,11 +104,25 @@ service.trampDown = (id,user_id) => {
 }
 
 /**
- * 收藏
+ * 收藏和取消收藏
  */
 service.favorite = (id,user_id) => {
     return util.ajax({
         url: '/thesis/favorite',
+        type:'POST',        
+        data: {
+            things_id: id,
+            user_id:user_id
+        }
+    });
+}
+
+/**
+ * 取消收藏
+ */
+service.cancelFavorite = (id,user_id) => {
+    return util.ajax({
+        url: '/thesis/cancelFavorite',
         type:'POST',        
         data: {
             things_id: id,
@@ -222,6 +236,21 @@ service.getUserComment = (uid,page) => {
         data: {
             user_id: uid,
             page:page
+        }
+    });
+}
+
+
+/**
+ * 获取我的收藏
+ */
+service.getUserFavorite = (uid,page,other) => {
+    return util.ajax({
+        url: '/thesis/getUserFavorite',
+        data: {
+            user_id: uid,
+            page:page,
+            other_user:other
         }
     });
 }

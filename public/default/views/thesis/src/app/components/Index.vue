@@ -106,15 +106,25 @@
 				}
 			},
 
-			//收藏
-			favorite:function(id){
-				let self = this;
-				service.trampDown(id,self.userInfo.user_id).done(function(res){
-				}).fail(function(res){
-					alert(res.msg);
-				});
-			}
-
+			//收藏和取消收藏
+			favorite:function(id,e){
+				let self = this,
+					$this = $(e.currentTarget).find('i'),
+					className = $this.attr('class');
+				if(className.indexOf('fa-heart-o') !== -1){//未收藏
+					service.favorite(id,self.userInfo.user_id).done(function(res){
+						$this.attr('class','fa fa-heart deep-orange-color');					
+					}).fail(function(res){
+						alert(res.msg);
+					});			
+				}else{//已收藏
+					service.cancelFavorite(id,self.userInfo.user_id).done(function(res){
+						$this.attr('class','fa fa-heart-o orange-color');
+					}).fail(function(res){
+						alert(res.msg);
+					});					
+				}
+			}				
 		},
 
 		watch:{

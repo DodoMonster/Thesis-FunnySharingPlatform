@@ -26,6 +26,11 @@
                     totalPage:0,
                     totalNum:0,
                 },
+                favoritePage:{
+                    cur:1,
+                    totalNum:0,
+                    totalPage:0,
+                },
                 commentPage:{
                     cur:1,
                     totalPage:0,
@@ -33,7 +38,8 @@
                 },
                 userInfo:{},
                 userThing:[],
-                userComment:[],                
+                userComment:[], 
+                userFavorite:[],
                 newUname:'',
                 store:store,
                 isSelf:false,
@@ -62,6 +68,7 @@
                     self.newUname = self.userData.user_name;
                     self.getUserThing();
                     self.getUserComment();
+                    self.getUserFavorite();
                     // store.setUserInfo(self.userData);   
                     // store.userInfo = store.getUserInfo();
         		}).fail(function(res){
@@ -84,6 +91,16 @@
                     self.userComment = res.data.list || {};
                     self.commentPage.totalPage = res.data.totalPage;
                     self.commentPage.totalNum = res.data.totalNum;
+                }).fail(function(res){
+                    alert(res.msg);
+                });
+            },
+            getUserFavorite:function(){
+                let self = this;
+                service.getUserFavorite(self.userId,self.favoritePage.cur,self.userInfo.user_id).done(function(res){
+                    self.userFavorite = res.data.list || [];
+                    self.favoritePage.totalPage = res.data.totalPage;
+                    self.favoritePage.totalNum = res.data.totalNum;
                 }).fail(function(res){
                     alert(res.msg);
                 });
@@ -206,13 +223,16 @@
                 }
             },
 
-            //收藏
-            favorite:function(id){
-                let self = this;
-                service.trampDown(id,self.userInfo.user_id).done(function(res){
+            //取消收藏
+            cancelFavorite:function(id,e){
+                let self = this,
+                    $this = $(e.currentTarget).find('i');
+                   
+                service.cancelFavorite(id,self.userInfo.user_id).done(function(res){
+                    $this.attr('class','fa fa-heart-o orange-color');
                 }).fail(function(res){
                     alert(res.msg);
-                });
+                });                 
             },
         	logout:function(){
 				let self = this;

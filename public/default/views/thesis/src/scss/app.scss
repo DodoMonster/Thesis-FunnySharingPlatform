@@ -92,11 +92,23 @@ header{
     padding: 10px 20px;
     margin:20px auto 20px auto;
 }
-.author a, .author span {
+.author>a, .author span {
     float: left;
     font-size: 14px;
     font-weight: 700;
     line-height: 35px;
+}
+.author .author-name{
+    margin-top: -10px;    
+}
+.author .favorite-btn{
+    font-size: 25px;    
+}
+.orange-color{
+    color:#f9a523;
+}
+.deep-orange-color{
+    color:#f35010;
 }
 .author h2{
     color: #9b8878;
@@ -475,9 +487,8 @@ footer {
     float: right;
     width: 700px;
 }
-.user-col-right .publish-time{
+.publish-time{
     font-size: 12px;
-    float: left;
     margin-top: 20px;
     margin-left: -85px;
     color:#9c9c9c;

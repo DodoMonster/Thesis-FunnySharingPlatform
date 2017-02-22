@@ -235,7 +235,25 @@ class thesisController extends \Core\BaseControllers {
         echo json_encode($data);
     }
 
-    //获取趣事
+    //获取单个用户收藏的趣事
+    public function getUserFavoriteAction(){
+        $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
+        $page = isset($this->_getData['page']) ? $this->_getData['page'] : $this->page;
+        $other_user = isset($this->_getData['other_user']) ? $this->_getData['other_user'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->getUserFavorite($user_id,$other_user,$page,$this->_count);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取用户收藏成功！'; 
+            $data['data'] = $data['data'];
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取用户收藏失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //获取首页趣事
     public function getFunnyThingsListAction(){
         $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
         $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
@@ -300,7 +318,7 @@ class thesisController extends \Core\BaseControllers {
         echo json_encode($data);
     }
 
-     //收藏趣事
+    //收藏趣事
     public function favoriteAction(){
         // $this->checkIsLogin();
         $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
@@ -318,6 +336,27 @@ class thesisController extends \Core\BaseControllers {
         }else{
             $data['code'] = 1;
             $data['msg'] = '收藏趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+     //取消收藏趣事
+    public function cancelFavoriteAction(){
+        $things_id = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+        $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
+        $model = new \Web\ThesisModel();
+        $data = $model->cancelFavorite($things_id,$uid);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '取消收藏趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 1;
+            $data['msg'] = '您还未收藏过该趣事！'; 
+            $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '取消收藏趣事失败，请重试'; 
         }
         echo json_encode($data);
     }

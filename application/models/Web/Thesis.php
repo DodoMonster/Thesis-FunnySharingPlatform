@@ -1,9 +1,16 @@
 <?php
 namespace Web;
 class ThesisModel extends \Core\BaseModels {    
-    public function handleUser($funny_thing,$unfunny_thing,$thing){
+    public function handleUser($funny_thing,$unfunny_thing,$favorite_thing,$thing){
+        // print_r('pre1');
+        // print_r($funny_thing);
+        // print_r('pre2');
+        // print_r(($unfunny_thing));
+        // print_r('pre3');        
+        // print_r($favorite_thing);
         foreach ($thing as $t_key => $t_val) {
-            // if(!empty($funny_thing)){
+            $thing[$t_key]['publish_time'] = date('Y-m-d H:i:s',$thing[$t_key]['publish_time']);
+            if(!empty($funny_thing)){
                 foreach ($funny_thing as $f_key => $f_val) {
                     if($thing[$t_key]['things_id'] == $funny_thing[$f_key]['things_id']){
                         $thing[$t_key]['is_praise'] = 1;
@@ -11,10 +18,11 @@ class ThesisModel extends \Core\BaseModels {
                     }else{
                         $thing[$t_key]['is_praise'] = 0;                     
                     }
-
                 }
-            // }
-            // if(!empty($unfunny_things)){
+            }else{
+                $thing[$t_key]['is_praise'] = 0;                     
+            }
+            if(!empty($unfunny_things)){
                 foreach ($unfunny_thing as $un_key => $un_val) {
                     if($thing[$t_key]['things_id'] == $unfunny_thing[$un_key]['things_id']){
                         $thing[$t_key]['is_tramp'] = 1;
@@ -23,7 +31,21 @@ class ThesisModel extends \Core\BaseModels {
                         $thing[$t_key]['is_tramp'] = 0;
                     }          
                 } 
-            // }
+            }else{
+                $thing[$t_key]['is_tramp'] = 0;
+            }  
+            if(!empty($favorite_thing)){            
+                foreach ($favorite_thing as $fa_key => $fa_val) {
+                    if($thing[$t_key]['things_id'] == $favorite_thing[$fa_key]['things_id']){
+                        $thing[$t_key]['is_favorite'] = 1;
+                        break;
+                    }else{
+                        $thing[$t_key]['is_favorite'] = 0;
+                    }          
+                } 
+            }else{
+                $thing[$t_key]['is_favorite'] = 0;
+            } 
         }
         // print_r($thing);die;
         return $thing;
@@ -151,10 +173,8 @@ class ThesisModel extends \Core\BaseModels {
         $option['order'] = 'publish_time desc';
         // print_r($option);
         $result = $this->db->select($option);
-        if(!empty($result)){
-            foreach ($result as $key => $value) {
-                $result[$key]['publish_time'] = date('Y-m-d H:i:s',$value['publish_time']);
-            }
+        if(empty($result)){
+            return $this->returnResult(201);
         }
 
         $option1['table'] = 'funny_things';
@@ -162,15 +182,22 @@ class ThesisModel extends \Core\BaseModels {
         $option1['param'] = array($other_user); 
         // print_r($option);
         $funny_things = $this->db->select($option1);
-
         // print_r($funny_things);
+
         $option2['table'] = 'unfunny_things';
         $option2['where'] = array('user_id'=>'?');
         $option2['param'] = array($other_user); 
         // print_r($option);
         $unfunny_things = $this->db->select($option2);
         // print_r($unfunny_things);
-        $result = $this->handleUser($funny_things,$unfunny_things,$result);
+
+        $option3['table'] = 'favorite_things';
+        $option3['where'] = array('user_id'=>'?');
+        $option3['param'] = array($other_user); 
+        // print_r($option);
+        $favorite_things = $this->db->select($option3);
+
+        $result = $this->handleUser($funny_things,$unfunny_things,$favorite_things,$result);
         // print_r($result);
         $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$result);
         return $this->returnResult(200,$list);
@@ -199,6 +226,48 @@ class ThesisModel extends \Core\BaseModels {
         }
         $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$comment);
         return $this->returnResult(200,$list); 
+    }
+
+    //获取单个用户收藏的趣事
+    public function getUserFavorite($user_id,$other_user,$page,$count){  
+        $option['table'] = 'things as A';
+
+        $option['join'] = 'favorite_things as B on A.user_id = B.user_id and A.things_id = B.things_id';
+        $option['where'] = array('A.user_id'=>'?','A.is_approval'=>'?');
+        $option['param'] = array($user_id,1); 
+        $option['limit'] = ($page-1)*$count.','.$count;
+        $totalNum = $this->db->count($option);        
+        $totalPage = ceil($totalNum/$count);        
+        $option['order'] = 'publish_time desc';
+        $res = $this->db->select($option);
+        if(empty($res)){
+            return $this->returnResult(201);
+        }
+        // print_r($result);
+        $option1['table'] = 'funny_things';
+        $option1['where'] = array('user_id'=>'?');
+        $option1['param'] = array($other_user); 
+        // print_r($option);
+        $funny_things = $this->db->select($option1);
+        // print_r($funny_things);
+
+        $option2['table'] = 'unfunny_things';
+        $option2['where'] = array('user_id'=>'?');
+        $option2['param'] = array($other_user); 
+        // print_r($option);
+        $unfunny_things = $this->db->select($option2);
+        // print_r($unfunny_things);
+
+        $option3['table'] = 'favorite_things';
+        $option3['where'] = array('user_id'=>'?');
+        $option3['param'] = array($other_user); 
+        // print_r($option);
+        $favorite_things = $this->db->select($option3);
+
+        $result = $this->handleUser($funny_things,$unfunny_things,$favorite_things,$res);
+        // print_r($result);
+        $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$result);
+        return $this->returnResult(200,$list);
     }
 
     //修改头像
@@ -246,8 +315,9 @@ class ThesisModel extends \Core\BaseModels {
     // 获取趣事
     public function getFunnyThingsList($page,$count,$uid){
         //用户        
-        $options['table'] = 'user';
-        $user_list = $this->db->select($options); 
+        $funny_list = [];
+        $unfunny_list = [];
+        $favorite_list = [];
         if($uid > 0){
             //该用户点过赞的趣事
             $options11['table'] = 'funny_things';
@@ -263,100 +333,81 @@ class ThesisModel extends \Core\BaseModels {
             $unfunny_list = $this->db->select($options12);
             // print_r($unfunny_list);die;
 
+            $options13['table'] = 'favorite_things';
+            $options13['where'] = array('user_id'=>'?');
+            $options13['param'] =  array($uid); 
+            $favorite_list = $this->db->select($options13);
+            // print_r($favorite_list);
         }
         
         //热门 
-        $options1['table'] = 'things';
-        $options1['where'] = array('is_approval'=>'?');
+        $options1['table'] = 'things as A';
+        $options1['where'] = array('A.is_approval'=>'?');
+        $options1['join'] = 'user as B on A.user_id = B.user_id';
         $options1['param'] =  array(1);    
         $options1['limit'] = ($page-1)*$count.','.$count; 
         $totalNum1=$this->db->count($options1);
         $totalPage1=ceil($totalNum1/$count);   
         $options1['order'] = 'comment_num desc';
-        $hot_things = $this->db->select($options1);   
+        $hot_things = $this->db->select($options1); 
+        // print_r($hot_things);
 
-        foreach($hot_things as $hot_k=>$hot_v){
-            $hot_things[$hot_k]['comment_param'] = $hot_things[$hot_k]['things_id'];
-            foreach($user_list as $user_k=>$user_v){
-                if($hot_things[$hot_k]['user_id'] = $user_list[$user_k]['user_id']){
-                    $hot_things[$hot_k]['user_info'] = $user_list[$user_k];
-                }                
-            }        
-        }
-        if($uid > 0){
-            $hot_things = $this->handleUser($funny_list,$unfunny_list,$hot_things);
+        if(!empty($hot_things)){
+            $hot_things = $this->handleUser($funny_list,$unfunny_list,$favorite_list,$hot_things);
         }
         $hot_things = array('totalPage'=>$totalPage1,'totalNum'=>$totalNum1,'page'=>$page,'list'=>$hot_things);
 
-
+        // print_r($hot_things);
+        
         //新鲜
-        $options2['table'] = 'things';
+        $options2['table'] = 'things as A';
+        $options2['join'] = 'user as B on A.user_id = B.user_id';        
+        $options2['where'] = array('A.is_approval'=>'?');
+        $options2['param'] =  array(1); 
         $options2['order'] = 'publish_time desc';
         $options2['limit'] = ($page-1)*$count.','.$count; 
-        $totalNum2=$this->db->count($options2);
-        $totalPage2=ceil($totalNum2/$count); 
-        $options2['where'] = array('is_approval'=>'?');
-        $options2['param'] =  array(1);  
+        $totalNum2 = $this->db->count($options2);
+        $totalPage2 = ceil($totalNum2/$count); 
+         
         $fresh_things = $this->db->select($options2);       
-        foreach($fresh_things as $fresh_k=>$fresh_v){
-            $fresh_things[$fresh_k]['comment_param'] = $fresh_things[$fresh_k]['things_id'];
-            foreach($user_list as $user_k=>$user_v){
-                if($fresh_things[$fresh_k]['user_id'] = $user_list[$user_k]['user_id']){
-                    $fresh_things[$fresh_k]['user_info'] = $user_list[$user_k];
-                }
-            }
-           
-        }
-        if($uid > 0){
-            $fresh_things = $this->handleUser($funny_list,$unfunny_list,$fresh_things);
+
+        if(!empty($fresh_things)){
+            $fresh_things = $this->handleUser($funny_list,$unfunny_list,$favorite_list,$fresh_things);
         }
         $fresh_things = array('totalPage'=>$totalPage2,'totalNum'=>$totalNum2,'page'=>$page,'list'=>$fresh_things);
+        // print_r($fresh_things);
 
         //带图 
-        $options3['table'] = 'things';
-        $options3['where'] = array('is_approval'=>'?','has_img'=>'?');
+        $options3['table'] = 'things as A';
+        $options3['join'] = 'user as B on A.user_id = B.user_id';        
+        $options3['where'] = array('A.is_approval'=>'?','A.has_img'=>'?');
         $options3['param'] =  array(1,1);    
         $options3['limit'] = ($page-1)*$count.','.$count; 
-        $totalNum3=$this->db->count($options3);
-        $totalPage3=ceil($totalNum3/$count);   
-        $options3['order'] = 'comment_num desc';
+        $totalNum3 = $this->db->count($options3);
+        $totalPage3 = ceil($totalNum3/$count);   
+        $options3['order'] = 'publish_time desc';
         $img_things = $this->db->select($options3);   
 
-        foreach($img_things as $img_k=>$img_v){
-            $img_things[$img_k]['comment_param'] = $img_things[$img_k]['things_id'];            
-            foreach($user_list as $user_k=>$user_v){
-                if($img_things[$img_k]['user_id'] = $user_list[$user_k]['user_id']){
-                    $img_things[$img_k]['user_info'] = $user_list[$user_k];
-                }                
-            }
-        
-        }
-        if($uid > 0){
-            $img_things = $this->handleUser($funny_list,$unfunny_list,$img_things);
+        if(!empty($img_things)){
+            $img_things = $this->handleUser($funny_list,$unfunny_list,$favorite_list,$img_things);
         }
         $img_things = array('totalPage'=>$totalPage3,'totalNum'=>$totalNum3,'page'=>$page,'list'=>$img_things);
 
+        // print_r($img_things);
+
         //纯文 
-        $options4['table'] = 'things';
-        $options4['where'] = array('is_approval'=>'?','has_img'=>'?');
+        $options4['table'] = 'things as A';
+        $options4['join'] = 'user as B on A.user_id = B.user_id'; 
+        $options4['where'] = array('A.is_approval'=>'?','A.has_img'=>'?');
         $options4['param'] =  array(1,0);    
         $options4['limit'] = ($page-1)*$count.','.$count; 
         $totalNum4=$this->db->count($options4);
         $totalPage4=ceil($totalNum4/$count);   
         $options4['order'] = 'comment_num desc';
         $word_things = $this->db->select($options4);   
-
-        foreach($word_things as $word_k=>$word_v){
-            $word_things[$word_k]['comment_param'] = $word_things[$word_k]['things_id'];                        
-            foreach($user_list as $user_k=>$user_v){
-                if($word_things[$word_k]['user_id'] = $user_list[$user_k]['user_id']){
-                    $word_things[$word_k]['user_info'] = $user_list[$user_k];
-                }                
-            }
-        
-        }
-        if($uid > 0){
-            $word_things = $this->handleUser($funny_list,$unfunny_list,$word_things);
+       
+        if(!empty($word_things)){
+            $word_things = $this->handleUser($funny_list,$unfunny_list,$favorite_list,$word_things);
         }
         $word_things = array('totalPage'=>$totalPage4,'totalNum'=>$totalNum4,'page'=>$page,'list'=>$word_things);
 
@@ -414,7 +465,7 @@ class ThesisModel extends \Core\BaseModels {
     public function favorite($things_id,$user_id){
         $options['table'] = 'favorite_things';
         $options['where'] = array('user_id'=>'?','things_id'=>'?');
-        $options['param'] = array($user_id,$things_id);
+        $options['param'] = array($user_id,$things_id);            
         $res = $this->db->find($options);
         if(empty($res)){
             $options1['table'] = 'favorite_things';
@@ -425,6 +476,31 @@ class ThesisModel extends \Core\BaseModels {
             $updateSql = 'update things set favorite_num = favorite_num + 1 where things_id =  '.$things_id;
             $info = $this->db->create($updateSql);
             return $this->returnResult(200,$info);            
+        }else{
+            return $this->returnResult(201);            
+        }     
+    }
+
+    //取消收藏
+    public function cancelFavorite($things_id,$user_id){
+        $options['table'] = 'favorite_things';
+        $options['where'] = array('user_id'=>'?','things_id'=>'?');
+        $options['param'] = array($user_id,$things_id);
+        // print_r($options); 
+        $res = $this->db->find($options);
+        // print_r($res);
+        if(!empty($res)){
+            $options1['table'] = 'favorite_things';
+            $options1['where'] = array('user_id'=>'?','things_id'=>'?');
+            $options1['param'] = array($user_id,$things_id);
+            $res1 = $this->db->delete($options1);
+            if($res1 !== FALSE){
+                $updateSql = 'update things set favorite_num = favorite_num - 1 where things_id =  '.$things_id;
+                $info = $this->db->create($updateSql);
+                return $this->returnResult(200,$info);
+            }else{
+                return $this->returnResult(4000);
+            }                        
         }else{
             return $this->returnResult(201);            
         }     

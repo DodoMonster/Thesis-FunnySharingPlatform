@@ -3,9 +3,13 @@
 		<div class="funny-things clearfix" v-for="things in funnyThingsList">
 			<div class="author clearfix">
 				<a v-link="{name:'userHome',params:{user_id:things.user_id}}" target="_blank">
-					<img :src="things.user_info.user_photo" alt="用户头像">
+					<img :src="things.user_photo" alt="用户头像">
 				</a>
-				<a v-link="{name:'userHome',params:{user_id:things.user_id}}" target="_blank"><h2>{{things.user_info.user_name}}</h2></a>
+				<a v-link="{name:'userHome',params:{user_id:things.user_id}}" target="_blank" class="author-name"><h2>{{things.user_name}}</h2></a>
+				<p class="publish-time pull-left" style="margin-left: -39px;">{{things.publish_time}}</p>
+				<a class="favorite-btn pull-right" @click="favorite(things.things_id,$event)">
+					<i class="fa" :class="[things.is_favorite == 1 ? 'fa-heart deep-orange-color' : 'fa-heart-o orange-color']"></i>
+				</a>
 			</div>
 			<a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}" class="contentHerf">
 				<div class="funny-content">
@@ -28,6 +32,11 @@
 						<i class="number">{{things.comment_num}}</i>
 						评论
 					</a>
+				</span>
+				<span class="stats-vote">
+					<i class="dash">·</i>
+					<i class="number">{{things.favorite_num}}</i>
+					收藏
 				</span>
 			</div>
 			<div class="stats-buttons clearfix">
