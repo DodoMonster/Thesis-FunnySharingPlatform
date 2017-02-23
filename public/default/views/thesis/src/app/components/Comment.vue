@@ -15,8 +15,9 @@
 			return{
 				thingInfo:{},
 				thing_id:'',
-				is_praise:false,
-				is_tramp:false,
+				is_praise:0,
+				is_tramp:0,
+				is_favorite:0,
 				page:{
 					cur:1,
 					totalPage:0,
@@ -32,7 +33,8 @@
 			let self = this;
 			self.thing_id = this.$route.query.thing_id;
 			self.is_praise = this.$route.query.is_praise;
-	        self.is_tramp = this.$route.query.is_tramp;		    
+	        self.is_tramp = this.$route.query.is_tramp;	
+	        self.is_favorite = this.$route.query.is_favorite;	    
 			this.getThingInfo();
 			this.getCommentsList(true);
 			console.log(this.thing_id);
@@ -86,7 +88,9 @@
 
 				}else{
 					service.praiseUp(self.thing_id,self.userInfo.user_id).done(function(res){
-				    	$this.addClass('voted');													
+				    	$this.addClass('voted');			
+				    	window.history.pushState({},0,self.changeURLArg('is_favorite',1));
+
 					}).fail(function(res){
 						alert(res.msg);
 					});
@@ -103,11 +107,54 @@
 				}else{									
 					service.trampDown(self.thing_id,self.userInfo.user_id).done(function(res){
 						$this.addClass('voted');
+						window.history.pushState({},0,self.changeURLArg('is_tramp',1));
 					}).fail(function(res){
 						alert(res.msg);
 					});
 				}
 			},
+			//收藏和取消收藏
+			favorite:function(id,e){
+				let self = this,
+					$this = $(e.currentTarget).find('i'),
+					className = $this.attr('class'),
+					$num = $(e.currentTarget).parents('.stats-buttons').siblings('.stats').find('.stats-favorite .number');
+				if(className.indexOf('fa-heart-o') !== -1){//未收藏
+					service.favorite(id,self.userInfo.user_id).done(function(res){
+						$this.attr('class','fa fa-heart deep-orange-color');
+						$num.text(Number($num.text()) + 1);	
+						window.history.pushState({},0,self.changeURLArg('is_favorite',1));				
+					}).fail(function(res){
+						alert(res.msg);
+					});			
+				}else{//已收藏
+					service.cancelFavorite(id,self.userInfo.user_id).done(function(res){
+						$this.attr('class','fa fa-heart-o orange-color');
+						window.history.pushState({},0,self.changeURLArg('is_favorite',0));
+						$num.text(Number($num.text()) - 1);
+					}).fail(function(res){
+						alert(res.msg);
+					});					
+				}
+			},
+
+			changeURLArg:function(arg,arg_val){ 
+				var pattern = arg + '=([^&]*)',
+					url = window.location.href, 
+					replaceText = arg + '=' + arg_val; 
+				if(url.match(pattern)){ 
+					var tmp = '/('+ arg+'=)([^&]*)/gi'; 
+					tmp = url.replace(eval(tmp),replaceText); 
+					return tmp; 
+				}else{ 
+					if(url.match('[\?]')){ 
+						return url + '&' + replaceText; 
+					}else{ 
+						return url + '?' + replaceText; 
+					} 
+				} 
+				return url + '\n' + arg + '\n' + arg_val; 
+			} 				
 		}
 	};
 

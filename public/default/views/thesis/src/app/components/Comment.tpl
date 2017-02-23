@@ -2,8 +2,12 @@
     <div id="content-block" class="clearfix">
         <div class="funny-things clearfix">
         	<div class="author clearfix">
+                <a class="favorite-btn pull-right" @click="favorite(thingInfo.things_id,$event)">
+                    <i class="fa" :class="[is_favorite == 1 ? 'fa-heart deep-orange-color' : 'fa-heart-o orange-color']"></i>
+                </a>
         		<a v-link="{name:'userHome',params:{user_id:thingInfo.user_id}}" target="_blank"><img :src="thingInfo.userInfo.user_photo" alt="用户头像"></a>
-        		<a v-link="{name:'userHome',params:{user_id:thingInfo.user_id}}" target="_blank"><h2>{{thingInfo.userInfo.user_name}}</h2></a>
+        		<a class="author-name" v-link="{name:'userHome',params:{user_id:thingInfo.user_id}}" target="_blank"><h2>{{thingInfo.userInfo.user_name}}</h2></a>
+                <p class="publish-time pull-left">{{thingInfo.publish_time}}</p>
         	</div>
         	<a href="javascript:;" class="contentHerf">
         		<div class="funny-content">
@@ -22,6 +26,13 @@
         				评论
         			</a>
         		</span>
+                <span class="stats-favorite">
+                    <i class="dash">·</i>
+                    <a href="">
+                        <i class="number">{{thingInfo.favorite_num}}</i>
+                        收藏
+                    </a>
+                </span>
         	</div>
         	<div class="stats-buttons clearfix">
         		<ul class="clearfix">

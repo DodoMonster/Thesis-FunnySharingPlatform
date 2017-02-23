@@ -2,12 +2,6 @@
 namespace Web;
 class ThesisModel extends \Core\BaseModels {    
     public function handleUser($funny_thing,$unfunny_thing,$favorite_thing,$thing){
-        // print_r('pre1');
-        // print_r($funny_thing);
-        // print_r('pre2');
-        // print_r(($unfunny_thing));
-        // print_r('pre3');        
-        // print_r($favorite_thing);
         foreach ($thing as $t_key => $t_val) {
             $thing[$t_key]['publish_time'] = date('Y-m-d H:i:s',$thing[$t_key]['publish_time']);
             if(!empty($funny_thing)){
@@ -232,8 +226,8 @@ class ThesisModel extends \Core\BaseModels {
     public function getUserFavorite($user_id,$other_user,$page,$count){  
         $option['table'] = 'things as A';
 
-        $option['join'] = 'favorite_things as B on A.user_id = B.user_id and A.things_id = B.things_id';
-        $option['where'] = array('A.user_id'=>'?','A.is_approval'=>'?');
+        $option['join'] = 'favorite_things as B on A.things_id = B.things_id';
+        $option['where'] = array('B.user_id'=>'?','A.is_approval'=>'?');
         $option['param'] = array($user_id,1); 
         $option['limit'] = ($page-1)*$count.','.$count;
         $totalNum = $this->db->count($option);        
@@ -524,6 +518,7 @@ class ThesisModel extends \Core\BaseModels {
         if(empty($user)){
             return $this->returnResult(201);
         }
+        $thing['publish_time'] = date('Y-m-d H:i:s',$thing['publish_time']);
         $thing['userInfo'] = $user;
         return $this->returnResult(200,$thing);
     }

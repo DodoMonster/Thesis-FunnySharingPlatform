@@ -161,22 +161,23 @@
         <div id="content-block" class="clearfix" style="width: 700px;min-width: 700px">
             <div class="funny-things clearfix" v-for="things in userThing" style="margin-top: 0">
                 <div class="author clearfix">
+                    <a class="favorite-btn pull-right" @click="favorite(false,things.things_id,$event)">
+                        <i class="fa" :class="[things.is_favorite == 1 ? 'fa-heart deep-orange-color' : 'fa-heart-o orange-color']"></i>
+                    </a> 
                     <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank">
                         <img :src="userInfo.user_photo" alt="用户头像">
                     </a>
-                    <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank" style="margin-top: -10px"><h2>{{userInfo.user_name}}</h2></a>
+                    <a class="author-name" v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank" style="margin-top: -10px"><h2>{{userInfo.user_name}}</h2></a>
                     <p class="publish-time pull-left">{{things.publish_time}}</p> 
-                    <a class="favorite-btn pull-right" @click="favorite(things.id)">
-                     <i class="fa fa-heart-o"></i>
-                    </a>                   
+                                      
                 </div>
-                <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}" class="contentHerf">
+                <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp,is_favorite:things.is_favorite}}" class="contentHerf">
                     <div class="funny-content">
                         <p>{{things.things_content}}</p>
                     </div>
                 </a>
                 <div class="thumb" v-if="things.things_image">
-                    <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}" target="_blank">
+                    <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp,is_favorite:things.is_favorite}}" target="_blank">
                     <img :src="things.things_image" alt="{{things.things_content}}" style="width: 40%;">
                     </a>
                 </div>
@@ -187,10 +188,15 @@
                     </span>
                     <span class="stats-comments">
                         <i class="dash">·</i>
-                        <a v-link="{name:'comment',params:{thing_id:things.comment_param}}">
+                        <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp,is_favorite:things.is_favorite}}">
                             <i class="number">{{things.comment_num}}</i>
                             评论
                         </a>
+                    </span>
+                    <span class="stats-favorite">
+                        <i class="dash">·</i>
+                        <i class="number">{{things.favorite_num}}</i>
+                            收藏
                     </span>
                 </div>
                 <div class="stats-buttons clearfix">
@@ -202,7 +208,7 @@
                             <a href="javascript:;" class="voting" :class="[things.is_tramp == 1? 'voted' : '']"  @click="trampDown(things.things_id,$event)"><i></i></a>
                         </li>
                         <li class="comments">
-                            <a v-link="{name:'comment',params:{thing_id:things.comment_param}}" class="voting"><i></i></a>
+                            <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp,is_favorite:things.is_favorite}}" class="voting"><i></i></a>
                         </li>
                     </ul>
                 </div>
@@ -271,14 +277,14 @@
         <div id="content-block" class="clearfix" style="width: 700px;min-width: 700px">
             <div class="funny-things clearfix" v-for="things in userFavorite" style="margin-top: 0">
                 <div class="author clearfix">
+                    <a class="favorite-btn pull-right" @click="favorite(true,things.things_id,$event)">
+                        <i class="fa" :class="[things.is_favorite == 1 ? 'fa-heart deep-orange-color' : 'fa-heart-o orange-color']"></i>
+                    </a> 
                     <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank">
                         <img :src="userInfo.user_photo" alt="用户头像">
                     </a>
-                    <a v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank" style="margin-top: -10px"><h2>{{userInfo.user_name}}</h2></a>
-                    <p class="publish-time pull-left">{{things.publish_time}}</p> 
-                    <a class="favorite-btn pull-right" @click="favorite(things.id)">
-                        <i class="fa" :class="[things.is_favorite == 1 ? 'fa-heart deep-orange-color' : 'fa-heart-o orange-color']"></i>
-                    </a>                   
+                    <a class="author-name" v-link="{name:'userHome',params:{user_id:userInfo.user_id}}" target="_blank" ><h2>{{userInfo.user_name}}</h2></a>
+                    <p class="publish-time pull-left">{{things.publish_time}}</p>                                     
                 </div>
                 <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}" class="contentHerf">
                     <div class="funny-content">
@@ -297,7 +303,7 @@
                     </span>
                     <span class="stats-comments">
                         <i class="dash">·</i>
-                        <a v-link="{name:'comment',params:{thing_id:things.comment_param}}">
+                        <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}">
                             <i class="number">{{things.comment_num}}</i>
                             评论
                         </a>
@@ -312,7 +318,7 @@
                             <a href="javascript:;" class="voting" :class="[things.is_tramp == 1? 'voted' : '']"  @click="trampDown(things.things_id,$event)"><i></i></a>
                         </li>
                         <li class="comments">
-                            <a v-link="{name:'comment',params:{thing_id:things.comment_param}}" class="voting"><i></i></a>
+                            <a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp}}" class="voting"><i></i></a>
                         </li>
                     </ul>
                 </div>

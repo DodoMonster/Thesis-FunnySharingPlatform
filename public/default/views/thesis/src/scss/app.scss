@@ -99,7 +99,9 @@ header{
     line-height: 35px;
 }
 .author .author-name{
-    margin-top: -10px;    
+    display: block;
+    width:85%;  
+    margin-top: -10px; 
 }
 .author .favorite-btn{
     font-size: 25px;    
@@ -489,8 +491,7 @@ footer {
 }
 .publish-time{
     font-size: 12px;
-    margin-top: 20px;
-    margin-left: -85px;
+    margin-top: -5px;
     color:#9c9c9c;
 }
 .user-main .user-col-left {

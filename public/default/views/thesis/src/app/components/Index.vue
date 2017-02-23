@@ -77,13 +77,15 @@
 			//好笑
 			praiseUp:function(id,event){
 				let self = this,
-					$this = $(event.currentTarget);
+					$this = $(event.currentTarget),
+					$num = $this.parents('.stats-buttons').siblings('.stats').find('.stats-vote .number');
 				if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
 					return false;
 
 				}else{
 					service.praiseUp(id,self.userInfo.user_id).done(function(res){
-				    	$this.addClass('voted');													
+				    	$this.addClass('voted');							
+				    	$num.text(Number($num.text()) + 1);						
 					}).fail(function(res){
 						alert(res.msg);
 					});
@@ -110,16 +112,19 @@
 			favorite:function(id,e){
 				let self = this,
 					$this = $(e.currentTarget).find('i'),
-					className = $this.attr('class');
+					className = $this.attr('class'),
+					$num = $(e.currentTarget).parents('.stats-buttons').siblings('.stats').find('.stats-favorite .number');
 				if(className.indexOf('fa-heart-o') !== -1){//未收藏
 					service.favorite(id,self.userInfo.user_id).done(function(res){
-						$this.attr('class','fa fa-heart deep-orange-color');					
+						$this.attr('class','fa fa-heart deep-orange-color');
+						$num.text(Number($num.text()) + 1);					
 					}).fail(function(res){
 						alert(res.msg);
 					});			
 				}else{//已收藏
 					service.cancelFavorite(id,self.userInfo.user_id).done(function(res){
 						$this.attr('class','fa fa-heart-o orange-color');
+						$num.text(Number($num.text()) - 1);
 					}).fail(function(res){
 						alert(res.msg);
 					});					

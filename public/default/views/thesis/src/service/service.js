@@ -104,7 +104,7 @@ service.trampDown = (id,user_id) => {
 }
 
 /**
- * 收藏和取消收藏
+ * 收藏
  */
 service.favorite = (id,user_id) => {
     return util.ajax({

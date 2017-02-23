@@ -246,6 +246,9 @@ class thesisController extends \Core\BaseControllers {
             $data['code'] = 0;
             $data['msg'] = '获取用户收藏成功！'; 
             $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 0;
+            $data['msg'] = '用户收藏列表为空！'; 
         }else{
             $data['code'] = 1;
             $data['msg'] = '获取用户收藏失败，请重试'; 

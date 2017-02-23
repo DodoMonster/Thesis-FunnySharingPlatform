@@ -95,8 +95,11 @@
                     alert(res.msg);
                 });
             },
-            getUserFavorite:function(){
+            getUserFavorite:function(flag){
                 let self = this;
+                if(flag){
+                    self.favoritePage.cur = 1;
+                }
                 service.getUserFavorite(self.userId,self.favoritePage.cur,self.userInfo.user_id).done(function(res){
                     self.userFavorite = res.data.list || [];
                     self.favoritePage.totalPage = res.data.totalPage;
@@ -194,13 +197,15 @@
             //好笑
             praiseUp:function(id,event){
                 let self = this,
-                    $this = $(event.currentTarget);
+                    $this = $(event.currentTarget),
+                    $num = $(event.currentTarget).parents('.stats-buttons').siblings('.stats').find('.stats-vote .number');
                 if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
                     return false;
 
                 }else{
                     service.praiseUp(id,self.userInfo.user_id).done(function(res){
-                        $this.addClass('voted');                                                    
+                        $this.addClass('voted'); 
+                        $num.text(Number($num.text()) + 1);                                                  
                     }).fail(function(res){
                         alert(res.msg);
                     });
@@ -212,6 +217,7 @@
             trampDown:function(id,event){
                 let self = this,
                     $this = $(event.currentTarget);
+
                 if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
                     return false;
                 }else{                                  
@@ -222,18 +228,45 @@
                     });
                 }
             },
-
-            //取消收藏
-            cancelFavorite:function(id,e){
+            //收藏和取消收藏
+            favorite:function(flag,id,e){
                 let self = this,
-                    $this = $(e.currentTarget).find('i');
-                   
-                service.cancelFavorite(id,self.userInfo.user_id).done(function(res){
-                    $this.attr('class','fa fa-heart-o orange-color');
-                }).fail(function(res){
-                    alert(res.msg);
-                });                 
+                    $this = $(e.currentTarget).find('i'),
+                    className = $this.attr('class'),
+                    $num = $(e.currentTarget).parents('.author').siblings('.stats').find('.stats-favorite .number');
+                if(className.indexOf('fa-heart-o') !== -1){//未收藏则收藏
+                    service.favorite(id,self.userInfo.user_id).done(function(res){
+                        $this.attr('class','fa fa-heart deep-orange-color');
+                        $num.text(Number($num.text()) + 1);
+                        self.getUserFavorite(true);                                                                    
+                    }).fail(function(res){
+                        alert(res.msg);
+                    });         
+                }else{//已收藏则取消收藏                    
+                    service.cancelFavorite(id,self.userInfo.user_id).done(function(res){                        
+                        if(!flag){
+                            $this.attr('class','fa fa-heart-o orange-color');
+                            $num.text(Number($num.text()) - 1);
+                        }
+                        self.getUserFavorite(true);                        
+                    }).fail(function(res){
+                        alert(res.msg);
+                    });                 
+                }
             },
+            //取消收藏
+            // cancelFavorite:function(id,e){
+            //     let self = this,
+            //         $this = $(e.currentTarget).find('i'),
+            //         $num = $(e.currentTarget).parents('.author').siblings('.stats').find('.stats-favorite .number');                   
+            //     service.cancelFavorite(id,self.userInfo.user_id).done(function(res){
+            //         $this.attr('class','fa fa-heart-o orange-color');
+            //         $num.text(Number($num.text()) + 1);
+                    
+            //     }).fail(function(res){
+            //         alert(res.msg);
+            //     });                 
+            // },
         	logout:function(){
 				let self = this;
 				service.logout().done(function(res){
