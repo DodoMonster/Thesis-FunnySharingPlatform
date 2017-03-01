@@ -525,8 +525,9 @@ class ThesisModel extends \Core\BaseModels {
 
     //获取评论列表
     public function getCommentsList($page,$thing_id,$count){
-        $options['table'] = 'comment';
-        $options['where'] = array('things_id'=>'?');
+        $options['table'] = 'comment as A';
+        $options['join'] = 'user as B on A.user_id = B.user_id';
+        $options['where'] = array('A.things_id'=>'?');
         $options['param'] = array($thing_id);
         $options['limit'] = ($page-1)*$count.','.$count;
         $totalNum = $this->db->count($options);
@@ -568,10 +569,10 @@ class ThesisModel extends \Core\BaseModels {
 
     //评论趣事
     public function comment($things_id,$user_id,$content){
-        $options['table'] = 'user';
-        $tmpData = array('user_id'=>'?');
-        $options['param'] = array($user_id);
-        $user = $this->db->find($options);
+        // $options['table'] = 'user';
+        // $tmpData = array('user_id'=>'?');
+        // $options['param'] = array($user_id);
+        // $user = $this->db->find($options);
 
         $options1['table'] = 'comment_user';
         $tmpData1 = array('user_id'=>'?','things_id'=>'?');
@@ -583,8 +584,8 @@ class ThesisModel extends \Core\BaseModels {
         $data = $this->db->create($updateSql);
 
         $options2['table'] = 'comment';
-        $tmpData2 = array('user_id'=>'?','user_name'=>'?','user_photo'=>'?','things_id'=>'?','content'=>'?','comment_time'=>'?');
-        $options2['param'] = array($user_id,$user['user_name'],$user['user_photo'],$things_id,$content,time());
+        $tmpData2 = array('user_id'=>'?','things_id'=>'?','content'=>'?','comment_time'=>'?');
+        $options2['param'] = array($user_id,$things_id,$content,time());
         $info = $this->db->add($tmpData2,$options2);
         if($res !== FALSE && $info !== FALSE){           
             return $this->returnResult(200,$info);            

@@ -3,6 +3,7 @@
 <script>
 	import service from '../../service/service.js';
 	import Router from 'vue-router';
+	import store from '../../store/index.js';
 	export default {
 		replace: false,
 
@@ -22,7 +23,7 @@
 		methods:{
 			publishThings:function(){
 				let self = this;
-				if(!self.userInfo.user_id){
+				if(!self.userInfo || !self.userInfo.user_id){
 					alert('请先登录！');
 					return false;
 				}
@@ -40,6 +41,7 @@
 		        
 		        fd.append("things_img", file);
 		        fd.append("things_content",self.publishData.content);
+		        fd.append("user_id",self.userInfo.user_id);
 		        fd.append("is_anonymous",self.publishData.is_anonymous);
 		      	        
 		        var xhr = new XMLHttpRequest();
@@ -61,9 +63,9 @@
 		            		router.go('/index/fresh');
 		                }else{
 		                	alert(res.msg);
-		                }
-		            }		                		                
+		                }		                		                
 		            }
+		        }
 		        xhr.send(fd);
 		        return false;
 			}

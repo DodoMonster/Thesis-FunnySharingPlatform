@@ -2,7 +2,7 @@ import {
     EventEmitter
 }
 from 'events';
-import util from 'common/util.js';
+import util from '../libs/js/util.js';
 import $ from 'jquery';
 import service from 'service/service.js';
 const store = new EventEmitter();

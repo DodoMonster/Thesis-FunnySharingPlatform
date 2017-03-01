@@ -39,29 +39,29 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="comment in commentsList">
+			<tr v-for="thing in thingsList">
 				<td>{{$index+1}}</td>
-				<td>{{comment.comments_id}}</td>
-				<td>{{comment.comments_content}}</td>
-				<td>{{comment.userInfo.user_name || '--'}}</td>
-				<td>{{comment.publish_time || '--'}}</td>
+				<td>{{thing.things_id}}</td>
+				<td>{{thing.things_content}}</td>
+				<td>{{thing.userInfo.user_name || '--'}}</td>
+				<td>{{thing.publish_time || '--'}}</td>
 				<td>
-					<img :src="comment.comments_image" alt="趣事图片" style="width:5rem;">
+					<img :src="thing.things_image" alt="趣事图片" style="width:5rem;">
 				</td>
-				<td>{{comment.funny_num || '--'}}</td>
-				<td>{{comment.unfunny_num || '--'}}</td>
-				<td>{{comment.favorite_num || '--'}}</td>
-				<td>{{comment.comment_num || '--'}}</td>
+				<td>{{thing.funny_num || '--'}}</td>
+				<td>{{thing.unfunny_num || '--'}}</td>
+				<td>{{thing.favorite_num || '--'}}</td>
+				<td>{{thing.thing_num || '--'}}</td>
 				<td>
-					<a @click="deletecomments(comment.comments_id)"
+					<a @click="deletethings(thing.things_id)"
 							href="javascript:;" title="删除趣事">
 						<i class="fa-lg ti-trash text-danger"></i> 
 					</a>
-	<!-- 				<a @click="approvalcomments(comment.comments_id)"
-						v-if="comment.is_approval == 0"
+					<a @click="approvalThings(thing.things_id)"
+						v-if="thing.is_approval == 0"
 							href="javascript:;" title="审核趣事">
 						<i class="fa-lg ti-zoom-in m-l-15 text-success"></i> 
-					</a> -->
+					</a>
 				</td>
 			</tr>			
 		</tbody>
