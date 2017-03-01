@@ -62,23 +62,23 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _Index = __webpack_require__(28);
+	var _Index = __webpack_require__(27);
 	
 	var _Index2 = _interopRequireDefault(_Index);
 	
-	var _userList = __webpack_require__(35);
+	var _userList = __webpack_require__(34);
 	
 	var _userList2 = _interopRequireDefault(_userList);
 	
-	var _thingsList = __webpack_require__(43);
+	var _thingsList = __webpack_require__(42);
 	
 	var _thingsList2 = _interopRequireDefault(_thingsList);
 	
-	var _adminList = __webpack_require__(46);
+	var _adminList = __webpack_require__(45);
 	
 	var _adminList2 = _interopRequireDefault(_adminList);
 	
-	var _commentList = __webpack_require__(49);
+	var _commentList = __webpack_require__(48);
 	
 	var _commentList2 = _interopRequireDefault(_commentList);
 	
@@ -23088,11 +23088,9 @@
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
 	__vue_script__ = __webpack_require__(6)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\app\\App.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(27)
+	__vue_template__ = __webpack_require__(26)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -23108,7 +23106,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-1078b9d7/App.vue"
+	  var id = "_v-5685f42c/App.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -23134,13 +23132,17 @@
 	
 	var _Sidebar2 = _interopRequireDefault(_Sidebar);
 	
-	var _Footer = __webpack_require__(21);
+	var _Footer = __webpack_require__(20);
 	
 	var _Footer2 = _interopRequireDefault(_Footer);
 	
-	var _Dialog = __webpack_require__(24);
+	var _Dialog = __webpack_require__(23);
 	
 	var _Dialog2 = _interopRequireDefault(_Dialog);
+	
+	var _util = __webpack_require__(9);
+	
+	var _util2 = _interopRequireDefault(_util);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23167,20 +23169,18 @@
 			}, 500);
 	
 			if (jQuery.browser.mobile == false) {
-				(function () {
-					var initScroll = function initScroll() {
-						$('.custom-scroll').jScrollPane({
-							autoReinitialise: true,
-							autoReinitialiseDelay: 100
-						});
-					};
-	
-					initScroll();
-	
-					$(window).resize(function () {
-						initScroll();
+				var initScroll = function initScroll() {
+					$('.custom-scroll').jScrollPane({
+						autoReinitialise: true,
+						autoReinitialiseDelay: 100
 					});
-				})();
+				};
+	
+				initScroll();
+	
+				$(window).resize(function () {
+					initScroll();
+				});
 			}
 	
 			if (jQuery.browser.mobile == true) {
@@ -23188,8 +23188,6 @@
 			}
 		},
 	
-	
-		methods: {},
 	
 		components: {
 			AppHeader: _Header2.default,
@@ -23207,9 +23205,7 @@
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
 	__vue_script__ = __webpack_require__(8)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\components\\Header.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(16)
 	module.exports = __vue_script__ || {}
@@ -23227,7 +23223,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-6a40f484/Header.vue"
+	  var id = "_v-f705eece/Header.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -23295,28 +23291,17 @@
 	
 		methods: {
 			logout: function logout() {
-				$.ajax({
-					url: '/admin/adminlogin/logout'
-				}).done(function (res) {
-					window.location.href = '/admin/adminlogin/login';
-				}).fail(function () {
-					_util2.default.dialog.alert({
-						msg: ['网络错误，请重新退出'],
-						title: '错误提示'
-					});
-				});
+				localStorage.clear();
+				window.location.href = '/adminlogin/login';
 			},
 	
 			getAdminInfo: function getAdminInfo() {
 				var self = this;
-				_service2.default.getAdminInfo().done(function (res) {
-					self.userInfo = res.data;
-				}).fail(function (res) {
-					_util2.default.dialog.alert({
-						msg: [res.msg],
-						title: '错误提示'
-					});
-				});
+				try {
+					self.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+				} catch (e) {
+					console.log(e);
+				}
 			},
 	
 			editPwd: function editPwd() {
@@ -23337,7 +23322,7 @@
 					_util2.default.dialog.alert({ msg: ['两次输入的密码不一致，请重新确定！'] });
 					return false;
 				}
-				_service2.default.editPwd(self.editPwdData).done(function (res) {
+				_service2.default.resetPwd(self.userInfo.admin_id, self.editPwdData).done(function (res) {
 					_util2.default.dialog.alert({
 						msg: [res.msg],
 						title: '信息提示'
@@ -23353,6 +23338,11 @@
 	
 			showEditPwdModal: function showEditPwdModal() {
 				this.editPwdModalMsg.show = true;
+				this.editPwdData = {
+					originPwd: '',
+					pwd: '',
+					againPwd: ''
+				};
 			}
 		},
 	
@@ -23768,9 +23758,7 @@
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
 	__vue_script__ = __webpack_require__(12)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\components\\Modal.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(13)
 	module.exports = __vue_script__ || {}
@@ -23788,7 +23776,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-1dcb6906/Modal.vue"
+	  var id = "_v-1661fe51/Modal.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -23859,13 +23847,14 @@
 	 * 更改密码
 	 */
 	
-	service.resetPwd = function (data) {
+	service.resetPwd = function (id, data) {
 		return _util2.default.ajax({
 			url: '/admin/resetOwnPassword',
 			type: 'POST',
 			data: {
-				oldPwd: data.oldPwd,
-				newPwd: data.newPwd
+				id: id,
+				old_pwd: data.originPwd,
+				new_pwd: data.pwd
 			}
 		});
 	};
@@ -24119,7 +24108,7 @@
 /* 16 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"site-header\">\r\n    <nav class=\"navbar navbar-dark\">\r\n        <ul class=\"nav navbar-nav\">\r\n            <li class=\"nav-item m-r-1 hidden-lg-up\">\r\n            <a class=\"nav-link collapse-button\" href=\"/admin/index\">\r\n                <i class=\"ti-menu\"></i>\r\n            </a>\r\n            </li>\r\n        </ul>\r\n        <ul class=\"nav navbar-nav pull-xs-right\">\r\n            <li class=\"nav-item dropdown\">\r\n                <a class=\"nav-link\" href=\"#\" data-toggle=\"dropdown\" aria-expanded=\"false\">\r\n                    <i class=\"ti-user\"></i> 管理员信息\r\n                </a>\r\n                <div class=\"dropdown-menu dropdown-menu-right animated flipInY\">\r\n                    <span class=\"dropdown-item\">\r\n                        <i class=\"fa fa-user\"></i> \r\n                        <em>{{userInfo.user_id}}</em>\r\n                    </span>\r\n                    <span class=\"dropdown-item\">\r\n                        <i class=\"fa fa-diamond\"></i>\r\n                        <em>{{userInfo.user_name}}</em>\r\n                    </span>                   \r\n                    <div class=\"dropdown-divider\"></div>\r\n                     <a class=\"dropdown-item\"  @click=\"showEditPwdModal()\">\r\n                        <i class=\"fa fa-cog m-r-0-5\"></i>修改密码\r\n                    </a>\r\n                    <a class=\"dropdown-item\" href=\"javascript:;\"><i class=\"ti-help m-r-0-5\"></i> Help</a>\r\n                </div>\r\n            </li>\r\n            <li class=\"nav-item\">\r\n              <a class=\"nav-link site-sidebar-second-toggle\" @click=\"logout()\" data-toggle=\"collapse\">\r\n                <i class=\"ti-power-off\"></i>\r\n              </a>\r\n            </li>\r\n        </ul>\r\n    </nav>\r\n  </div>\r\n\r\n  <modal :modal.sync=\"editPwdModalMsg\">\r\n    <div slot=\"modal-body\">\r\n        <form class=\"p-a-0-75\">\r\n            <div class=\"form-group row\">\r\n                <label class=\"col-xs-3 reset-password\">原密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n                <div class=\"col-xs-9\">\r\n                    <input type=\"password\" class=\"form-control\" placeholder=\"请输入原来的密码\"\r\n                    v-model=\"editPwdData.originPwd\">\r\n                </div>              \r\n            </div>\r\n            <div class=\"form-group row\">\r\n                <label class=\"col-xs-3 edit-password\">密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n                <div class=\"col-xs-9\">\r\n                    <input type=\"password\" class=\"form-control\" placeholder=\"请输入密码\"\r\n                    v-model=\"editPwdData.pwd\">\r\n                </div>              \r\n            </div>\r\n            <div class=\"form-group row\">\r\n                <label class=\"col-xs-3\">重复密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n                <div class=\"col-xs-9\">\r\n                    <input type=\"password\" class=\"form-control\" placeholder=\"请重复输入密码\"\r\n                    v-model=\"editPwdData.againPwd\">\r\n                </div>              \r\n            </div>          \r\n        </form>\r\n    </div>\r\n    <span slot=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-primary\" @click=\"editPwd\"><i class=\"ti-back-right\"></i>修改</button>\r\n    </span> \r\n</modal>";
+	module.exports = "<div class=\"site-header\">\r\n    <nav class=\"navbar navbar-dark\">\r\n        <ul class=\"nav navbar-nav\">\r\n            <li class=\"nav-item m-r-1 hidden-lg-up\">\r\n            <a class=\"nav-link collapse-button\" href=\"/admin/index\">\r\n                <i class=\"ti-menu\"></i>\r\n            </a>\r\n            </li>\r\n        </ul>\r\n        <ul class=\"nav navbar-nav pull-xs-right\">\r\n            <li class=\"nav-item dropdown\">\r\n                <a class=\"nav-link\" href=\"#\" data-toggle=\"dropdown\" aria-expanded=\"false\">\r\n                    <i class=\"ti-user\"></i> 管理员信息\r\n                </a>\r\n                <div class=\"dropdown-menu dropdown-menu-right animated flipInY\">\r\n<!--                     <span class=\"dropdown-item\">\r\n                        <i class=\"fa fa-user\"></i> \r\n                        <em>{{userInfo.admin_id}}</em>\r\n                    </span> -->\r\n                    <span class=\"dropdown-item\">\r\n                        <i class=\"fa fa-user\"></i>\r\n                        <em>{{userInfo.admin_name}}</em>\r\n                    </span>                   \r\n                    <div class=\"dropdown-divider\"></div>\r\n                     <a class=\"dropdown-item\"  @click=\"showEditPwdModal()\">\r\n                        <i class=\"fa fa-cog m-r-0-5\"></i>修改密码\r\n                    </a>\r\n                    <a class=\"dropdown-item\" href=\"javascript:;\"><i class=\"ti-help m-r-0-5\"></i> Help</a>\r\n                </div>\r\n            </li>\r\n            <li class=\"nav-item\">\r\n              <a class=\"nav-link site-sidebar-second-toggle\" @click=\"logout()\" data-toggle=\"collapse\">\r\n                <i class=\"ti-power-off\"></i>\r\n              </a>\r\n            </li>\r\n        </ul>\r\n    </nav>\r\n  </div>\r\n\r\n  <modal :modal.sync=\"editPwdModalMsg\">\r\n    <div slot=\"modal-body\">\r\n        <form class=\"p-a-0-75\">\r\n            <div class=\"form-group row\">\r\n                <label class=\"col-xs-3 reset-password\">原密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n                <div class=\"col-xs-9\">\r\n                    <input type=\"password\" class=\"form-control\" placeholder=\"请输入原来的密码\"\r\n                    v-model=\"editPwdData.originPwd\">\r\n                </div>              \r\n            </div>\r\n            <div class=\"form-group row\">\r\n                <label class=\"col-xs-3 edit-password\">密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n                <div class=\"col-xs-9\">\r\n                    <input type=\"password\" class=\"form-control\" placeholder=\"请输入密码\"\r\n                    v-model=\"editPwdData.pwd\">\r\n                </div>              \r\n            </div>\r\n            <div class=\"form-group row\">\r\n                <label class=\"col-xs-3\">重复密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n                <div class=\"col-xs-9\">\r\n                    <input type=\"password\" class=\"form-control\" placeholder=\"请重复输入密码\"\r\n                    v-model=\"editPwdData.againPwd\">\r\n                </div>              \r\n            </div>          \r\n        </form>\r\n    </div>\r\n    <span slot=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-primary\" @click=\"editPwd\"><i class=\"ti-back-right\"></i>修改</button>\r\n    </span> \r\n</modal>";
 
 /***/ },
 /* 17 */
@@ -24128,9 +24117,7 @@
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
 	__vue_script__ = __webpack_require__(18)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\components\\Sidebar.vue: named exports in *.vue files are ignored.")}
 	__vue_template__ = __webpack_require__(19)
 	module.exports = __vue_script__ || {}
@@ -24148,7 +24135,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-fd240416/Sidebar.vue"
+	  var id = "_v-a2972700/Sidebar.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -24265,18 +24252,15 @@
 	module.exports = "\r\n<div class=\"site-sidebar-overlay\"></div>\r\n<div class=\"site-sidebar\">\r\n\t<a class=\"logo\" href=\"/admin/index\">\r\n\t\t<img src=\"http://imgstatic.ufile.ucloud.com.cn/thesis_logo.png\" alt=\"logo\">\r\n\t</a>\r\n\t<div class=\"custom-scroll custom-scroll-dark\">\r\n\t\t<ul class=\"sidebar-menu\">\r\n\t\t\t<li class=\"menu-title m-t-0-5\">Navigation</li>\r\n\t\t\t<li class=\"with-sub\" v-for=\"lvl1Nav in links\" id=\"{{lvl1Nav.menu}}\">\r\n\t\t\t\t<a href=\"javascript:;\" class=\"waves-effect waves-light\">\r\n\t\t\t\t\t<span class=\"s-caret\"><i class=\"ti-angle-down\"></i></span>\r\n\t\t\t\t\t<span class=\"s-icon\"><i class=\"{{lvl1Nav.icon}}\"></i></span>\r\n\t\t\t\t\t<span class=\"s-text\">{{lvl1Nav.title}}</span>\r\n\t\t\t\t</a>\r\n\t\t\t\t<ul class=\"subnav\" v-if=\"lvl1Nav.links\" @click=\"stopPropagation($event)\">\r\n\t\t\t\t<template v-for=\"lvl2Nav in lvl1Nav.links\">\r\n\t\t\t\t\t<li>\r\n\t\t\t\t\t\t<a class=\"sdkList\" @click=\"refreshLocalPage(lvl2Nav.url)\">{{lvl2Nav.title}}</a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</template>\r\n\t\t\t\t\t\r\n\t\t\t\t</ul>\r\n\t\t\t</li>\t\t\t\r\n\t\t</ul>\r\n\t</div>\r\n</div>";
 
 /***/ },
-/* 20 */,
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(22)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	__vue_script__ = __webpack_require__(21)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\components\\Footer.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(23)
+	__vue_template__ = __webpack_require__(22)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -24292,7 +24276,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-490e9092/Footer.vue"
+	  var id = "_v-634aa4a7/Footer.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -24301,7 +24285,7 @@
 	})()}
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -24318,23 +24302,21 @@
 	};
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports) {
 
 	module.exports = "<footer class=\"footer\">\r\n\t<div class=\"text-xs-center\">\r\n\t\t2016 © 华农趣事平台\r\n\t</div>\r\n</footer>";
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(25)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	__vue_script__ = __webpack_require__(24)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\components\\Dialog.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(26)
+	__vue_template__ = __webpack_require__(25)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -24350,7 +24332,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-bc578c82/Dialog.vue"
+	  var id = "_v-87df6458/Dialog.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -24359,7 +24341,7 @@
 	})()}
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24434,30 +24416,28 @@
 	};
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"modal-open\" v-show=\"isShow\" transition=\"fade\">\r\n    <div class=\"modal chenyou-modal fade in\">\r\n        <div class=\"modal-dialog\" :class=\"dialogInfo.size == 'lg' ? 'modal-lg' : 'modal-sm'\">\r\n            <div class=\"modal-content\">\r\n                <div class=\"modal-header\">\r\n                    <button type=\"button\" class=\"close\" @click=\"cancel()\">\r\n                    <span aria-hidden=\"true\">&times;</span>\r\n                    </button>\r\n                    <h4 class=\"modal-title align-center bolder\">{{ dialogInfo.title || '错误提示'}}</h4>\r\n                </div>\r\n\r\n                <div class=\"modal-body\">\r\n                    <span class=\"pull-left\">{{{dialogInfo.icon}}}</span>\r\n                    <p v-for=\"text in dialogInfo.msg\">\r\n                        {{text}}\r\n                    </p>\r\n                </div>\r\n\r\n\r\n                <div class=\"modal-footer\">\r\n                    <button type=\"button\" class=\"btn btn-danger\" @click=\"cancel()\">\r\n                        <i class=\"ti-close\"></i> {{ dialogInfo.cancleBtnText || '关闭'}}\r\n                    </button>\r\n                    <button type=\"button\" class=\"btn btn-primary\" v-if=\"!isAlertDailog\"@click=\"confirm()\">\r\n                        <i class=\"ti-check\"></i> {{ dialogInfo.confirmBtnText || '确定'}}\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"wrapper\">\r\n    <div class=\"preloader\"></div>\r\n  <app-header></app-header>\r\n    <!-- sidebar start -->\r\n    <app-sidebar></app-sidebar>\r\n    <!-- sidebar end -->\r\n\r\n    <!-- content start -->   \r\n    <div class=\"site-content\">        \r\n        <div class=\"content-area p-y-1\">\r\n            <div class=\"container-fluid\">\r\n                <!-- <app-bread></app-bread> -->\r\n                <router-view></router-view>\r\n            </div>\r\n        </div>\r\n        <app-dialog></app-dialog> \r\n        <app-footer></app-footer>        \r\n    </div>  \r\n\r\n    <!-- content end -->\r\n</div>\r\n\r\n";
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__webpack_require__(29)
-	__vue_script__ = __webpack_require__(33)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	__webpack_require__(28)
+	__vue_script__ = __webpack_require__(32)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\app\\Index.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(34)
+	__vue_template__ = __webpack_require__(33)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -24473,7 +24453,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-eac28ef0/Index.vue"
+	  var id = "_v-fb729cc6/Index.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -24482,23 +24462,23 @@
 	})()}
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(30);
+	var content = __webpack_require__(29);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
+	var update = __webpack_require__(31)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/.0.23.1@css-loader/index.js?sourceMap!./../../node_modules/.8.5.4@vue-loader/lib/style-rewriter.js!./../../node_modules/.8.5.4@vue-loader/lib/selector.js?type=style&index=0!./Index.vue", function() {
-				var newContent = require("!!./../../node_modules/.0.23.1@css-loader/index.js?sourceMap!./../../node_modules/.8.5.4@vue-loader/lib/style-rewriter.js!./../../node_modules/.8.5.4@vue-loader/lib/selector.js?type=style&index=0!./Index.vue");
+			module.hot.accept("!!../../node_modules/.0.23.1@css-loader/index.js?sourceMap!../../node_modules/.8.7.0@vue-loader/lib/style-rewriter.js!../../node_modules/.8.7.0@vue-loader/lib/selector.js?type=style&index=0!./Index.vue", function() {
+				var newContent = require("!!../../node_modules/.0.23.1@css-loader/index.js?sourceMap!../../node_modules/.8.7.0@vue-loader/lib/style-rewriter.js!../../node_modules/.8.7.0@vue-loader/lib/selector.js?type=style&index=0!./Index.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -24508,10 +24488,10 @@
 	}
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(31)();
+	exports = module.exports = __webpack_require__(30)();
 	// imports
 	
 	
@@ -24522,7 +24502,7 @@
 
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports) {
 
 	/*
@@ -24578,7 +24558,7 @@
 
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -24800,7 +24780,7 @@
 
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24823,24 +24803,22 @@
 	};
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"breadcrumb\">\r\n\t<h4>首页</h4>\r\n\t<ol class=\"breadcrumb no-bg m-b-1\">\r\n\t\t<li class=\"breadcrumb-item\">后台管理系统</li>\r\n\t\t<li class=\"breadcrumb-item\">首页</li>\r\n\t</ol>\r\n</div>\r\n<div class=\"box box-block bg-white\">\r\n\t<h3 class=\"text-xs-center p-a-1\">欢迎进入华农趣事平台-后台管理系统！</h3>\r\n</div>\r\n\r\n";
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__webpack_require__(36)
-	__vue_script__ = __webpack_require__(38)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	__webpack_require__(35)
+	__vue_script__ = __webpack_require__(37)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\app\\userList.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(42)
+	__vue_template__ = __webpack_require__(41)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -24856,7 +24834,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-645f3223/userList.vue"
+	  var id = "_v-689224ee/userList.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -24865,23 +24843,23 @@
 	})()}
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(37);
+	var content = __webpack_require__(36);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(32)(content, {});
+	var update = __webpack_require__(31)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/.0.23.1@css-loader/index.js?sourceMap!./../../node_modules/.8.5.4@vue-loader/lib/style-rewriter.js!./../../node_modules/.8.5.4@vue-loader/lib/selector.js?type=style&index=0!./userList.vue", function() {
-				var newContent = require("!!./../../node_modules/.0.23.1@css-loader/index.js?sourceMap!./../../node_modules/.8.5.4@vue-loader/lib/style-rewriter.js!./../../node_modules/.8.5.4@vue-loader/lib/selector.js?type=style&index=0!./userList.vue");
+			module.hot.accept("!!../../node_modules/.0.23.1@css-loader/index.js?sourceMap!../../node_modules/.8.7.0@vue-loader/lib/style-rewriter.js!../../node_modules/.8.7.0@vue-loader/lib/selector.js?type=style&index=0!./userList.vue", function() {
+				var newContent = require("!!../../node_modules/.0.23.1@css-loader/index.js?sourceMap!../../node_modules/.8.7.0@vue-loader/lib/style-rewriter.js!../../node_modules/.8.7.0@vue-loader/lib/selector.js?type=style&index=0!./userList.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -24891,10 +24869,10 @@
 	}
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(31)();
+	exports = module.exports = __webpack_require__(30)();
 	// imports
 	
 	
@@ -24905,7 +24883,7 @@
 
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24918,7 +24896,7 @@
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _Pagination = __webpack_require__(39);
+	var _Pagination = __webpack_require__(38);
 	
 	var _Pagination2 = _interopRequireDefault(_Pagination);
 	
@@ -25184,17 +25162,15 @@
 	};
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(40)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	__vue_script__ = __webpack_require__(39)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\components\\Pagination.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(41)
+	__vue_template__ = __webpack_require__(40)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25210,7 +25186,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-d09c18de/Pagination.vue"
+	  var id = "_v-4eebf526/Pagination.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -25219,7 +25195,7 @@
 	})()}
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -25280,29 +25256,27 @@
 	};
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"row\">\r\n\t<div class=\"col-md-5\">\r\n\t\t<div class=\"dataTables_info\" id=\"table-1_info\" role=\"status\" aria-live=\"polite\">总共 \r\n\t\t\t<em class=\"font-style-normal text-googleplus\">{{ page.totalNum }}</em> 条\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"col-md-7\">\r\n\t\t<div class=\"dataTables-paginate text-xs-right\">\r\n\t\t\t\t<ul class=\"pagination\">\r\n\t\t\t\t\t<li class=\"paginate_button page-item previous\"\r\n\t\t\t\t\t\tv-if=\"page.cur != 1\">\r\n\t\t\t\t\t\t<a class=\"page-link\" @click=\"page.cur--\">\r\n\t\t\t\t\t\t\t<span aria-hidden=\"true\">«</span>\r\n\t\t\t\t\t\t</a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"page-item\" :class=\"{'active' : page.cur == index}\"\r\n\t\t\t\t\t\tv-for=\"index in indexs\"@click=\"btnClick(index)\">\r\n\t\t\t\t\t\t<a class=\"page-link\" href=\"javascript:;\">{{index}}</a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<li class=\"paginate_button page-item next\" v-if=\"page.totalPage>1 && page.cur <= page.totalPage\">\r\n\t\t\t\t\t\t<a class=\"page-link\" @click=\"page.cur++\" href=\"javascript:;\">\r\n\t\t\t\t\t\t\t<span aria-hidden=\"true\">»</span>\t\t\t\r\n\t\t\t\t\t\t</a>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"breadcrumb\">\r\n\t<h4>用户列表</h4>\r\n\t<ol class=\"breadcrumb no-bg m-b-1\">\r\n\t\t<li class=\"breadcrumb-item\">用户管理</li>\r\n\t\t<li class=\"breadcrumb-item active\">用户列表</li>\r\n\t</ol>\r\n</div>\r\n\r\n<div class=\"box box-block bg-white chenyou-box long-search\">\t\t    \t    \r\n\t<div class=\"row m-x-0 m-b-0-25\">\r\n\t\t<button type=\"button\" @click=\"showAddDialog()\"\r\n\t\tclass=\"btn btn-outline-primary pull-left m-b-0-75\">\r\n\t\t\t<i class=\"ti-plus\"></i> 添加用户\r\n\t\t</button>\r\n\t\t<div class=\"form-inline m-b-1 pull-right\">\r\n\t\t\t<div class=\"form-group\">\r\n\t\t\t\t<label for=\"user_name\">用户名称：</label>\r\n\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" id=\"user_name\" placeholder=\"用户名称\"\r\n\t\t\t\tv-model=\"searchParam.uname\">\r\n\t\t\t</div>\r\n\t\t\t<button type=\"button\" class=\"btn m-l-0-5 btn-primary\"@click=\"getUserList(true)\">\r\n\t\t\t\t<i class=\"ti-search\"></i> 搜索\r\n\t\t\t</button>\r\n\t\t</div>\r\n\t</div>\r\n\t\t\r\n\t\r\n\t<!-- <div class=\"table-responsive\"> -->\r\n\t\t<table class=\"table table-bordered table-striped\">\r\n\t\t\t<thead>\r\n\t\t\t\t<tr>\r\n\t\t\t\t\t<th>序号</th>\r\n\t\t\t\t\t<th>用户id</th>\r\n\t\t\t\t\t<th>用户名称</th>\r\n\t\t\t\t\t<th>注册时间</th>\r\n\t\t\t\t\t<th>操作</th>\r\n\t\t\t\t</tr>\r\n\t\t\t</thead>\r\n\t\t\t<tbody>\r\n\t\t\t\t<tr v-for=\"user in userList\">\r\n\t\t\t\t\t<td>{{$index+1}}</td>\r\n\t\t\t\t\t<td>{{user.user_id}}</td>\r\n\t\t\t\t\t<td>{{user.user_name}}</td>\r\n\t\t\t\t\t<td>{{user.register_time || '--'}}</td>\r\n\t\t\t\t<!-- \t<td>\r\n\t\t\t\t\t\t<span>{{user.state || '--'}}</span>\r\n\t\t\t\t\t\t<a v-show=\"user.state\" @click=\"showEditDiv($event)\"\r\n\t\t\t\t\t \t\thref=\"javascript:;\" title=\"编辑\" class=\"pull-xs-right\"> \r\n\t\t\t\t\t\t\t<i class=\"fa-lg ti-pencil-alt\"></i>\r\n\t\t\t\t\t\t</a>\r\n\t\t\t\t\t\t<form class=\"form-inline overflow-hidden pull-left state-form\">\r\n\t\t\t\t\t\t\t<button type=\"button\" @click=\"closeEditDiv($event)\"\r\n\t\t\t\t\t\t\t\tclass=\"btn btn-sm pull-xs-right btn-secondary waves-effect waves-light\">\r\n\t\t\t\t\t\t\t\t<i class=\"ti-close\"></i>\r\n\t\t\t\t\t\t\t</button>\r\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn pull-xs-right btn-primary btn-sm waves-effect waves-light\" @click=\"editState(user.uid,$event)\">\r\n\t\t\t\t\t\t\t\t<i class=\"ti-check\"></i>\r\n\t\t\t\t\t\t\t</button>\r\n\t\t\t\t\t\t\t<div class=\"form-group pull-xs-right\">\r\n\t\t\t\t\t\t\t\t<select id=\"state_select\">\r\n\t\t\t\t\t\t\t\t\t<option value=\"0\">正常</option>\r\n\t\t\t\t\t\t\t\t\t<option value=\"1\">禁封</option>\r\n\t\t\t\t\t\t\t\t</select>\r\n\t\t\t\t\t\t\t</div>\t\t\t\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t</form>\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t</td> -->\r\n\t\t\t\t\t<td>\r\n\t\t\t\t\t\t<button type=\"button\"  @click=\"showResetBox(user.uid)\"\r\n\t\t\t\t\t\t\tclass=\"btn btn-sm btn-primary btn-rounded\">重置密码</button>\r\n\t\t\t\t\t\t<a @click=\"deleteUser(user.user_id)\"\r\n\t\t\t\t\t\t\thref=\"javascript:;\" title=\"删除用户\">\r\n\t\t\t\t\t\t\t<i class=\"m-l-15 fa-lg ti-trash text-danger\"></i> \r\n\t\t\t\t\t\t</a>\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\t\t\t\r\n\t\t\t</tbody>\r\n\t\t</table>\r\n\t<!-- <div> -->\r\n\r\n\t<pagination :page.sync=\"page\"></pagination>\r\n</div>\r\n\r\n\r\n<!--start 重置密码弹窗-->\r\n<modal :modal.sync=\"modalMsg\">\r\n\t<div slot=\"modal-body\">\r\n\t\t<form class=\"p-a-0-75\">\r\n\t\t\t<div class=\"form-group row\">\r\n\t\t\t\t<label class=\"col-xs-3\">密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n\t\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t\t<input type=\"password\" class=\"form-control\" placeholder=\"请输入密码\"\r\n\t\t\t\t\tv-model=\"resetPwdData.pwd\">\r\n\t\t\t\t</div>\t\t\t\t\r\n\t\t\t</div>\r\n\t\t\t<div class=\"form-group row\">\r\n\t\t\t\t<label class=\"col-xs-3\">重复密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n\t\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t\t<input type=\"password\" class=\"form-control\" placeholder=\"请重复输入密码\"\r\n\t\t\t\t\tv-model=\"resetPwdData.againPwd\">\r\n\t\t\t\t</div>\t\t\t\t\r\n\t\t\t</div>\t\t\t\r\n\t\t</form>\r\n\t</div>\r\n\t<span slot=\"modal-footer\">\r\n\t    <button type=\"button\" class=\"btn btn-primary\" @click=\"resetPwd\"><i class=\"ti-back-right\"></i>重置</button>\r\n\t</span>\t\r\n</modal>\r\n<!--end 重置密码弹窗-->\r\n\r\n<!--start 添加用户弹窗-->\r\n<modal :modal.sync=\"addDialog\">\r\n\t<div slot=\"modal-body\">\r\n\t\t<form class=\"p-a-0-75\">\r\n\t\t\t<div class=\"form-group row\">\r\n\t\t\t\t<label class=\"col-xs-3\">用户名<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n\t\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"请输入用户名\"\r\n\t\t\t\t\tv-model=\"addData.user_name\">\r\n\t\t\t\t</div>\t\t\t\t\r\n\t\t\t</div>\r\n\t\t\t<div class=\"form-group row\">\r\n\t\t\t\t<label class=\"col-xs-3\">密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n\t\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t\t<input type=\"password\" class=\"form-control\" placeholder=\"请输入密码\"\r\n\t\t\t\t\tv-model=\"addData.user_password\">\r\n\t\t\t\t</div>\t\t\t\t\r\n\t\t\t</div>\r\n\t\t\t<div class=\"form-group row\">\r\n\t\t\t\t<label class=\"col-xs-3\">重复密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n\t\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t\t<input type=\"password\" class=\"form-control\" placeholder=\"请重复输入密码\"\r\n\t\t\t\t\tv-model=\"addData.user_againtPwd\">\r\n\t\t\t\t</div>\t\t\t\t\r\n\t\t\t</div>\t\t\t\r\n\t\t</form>\r\n\t</div>\r\n\t<span slot=\"modal-footer\">\r\n\t    <button type=\"button\" class=\"btn btn-primary\" @click=\"addUser()\"><i class=\"ti-back-right\"></i> 提交</button>\r\n\t</span>\t\r\n</modal>\r\n<!--end 添加用户弹窗-->\r\n";
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(44)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	__vue_script__ = __webpack_require__(43)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\app\\thingsList.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(45)
+	__vue_template__ = __webpack_require__(44)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25318,7 +25292,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-5dcb0d1d/thingsList.vue"
+	  var id = "_v-210c7928/thingsList.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -25327,7 +25301,7 @@
 	})()}
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25340,7 +25314,7 @@
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _Pagination = __webpack_require__(39);
+	var _Pagination = __webpack_require__(38);
 	
 	var _Pagination2 = _interopRequireDefault(_Pagination);
 	
@@ -25462,23 +25436,21 @@
 	};
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"breadcrumb\">\r\n\t<h4>趣事列表</h4>\r\n\t<ol class=\"breadcrumb no-bg m-b-1\">\r\n\t\t<li class=\"breadcrumb-item\">趣事管理</li>\r\n\t\t<li class=\"breadcrumb-item active\">趣事列表</li>\r\n\t</ol>\r\n</div>\r\n\r\n<div class=\"box box-block bg-white chenyou-box long-search\">\t\t    \t    \r\n\t<div class=\"row m-x-0 m-b-0-25\">\r\n\t\t<form class=\"clearfix\">\r\n\t\t\t<button type=\"button\" class=\"btn pull-xs-right m-l-15 btn-primary\" @click=\"getcommentsList(true)\">\r\n\t\t\t\t<i class=\"ti-search\"></i> 搜索\r\n\t\t\t</button>\r\n\t\t\t<div class=\"form-inline m-b-1 pull-right\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"content\">趣事内容：</label>\r\n\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"趣事内容\"\r\n\t\t\t\t\tv-model=\"searchParam.content\">\r\n\t\t\t\t</div>\r\n\t\t\t</div>\t\t\t\t\t\r\n\t\t</form>\r\n\t</div>\r\n\t\t\r\n\t<table class=\"table table-bordered table-striped\">\r\n\t\t<thead>\r\n\t\t\t<tr>\r\n\t\t\t\t<th>序号</th>\r\n\t\t\t\t<th>趣事id</th>\r\n\t\t\t\t<th>趣事内容</th>\r\n\t\t\t\t<th>作者</th>\r\n\t\t\t\t<th>发布时间</th>\r\n\t\t\t\t<th>趣事图片</th>\r\n\t\t\t\t<th>点赞数</th>\r\n\t\t\t\t<th>踩数</th>\r\n\t\t\t\t<th>收藏数</th>\r\n\t\t\t\t<th>评论数</th>\r\n\t\t\t\t<th>操作</th>\r\n\t\t\t</tr>\r\n\t\t</thead>\r\n\t\t<tbody>\r\n\t\t\t<tr v-for=\"comment in commentsList\">\r\n\t\t\t\t<td>{{$index+1}}</td>\r\n\t\t\t\t<td>{{comment.comments_id}}</td>\r\n\t\t\t\t<td>{{comment.comments_content}}</td>\r\n\t\t\t\t<td>{{comment.userInfo.user_name || '--'}}</td>\r\n\t\t\t\t<td>{{comment.publish_time || '--'}}</td>\r\n\t\t\t\t<td>\r\n\t\t\t\t\t<img :src=\"comment.comments_image\" alt=\"趣事图片\" style=\"width:5rem;\">\r\n\t\t\t\t</td>\r\n\t\t\t\t<td>{{comment.funny_num || '--'}}</td>\r\n\t\t\t\t<td>{{comment.unfunny_num || '--'}}</td>\r\n\t\t\t\t<td>{{comment.favorite_num || '--'}}</td>\r\n\t\t\t\t<td>{{comment.comment_num || '--'}}</td>\r\n\t\t\t\t<td>\r\n\t\t\t\t\t<a @click=\"deletecomments(comment.comments_id)\"\r\n\t\t\t\t\t\t\thref=\"javascript:;\" title=\"删除趣事\">\r\n\t\t\t\t\t\t<i class=\"fa-lg ti-trash text-danger\"></i> \r\n\t\t\t\t\t</a>\r\n\t<!-- \t\t\t\t<a @click=\"approvalcomments(comment.comments_id)\"\r\n\t\t\t\t\t\tv-if=\"comment.is_approval == 0\"\r\n\t\t\t\t\t\t\thref=\"javascript:;\" title=\"审核趣事\">\r\n\t\t\t\t\t\t<i class=\"fa-lg ti-zoom-in m-l-15 text-success\"></i> \r\n\t\t\t\t\t</a> -->\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\t\t\t\r\n\t\t</tbody>\r\n\t</table>\r\n\t<pagination :page.sync=\"page\"></pagination>\r\n</div>\r\n\r\n\r\n";
 
 /***/ },
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(47)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	__vue_script__ = __webpack_require__(46)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\app\\adminList.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(48)
+	__vue_template__ = __webpack_require__(47)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25494,7 +25466,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-000db3e3/adminList.vue"
+	  var id = "_v-fb8dcb10/adminList.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -25503,7 +25475,7 @@
 	})()}
 
 /***/ },
-/* 47 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25661,23 +25633,21 @@
 	};
 
 /***/ },
-/* 48 */
+/* 47 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"breadcrumb\">\r\n\t<h4>管理员列表</h4>\r\n\t<ol class=\"breadcrumb no-bg m-b-1\">\r\n\t\t<li class=\"breadcrumb-item\">系统管理</li>\r\n\t\t<li class=\"breadcrumb-item active\">管理员列表</li>\r\n</div>\r\n\r\n<div class=\"box box-block bg-white\">\t\r\n\t<button type=\"button\" @click=\"showEditDialog(true)\"\r\n\t\tclass=\"btn btn-outline-primary m-b-0-75 waves-effect waves-light\">\r\n\t\t<i class=\"ti-plus\"></i> 添加管理员\r\n\t</button>\t               \r\n\t\t\r\n\t<table class=\"table table-bordered table-striped\">\r\n\t\t<thead>\r\n\t\t\t<tr>\r\n\t\t\t\t<th>序号</th>\r\n\t\t\t\t<th>用户id</th>\r\n\t\t\t\t<th>用户名称</th>\r\n\t\t\t\t<th>手机</th>\r\n\t\t\t\t<th>注册时间</th>\r\n\t\t\t\t<th>操作</th>\r\n\t\t\t</tr>\r\n\t\t</thead>\r\n\t\t<tbody>\r\n\t\t\t<tr v-for=\"admin in adminList\">\r\n\t\t\t\t<td>{{$index+1}}</td>\r\n\t\t\t\t<td>{{admin.admin_id}}</td>\r\n\t\t\t\t<td>{{admin.admin_name}}</td>\r\n\t\t\t\t<td>{{admin.cellphone || '--'}}</td>\r\n\t\t\t\t<td>{{admin.register_time}}</td>\r\n\t\t\t\t<td>\t\t\t\r\n\t\t\t\t\t<a href=\"javascript:;\" title=\"编辑\" @click=\"showEditDialog(false,admin)\" > \r\n\t\t\t\t\t\t<i class=\"fa-lg ti-pencil-alt\"></i>\r\n\t\t\t\t\t</a>\r\n\t\t\t\t\t<a href=\"javascript:;\" title=\"删除\" @click=\"deleteAdmin(admin.admin_id)\" > \r\n\t\t\t\t\t\t<i class=\"fa-lg ti-trash m-l-15 text-danger\"></i>\r\n\t\t\t\t\t</a>\t\t\t\t\t\t\t\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\t\t\t\t\r\n\t\t</tbody>\r\n\t</table>\r\n\r\n<!-- \t<pagination></pagination> -->\r\n</div>\r\n\r\n<!--start 弹窗-->\r\n<modal :modal.sync=\"adminBoxMsg\">\r\n\t<div slot=\"modal-body\">\r\n\t\t<form class=\"p-a-0-75\">\r\n\t\t\t<div class=\"form-group row\">\r\n\t\t\t\t<label class=\"col-xs-3\">管理员名称 <i class=\"text-danger font-style-normal\">*</i>：</label>\r\n\t\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"请输入管理员名称\"\r\n\t\t\t\t\tv-model=\"adminData.admin_name\">\r\n\t\t\t\t</div>\t\t\t\t\t\t\t\t\r\n\t\t\t</div>\r\n\t\t\t<div class=\"form-group row\" v-show=\"!showPwd || !isEditAdmin\">\r\n\t\t\t\t<label class=\"col-xs-3\">密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n\t\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t\t<input type=\"password\" class=\"form-control\" placeholder=\"请输入密码\"\r\n\t\t\t\t\tv-model=\"adminData.password\">\r\n\t\t\t\t</div>\t\t\t\t\r\n\t\t\t</div> \r\n\t\t\t<div class=\"form-group row\" v-show=\"!showPwd || !isEditAdmin\">\r\n\t\t\t\t<label class=\"col-xs-3\">重复密码<i class=\"text-danger font-style-normal\">*</i>：</label>\r\n\t\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t\t<input type=\"password\" class=\"form-control\" placeholder=\"请重复输入密码\"\r\n\t\t\t\t\tv-model=\"adminData.againPwd\">\r\n\t\t\t\t</div>\t\t\t\t\r\n\t\t\t</div>\r\n\t\t\t<div class=\"form-group row\">\r\n\t\t\t\t<label class=\"col-xs-3\">手机号码：</label>\r\n\t\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"请输入手机号码\"\r\n\t\t\t\t\tv-model=\"adminData.cellphone\">\r\n\t\t\t\t</div>\t\t\t\t\r\n\t\t\t</div>\r\n\t\t</form>\r\n\t\t<div class=\"form-group row\" >\r\n\t\t\t<div class=\"col-xs-3\"></div>\r\n\t\t\t<div class=\"col-xs-9\">\r\n\t\t\t\t<button type=\"button\" class=\"btn btn-primary\" \r\n\t\t\t\tv-show=\"isEditAdmin&&showPwd\"\r\n\t\t\t\t@click=\"showResetPwd()\">重置密码</button>\r\n\t\t\t\t<button type=\"button\" class=\"btn btn-primary\" \r\n\t\t\t\tv-show=\"isEditAdmin&&!showPwd\"\r\n\t\t\t\t@click=\"hideResetPwd()\">取消重置密码</button>\r\n\t\t\t</div>\t\t\t\t\r\n\t\t</div>\r\n\t\t\t\r\n\t</div>\r\n\t<span slot=\"modal-footer\">\r\n\t    <button type=\"button\" class=\"btn btn-primary\" @click=\"submitAdminData\"> \r\n\t    \t<i class=\"ti-check\"></i> 提交\r\n\t    </button>\r\n\t</span>\t\r\n</modal>\r\n<!--end 弹窗-->\r\n\r\n";
 
 /***/ },
-/* 49 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__vue_script__ = __webpack_require__(50)
-	if (__vue_script__ &&
-	    __vue_script__.__esModule &&
-	    Object.keys(__vue_script__).length > 1) {
+	__vue_script__ = __webpack_require__(49)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\app\\commentList.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(51)
+	__vue_template__ = __webpack_require__(50)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -25693,7 +25663,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), false)
 	  if (!hotAPI.compatible) return
-	  var id = "_v-a926911a/commentList.vue"
+	  var id = "_v-5058ccc8/commentList.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -25702,7 +25672,7 @@
 	})()}
 
 /***/ },
-/* 50 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25715,7 +25685,7 @@
 	
 	var _vue2 = _interopRequireDefault(_vue);
 	
-	var _Pagination = __webpack_require__(39);
+	var _Pagination = __webpack_require__(38);
 	
 	var _Pagination2 = _interopRequireDefault(_Pagination);
 	
@@ -25837,7 +25807,7 @@
 	};
 
 /***/ },
-/* 51 */
+/* 50 */
 /***/ function(module, exports) {
 
 	module.exports = "<div id=\"breadcrumb\">\r\n\t<h4>评论列表</h4>\r\n\t<ol class=\"breadcrumb no-bg m-b-1\">\r\n\t\t<li class=\"breadcrumb-item\">评论管理</li>\r\n\t\t<li class=\"breadcrumb-item active\">评论列表</li>\r\n\t</ol>\r\n</div>\r\n\r\n<div class=\"box box-block bg-white chenyou-box long-search\">\t\t    \t    \r\n\t<div class=\"row m-x-0 m-b-0-25\">\r\n\t\t<form class=\"clearfix\">\r\n\t\t\t<button type=\"button\" class=\"btn pull-xs-right m-l-15 btn-primary\" @click=\"getCommentList(true)\">\r\n\t\t\t\t<i class=\"ti-search\"></i> 搜索\r\n\t\t\t</button>\r\n\t\t\t<div class=\"form-inline m-b-1 pull-right\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<label for=\"content\">评论内容：</label>\r\n\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"趣事内容\"\r\n\t\t\t\t\tv-model=\"searchParam.content\">\r\n\t\t\t\t</div>\r\n\t\t\t</div>\t\t\t\t\t\r\n\t\t</form>\r\n\t</div>\r\n\t\t\r\n\t<table class=\"table table-bordered table-striped\">\r\n\t\t<thead>\r\n\t\t\t<tr>\r\n\t\t\t\t<th>序号</th>\r\n\t\t\t\t<th>评论id</th>\r\n\t\t\t\t<th>评论内容</th>\r\n\t\t\t\t<th>作者</th>\r\n\t\t\t\t<th>评论时间</th>\r\n\t\t\t\t<th>趣事id</th>\r\n\t\t\t\t<th>趣事内容</th>\r\n\t\t\t\t<th>趣事图片</th>\r\n\t\t\t\t<th>操作</th>\r\n\t\t\t</tr>\r\n\t\t</thead>\r\n\t\t<tbody>\r\n\t\t\t<tr v-for=\"comment in commentList\">\r\n\t\t\t\t<td>{{$index+1}}</td>\r\n\t\t\t\t<td>{{comment.comment_id}}</td>\r\n\t\t\t\t<td>{{comment.content}}</td>\r\n\t\t\t\t<td>{{comment.userInfo.user_name || '--'}}</td>\r\n\t\t\t\t<td>{{comment.comment_time || '--'}}</td>\r\n\t\t\t\t<td>{{comment.things_id || '--'}}</td>\t\t\t\t\r\n\t\t\t\t<td>{{comment.thingInfo.things_content || '--'}}</td>\t\t\t\t\t\t\t\t\r\n\t\t\t\t<td>\r\n\t\t\t\t\t<img :src=\"comment.thingInfo.things_image\" alt=\"趣事图片\" style=\"width:5rem;\">\r\n\t\t\t\t</td>\r\n\t\t\t\t<td>\r\n\t\t\t\t\t<a @click=\"deleteComment(comment.comment_id)\"\r\n\t\t\t\t\t\t\thref=\"javascript:;\" title=\"删除评论\">\r\n\t\t\t\t\t\t<i class=\"fa-lg ti-trash text-danger\"></i> \r\n\t\t\t\t\t</a>\r\n\t\t\t<!-- \t\t<a @click=\"approvalcomments(comment.comments_id)\"\r\n\t\t\t\t\t\tv-if=\"comment.is_approval == 0\"\r\n\t\t\t\t\t\t\thref=\"javascript:;\" title=\"审核评论\">\r\n\t\t\t\t\t\t<i class=\"fa-lg ti-zoom-in m-l-15 text-success\"></i> \r\n\t\t\t\t\t</a> -->\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\t\t\t\r\n\t\t</tbody>\r\n\t</table>\r\n\t<pagination :page.sync=\"page\"></pagination>\r\n</div>\r\n\r\n\r\n";

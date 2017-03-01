@@ -156,6 +156,7 @@
                 </li>
             </ul>
         </div>
+    <pagination :page="homePage"></pagination>  
     </div>
     <div class="user-col-right" v-show="pageType == 2">
         <div id="content-block" class="clearfix" style="width: 700px;min-width: 700px">
@@ -220,6 +221,7 @@
                 </div> -->
             </div>
         </div>
+        <pagination :page="thingPage"></pagination>  
     </div>
     <div class="user-col-right" v-show="pageType == 3">
         <div class="user-block user-feed" v-for="comment in userComment">
@@ -272,6 +274,7 @@
                 </li>
             </ul>
         </div>
+        <pagination :page="commentPage"></pagination>  
     </div>
     <div class="user-col-right" v-show="pageType == 4">
         <div id="content-block" class="clearfix" style="width: 700px;min-width: 700px">
@@ -330,6 +333,7 @@
                 </div> -->
             </div>
         </div>
+        <pagination :page="favoritePage"></pagination>  
     </div>
     <div class="user-col-right" v-show="pageType == 5">
 

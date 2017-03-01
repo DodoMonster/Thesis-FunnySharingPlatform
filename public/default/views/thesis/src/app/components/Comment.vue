@@ -5,6 +5,7 @@
 	import util from '../../libs/js/util.js';
 	import store from '../../store/index.js';
 	import service from '../../service/service.js';
+	import pagination from './common/pagination.vue';
 	export default {
 
 		replace: false,
@@ -89,7 +90,7 @@
 				}else{
 					service.praiseUp(self.thing_id,self.userInfo.user_id).done(function(res){
 				    	$this.addClass('voted');			
-				    	window.history.pushState({},0,self.changeURLArg('is_favorite',1));
+				    	window.history.pushState({},0,util.changeURLArg('is_favorite',1));
 
 					}).fail(function(res){
 						alert(res.msg);
@@ -136,25 +137,10 @@
 						alert(res.msg);
 					});					
 				}
-			},
-
-			changeURLArg:function(arg,arg_val){ 
-				var pattern = arg + '=([^&]*)',
-					url = window.location.href, 
-					replaceText = arg + '=' + arg_val; 
-				if(url.match(pattern)){ 
-					var tmp = '/('+ arg+'=)([^&]*)/gi'; 
-					tmp = url.replace(eval(tmp),replaceText); 
-					return tmp; 
-				}else{ 
-					if(url.match('[\?]')){ 
-						return url + '&' + replaceText; 
-					}else{ 
-						return url + '?' + replaceText; 
-					} 
-				} 
-				return url + '\n' + arg + '\n' + arg_val; 
-			} 				
+			},							
+		},
+		components:{
+			pagination:pagination
 		}
 	};
 

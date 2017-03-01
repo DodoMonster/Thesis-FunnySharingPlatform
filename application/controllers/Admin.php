@@ -164,6 +164,35 @@ class AdminController extends \Core\BaseControllers{
         echo json_encode($data);
     }
 
+    // 修改自己的密码
+    public function resetOwnPasswordAction(){
+        $param['uid'] = isset($this->_postData['id']) ? trim($this->_postData['id']):'';;
+        $param['old_pwd'] = isset($this->_postData['old_pwd']) ? trim($this->_postData['old_pwd']):'';
+        $param['new_pwd'] = isset($this->_postData['new_pwd']) ? trim($this->_postData['new_pwd']):'';
+        if(empty($param['uid'])){
+            $data['code'] = -1;
+            $data['msg'] = '用户id不能为空！';
+            echo json_encode($data); die;
+        }
+        // print_r($param);
+        $model = new \Admin\AdminModel();
+        $data = $model->resetOwnPassword($param);
+        if($data['code'] == 200){
+            $data['code'] = 0;
+            $data['msg'] = '修改密码成功！';
+        }elseif ($data['code'] == 201) {
+            $data['code'] = 1;
+            $data['msg'] = '账号不存在！';
+        }elseif ($data['code'] == 402) {
+            $data['code'] = 1;
+            $data['msg'] = '原密码输入错误！';
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '密码修改失败，请重试！';
+        }
+        echo json_encode($data);
+    }
+
     //获取用户列表
     public function getUserListAction(){
         $uname = isset($this->_getData['uname']) ? $this->_getData['uname']:'';

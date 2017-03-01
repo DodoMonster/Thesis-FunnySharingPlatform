@@ -5,6 +5,8 @@
 	import $ from 'jquery';
 	import store from '../../store/index.js';
 	import Router from 'vue-router';
+    import pagination from './common/pagination.vue';
+
 	export default {
 
 		replace: false,
@@ -21,6 +23,11 @@
         			newPwd:'',
         			againPwd:''
         		},
+                homePage:{
+                    cur:1,
+                    totalPage:0,
+                    totalNum:0,
+                },
                 thingPage:{
                     cur:1,
                     totalPage:0,

@@ -5,7 +5,7 @@
 	import util from '../../libs/js/util.js';
 	import store from '../../store/index.js';
 	import service from '../../service/service.js';
-
+	import pagination from './common/pagination.vue';
 	export default {
 		replace: true,
 
@@ -27,8 +27,8 @@
 				type:'hot',
 				page:{
 					cur:1,
-					totalNum:0,
-					totalPage:0,
+					totalNum:20,
+					totalPage:5,
 				},
 				userInfo:store.userInfo
 			}
@@ -36,7 +36,7 @@
 
 		ready(){
 			var self = this;
-			self.getFunnyThingsList(self.page);			
+			self.getFunnyThingsList();			
 		},
 
 		methods:{
@@ -45,7 +45,12 @@
 			// },
 			getFunnyThingsList:function(){
 				let self = this;
-				service.getFunnyThingsList(self.page.cur,self.userInfo.user_id).done(function(res){
+				if(!self.userInfo){
+					var user_id = '';
+				}else{
+					var user_id = self.userInfo.user_id;
+				}
+				service.getFunnyThingsList(self.page.cur,user_id).done(function(res){
 					self.thingsData = res.data;
 					switch(self.type) {
 						case 'hot':
@@ -141,9 +146,7 @@
 				}
 			},
 			'page.cur':function(newVal,oldVal){
-				let self = this;
-				self.page.cur = newVal;
-				self.getFunnyThingsList(self.page);
+				this.getFunnyThingsList();
 			},
 			'type':function(newVal,oldVal){
 				let self = this;
@@ -174,5 +177,8 @@
 
 		},
 
+		components:{
+			pagination:pagination
+		}
 	};
 </script>

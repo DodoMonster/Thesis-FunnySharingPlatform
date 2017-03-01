@@ -59,6 +59,7 @@
 				<a href="" class="share-weibo" title="分享到微博"></a>
 			</div>
 		</div>
+		<pagination :page="page"></pagination>
 	</div>
 </div>
 

@@ -14,13 +14,18 @@
 					content:'',
 					img:'',
 					// is_anonymous:'0'
-				}
+				},
+				userInfo:store.userInfo,
 			}			
 		},
 
 		methods:{
 			publishThings:function(){
 				let self = this;
+				if(!self.userInfo.user_id){
+					alert('请先登录！');
+					return false;
+				}
 				if(self.publishData.is_anonymous){
 					self.publishData.is_anonymous = 1;//1为匿名
 				}else{

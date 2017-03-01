@@ -10,13 +10,14 @@ export default service;
 /**
  * 更改密码
  */
-service.resetPwd = (data) => {
+service.resetPwd = (id,data) => {
 	return util.ajax({
 		url: '/admin/resetOwnPassword',
 		type:'POST',
 		data:{
-			oldPwd:data.oldPwd,
-			newPwd:data.newPwd,
+			id:id,
+			old_pwd:data.originPwd,
+			new_pwd:data.pwd,
 		}
 	});
 	

@@ -10,50 +10,45 @@ class AdminloginController extends \Core\BaseControllers {
     
     //管理员登录界面
     public function loginAction(){
-        echo "string";
-        // $this->display('login');
+        // echo "string";
+        $this->display('login');
     }
     
     //登陆接口
     public function opLoginAction(){
         $loginData['account'] = isset($this->_postData['account']) ? $this->_postData['account'] : '';
         $loginData['password'] = isset($this->_postData['password']) ? $this->_postData['password'] : '';
-        $loginData['captcha'] = isset($this->_postData['captcha']) ? $this->_postData['captcha'] : '';
         $model = new \Admin\AdminOauthModel();
         $data = $model->adminLogin($loginData);
-        if($data['code'] == 200){
-            $this->setOauthAdminSession($data);
-            $this->redirect("/newadmin/newadminindex/index");            
+         if($data['code'] == 200){
+           $data['code'] = 0;
+           $data['msg'] = '登陆成功！';
+           $data['data'] = $data;
         }elseif ($data['code'] == 201) {
-            echo "<script>alert('验证码错误');history.back();</script>";die;
-        }elseif ($data['code'] == 401) {
-             echo "<script>alert('账号或密码长度有误');history.back();</script>";die;
+            $data['code'] = 1;
+            $data['msg'] = '账号不存在！';
         }elseif ($data['code'] == 402) {
-            echo "<script>alert('账号不存在或密码错误');history.back();</script>";die;
+            $data['code'] = 1;
+            $data['msg'] = '密码错误！';
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '未知错误！';
         }
+        echo json_encode($data);       
     }
 
     //生成图形验证码
-    public function getCaptchaAction(){
-        $model = new \Addons\Captcha\CaptchaUtil('admin');
-        $model->show();
-    }
+    // public function getCaptchaAction(){
+    //     $model = new \Addons\Captcha\CaptchaUtil('admin');
+    //     $model->show();
+    // }
 
     //退出登录
-    public function opLogoutAction(){
-        $this->unsetOauthAdminSession();
-        $this->redirect("/adminlogin/login");
-    }
-    
+    // public function opLogoutAction(){
+    //     $this->unsetOauthAdminSession();
+    //     $this->redirect("/adminlogin/login");
+    // }
 
-    public function testSphinxAction(){
-        $s = new \Addons\Sphinx\SearchUtil([ 'snippet_fields' => ['title', 'content'], 'field_weights' => ['title' => 20, 'content' => 10], ]); 
-        $s->setSortMode(SPH_SORT_EXTENDED, 'created desc,@weight desc'); 
-        //$s->setSortBy('created desc,@weight desc'); 
-        $words = $s->wordSplit("MySQL复制"); 
-        $res = $s->query($words, 0, 10, 'master'); 
-        var_dump($res);
-    }
 
 }
 

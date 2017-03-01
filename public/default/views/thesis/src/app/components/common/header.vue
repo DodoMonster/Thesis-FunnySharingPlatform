@@ -45,10 +45,13 @@
 			logout:function(){
 				let self = this;
 				service.logout().done(function(res){
-					alert(res.msg);	
 					self.isLogin = false;
 					store.isLogin = false;
-					store.clearUserInfo();				
+					store.clearUserInfo();	
+					window.history.pushState({},0,util.changeURLArg('is_tramp',0));
+					window.history.pushState({},0,util.changeURLArg('is_favorite',0));
+					window.history.pushState({},0,util.changeURLArg('is_praise',0));
+					history.go(0);
 				}).fail(function(res){
 					alert(res.msg);
 				});

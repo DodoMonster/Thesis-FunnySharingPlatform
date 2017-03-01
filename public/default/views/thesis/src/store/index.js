@@ -46,10 +46,8 @@ store.getUserInfo = () => {
         var userInfo = JSON.parse(localStorage.getItem('userInfo'));
         store.userInfo = userInfo;
     }catch(e){
-        console.log(e);
         var userInfo = JSON.parse('{}');
     }
-    console.log(userInfo);
     return userInfo;   
 }
 

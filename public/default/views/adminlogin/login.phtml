@@ -26,25 +26,17 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-4 offset-md-4">
-						<form method="post" action="/newadmin/newadminoauth/opLogin/" id="login_form">
+						<form id="login_form">
 							<div class="form-group">
 								<div class="input-group">
-									<input type="text" class="form-control" name="account" placeholder="username" required autocomplete>
+									<input type="text" class="form-control" name="account" placeholder="username" required autocomplete id="username">
 									<div class="input-group-addon"><i class="ti-user"></i></div>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="input-group">
-								<input type="password" class="form-control" name="password" required placeholder="Password">
+								<input type="password" class="form-control" name="password" required placeholder="Password" id="passwd">
 									<div class="input-group-addon"><i class="ti-key"></i></div>
-								</div>
-							</div>
-							<div class="form-group clearfix">
-								<div class="pull-xs-left">
-									<input type="text" name="captcha" class="control-input " placeholder="varify code" required>
-								</div>
-								<div class="pull-xs-right">
-									<img class="code-img " src="/admin/adminlogin/getCaptcha" onclick="this.src='/admin/adminlogin/getCaptcha'">
 								</div>
 							</div>
 							<div class="form-group">
@@ -55,6 +47,51 @@
 				</div>
 			</div>
 		</div>
+		<script src="<?php echo RESOURCE_PATH . '/views/admin/src/libs/js/jquery-1.12.3.min.js';?>"></script>
+		<script>		
+		$('#login_form').submit(function() {
+			var username = $('#username').val(),
+				passwd = $('#passwd').val();
+				
+			if (!username || !passwd) {
+				alert('请输入用户名、密码');
+				return false;
+			}
 
+			$.ajax({
+				url: '/adminlogin/opLogin/',
+				type:'POST',
+				data: {
+					account: username,
+					password: passwd
+				},
+				dataType: 'json',
+
+				success(result) {
+					if (result.code === 0) {
+						var userInfo = {
+							admin_id : result.data.data.admin_id,
+							admin_name : result.data.data.admin_name,
+							cellphone : result.data.data.cellphone,
+							register_time : result.data.data.register_time
+						};
+						try {
+							window.location.href = '/admin/index';
+							localStorage.setItem('userInfo', JSON.stringify(userInfo));
+						} catch (e) {
+							window.location.href = 'adminlogin/login';
+						}
+					} else {
+						alert(result.msg);
+					}
+				},
+				fail(result) {
+					alert('网络出了点问题，请稍后再试');
+				}
+			});
+			return false;
+		});
+
+	</script>
 </body>
 </html>

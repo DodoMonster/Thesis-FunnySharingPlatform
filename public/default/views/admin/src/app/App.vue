@@ -5,7 +5,7 @@
 	import Sidebar from '../components/Sidebar.vue';
 	import Footer from '../components/Footer.vue';
 	import AppDialog from '../components/Dialog.vue';
-	// import store from '../store/store.js';
+	import util from '../libs/js/util.js';
 
 	export default {
 
@@ -14,10 +14,7 @@
 		name: 'App',
 
 		data(){
-			return{
-				
-			} 
-			
+			return {}
 		},
 
 		ready(){
@@ -55,10 +52,6 @@
 			if(jQuery.browser.mobile == true) {
 				$('.custom-scroll').css('overflow-y','scroll');
 			}
-		},
-
-		methods:{
-			
 		},
 
 		components: {

@@ -35,28 +35,17 @@
 
 		methods:{
 			logout:function(){
-				$.ajax({
-					url:'/admin/adminlogin/logout',					
-				}).done((res) =>{
-					window.location.href = '/admin/adminlogin/login';
-				}).fail(function(){
-					util.dialog.alert({
-						msg:['网络错误，请重新退出'],
-						title:'错误提示'
-					});
-				})
+				localStorage.clear();
+				window.location.href = '/adminlogin/login';
 			},
 
 			getAdminInfo:function(){
 				let self = this;
-				service.getAdminInfo().done(function(res){
-					self.userInfo = res.data;
-				}).fail(function(res){
-					util.dialog.alert({
-						msg:[res.msg],
-						title:'错误提示'
-					});
-				});
+				try{
+					self.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+				}catch(e){
+					console.log(e);
+				}
 			},
 
 			editPwd:function(){
@@ -77,7 +66,7 @@
 					util.dialog.alert({msg:['两次输入的密码不一致，请重新确定！']});
 					return false;
 				}
-				service.editPwd(self.editPwdData).done(function(res){
+				service.resetPwd(self.userInfo.admin_id,self.editPwdData).done(function(res){
 					util.dialog.alert({
 						msg:[res.msg],
 						title:'信息提示'
@@ -93,6 +82,11 @@
 
 			showEditPwdModal:function(){
 				this.editPwdModalMsg.show = true;
+				this.editPwdData = {
+					originPwd : '',
+					pwd : '',
+					againPwd:''
+				};
 			}
 		},
 

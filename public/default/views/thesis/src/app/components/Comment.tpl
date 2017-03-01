@@ -82,33 +82,10 @@
                             <span class="body">{{comment.content}}</span>
                         </div>
                         <div class="report">{{$index+1}}</div>
-                    </div>
-                    <!-- <div class="comment-block clearfix">
-                        <div class="avatars">
-                            <a href="" target="_blank">
-                                <img src="../../../static/image/usercover.jpg" alt="用户头像" title="用户头像">
-                            </a>
-                        </div>
-                        <div class="replay">
-                            <a href="" target="_blank" class="user-login" title="我我我我是神仙">我我我我是神仙</a>
-                            <span class="body">回复 35楼：你孽狗</span>
-                        </div>
-                        <div class="report">36</div>
-                    </div>
-                    <div class="comment-block clearfix">
-                        <div class="avatars">
-                            <a href="" target="_blank">
-                                <img src="../../../static/image/usercover.jpg" alt="用户头像" title="用户头像">
-                            </a>
-                        </div>
-                        <div class="replay">
-                            <a href="" target="_blank" class="user-login" title="我我我我是神仙">我我我我是神仙</a>
-                            <span class="body">回复 35楼：你孽狗</span>
-                        </div>
-                        <div class="report">36</div>
-                    </div> -->
+                    </div>                 
                 </div>
             </div>
         </div>
+        <pagination :page="page"></pagination>        
     </div>
 </div>

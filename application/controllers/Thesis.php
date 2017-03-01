@@ -76,8 +76,13 @@ class thesisController extends \Core\BaseControllers {
 
     //发表趣事
     public function publishThingsAction(){    
-        $this->checkIsLogin();
-        $param['things_content']=isset($this->_postData['things_content']) ? $this->_postData['things_content']: '';
+        $param['things_content'] = isset($this->_postData['things_content']) ? $this->_postData['things_content']: '';
+        $user_id = isset($this->_postData['user_id']) ? $this->_postData['user_id']: '';
+        if(empty($user_id)){
+            $data['code'] = 1;
+            $data['msg'] = '请先登录！'; 
+            echo json_encode($data);
+        }
         if($_FILES && $_FILES['things_img']['tmp_name']){
             $tmp_name = $_FILES['things_img']['tmp_name'];
             $template = $_FILES['things_img']['name'];
@@ -96,7 +101,7 @@ class thesisController extends \Core\BaseControllers {
         
         // print_r($param);die;
         $model = new \Web\ThesisModel();
-        $data = $model->publishThings($param,$this->_uid);
+        $data = $model->publishThings($param,$user_id);
 
         if($data['code'] == 200){ 
             $data['code'] = 0;

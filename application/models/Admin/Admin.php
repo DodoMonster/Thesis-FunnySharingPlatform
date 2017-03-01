@@ -73,6 +73,36 @@ class AdminModel extends \Core\BaseModels {
         }
     }
 
+    // 用户修改自己的密码操作
+    public function resetOwnPassword($param){
+        $uid = $param['uid'];
+        $old_pwd = $param['old_pwd'];
+        $new_pwd = $param['new_pwd'];
+
+        $options['table'] = 'admin';
+        $options['where'] = array('admin_id'=>'?');
+        $options['param'] = array($uid);
+        $userOauth = $this->db->find($options);
+        if(!empty($userOauth)){
+            if($userOauth['password'] !== md5($old_pwd)){
+                return $this->returnResult(402,array('Wrong Password'));
+            }
+        }else{
+            return $this->returnResult(201,array('Account Not Exist'));
+        }
+
+        $tmpData = array('password'=>'?');
+        $options1['table'] = 'admin';
+        $options1['where'] = array('admin_id'=>'?');
+        $options1['param'] = array(md5($new_pwd),$uid);
+        $uid = $this->db->save($tmpData,$options1);
+        if($uid !== FALSE){
+            return $this->returnResult(200);
+        }else {
+            return $this->returnResult(4000);
+        }
+    }
+
     //添加用户
     public function addUser($param){
         $options['table'] = 'user';

@@ -13,13 +13,13 @@
                     <i class="ti-user"></i> 管理员信息
                 </a>
                 <div class="dropdown-menu dropdown-menu-right animated flipInY">
-                    <span class="dropdown-item">
+<!--                     <span class="dropdown-item">
                         <i class="fa fa-user"></i> 
-                        <em>{{userInfo.user_id}}</em>
-                    </span>
+                        <em>{{userInfo.admin_id}}</em>
+                    </span> -->
                     <span class="dropdown-item">
-                        <i class="fa fa-diamond"></i>
-                        <em>{{userInfo.user_name}}</em>
+                        <i class="fa fa-user"></i>
+                        <em>{{userInfo.admin_name}}</em>
                     </span>                   
                     <div class="dropdown-divider"></div>
                      <a class="dropdown-item"  @click="showEditPwdModal()">

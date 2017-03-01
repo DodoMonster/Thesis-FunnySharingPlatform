@@ -642,3 +642,27 @@ footer {
     line-height: 140%;
 }
 /* end 投稿 样式*/
+
+.pagination{border-radius:0}
+.page-link{color:#999}
+.page-link:focus,
+.page-link:hover{
+    color:#333;
+    background-color:#eceeef;
+    border-color:#ddd
+}
+.page-item:first-child .page-link{
+    border-bottom-left-radius:0;
+    border-top-left-radius:0
+}
+.page-item:last-child .page-link{
+    border-bottom-right-radius:0;
+    border-top-right-radius:0
+}
+.page-item.active .page-link,
+.page-item.active .page-link:focus,
+.page-item.active 
+.page-link:hover{
+    background-color:#F70;
+    border-color:#F70
+}
