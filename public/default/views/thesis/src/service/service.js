@@ -144,7 +144,7 @@ service.getFunnyThingsDetail = (id) => {
 }
 
 /**
- * 发表评论
+ * 获取趣事详情
  */
 service.getFunnyThingsDetail = (data) => {
     return util.ajax({
@@ -157,7 +157,6 @@ service.getFunnyThingsDetail = (data) => {
         }
     });
 }
-
 
 /**
  * 获取个人详细信息
@@ -312,13 +311,30 @@ service.getCommentsList = (page,id) => {
 /**
  * 评论趣事
  */
-service.comment = (id,content) => {    
+service.comment = (id,content,user_id) => {    
     return util.ajax({
         url: '/thesis/comment',
         type:'POST',
         data: {
             content: content,
-            thing_id:id
+            thing_id:id,
+            user_id:user_id
+        }
+    });
+}
+
+/**
+ * 回复评论
+ */
+ service.replyComment = (id,data) => {    
+    return util.ajax({
+        url: '/thesis/replyComment',
+        type:'POST',
+        data: {
+            comment_id:data.comment_id,
+            reply_user:id,
+            replied_user:data.replied_id,
+            reply_content:data.content
         }
     });
 }

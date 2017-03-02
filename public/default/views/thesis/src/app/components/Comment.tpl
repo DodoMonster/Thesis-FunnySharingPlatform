@@ -49,12 +49,12 @@
                     </li> -->
                 </ul>
             </div>
-            <div class="single-share">
+<!--             <div class="single-share">
                 <a href="" class="share-wechat" title="分享到微信"></a>
                 <a href="" class="share-qq" title="分享到QQ"></a>
                 <a href="" class="share-qzone" title="分享到空间"></a>
                 <a href="" class="share-weibo" title="分享到微博"></a>
-            </div>
+            </div> -->
         </div>
         <div class="comments-wrap">
             <h3 class="comments-title fs-m">评论（<em id="comments-num">{{thingInfo.comment_num}}</em>）</h3>
@@ -68,24 +68,31 @@
                 </div>
                 <div class="comments-list">
                     <div class="comment-block clearfix" v-for="comment in commentsList">
-                        <div class="clearfix">
+                        <div class="clearfix comment-content">
                             <div class="avatars">
                                 <a v-link="{name:'userHome',params:{'user_id':comment.user_id}}" target="_blank">
                                     <img :src="comment.user_photo" alt="用户头像" title="用户头像">
                                 </a>
                             </div>
-                            <div class="replay">
-                                <a v-link="{name:'userHome',params:{'user_id':comment.user_id}}" class="user-login" title="{{comment.user_name}}">{{comment.user_name}}</a>
-                                <span class="body">{{comment.content}}</span>
-                            </div>
-                            <div class="report">{{$index+1}}</div>
+                            <ul class="replay">
+                                <li class="pull-left">
+                                    <a v-link="{name:'userHome',params:{'user_id':comment.user_id}}" class="user-login" title="{{comment.user_name}}">{{comment.user_name}}</a>
+                                </li>
+                                <li class="pull-left">
+                                    <span class="comment-time">2017-03-02 17:32:40</span>                                    
+                                </li>
+                                <li class="pull-right" v-if="userInfo.user_id">
+                                    <button class="reply-btn" @click="showReplyBox($event,comment.user_id,comment.comment_id)">回复</button>
+                                </li>
+                            </ul>
+                            <p class="body pull-left">{{comment.content}}</p>
                         </div>
-                        <ul class="comment-opt clearfix">
-                            <li class="comment-time">2017-03-02 17:32:40</li>
-                            <li><button class="reply-btn" @click="showReplyBox($event)">回复</button></li>
-                        </ul>
-                        <div class="reply-input">
-                            <input type="text" v-model="reply.content">
+                        <div class="reply-input hide">
+                            <span class="reply-user">
+                                <img :src="userInfo.user_photo">
+                            </span>
+                            <input type="text" placeholder="请输入您的回复内容...">
+                            <button class="confirm-reply-btn btn btn-primary btn-sm" @click="replyComment($event)">提交</button>
                         </div>
                     </div>
                 </div>

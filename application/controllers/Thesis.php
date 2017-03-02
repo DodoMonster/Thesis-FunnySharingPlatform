@@ -412,7 +412,6 @@ class thesisController extends \Core\BaseControllers {
 
     //评论趣事
     public function commentAction(){
-        $this->checkIsLogin();
         $things_id = isset($this->_postData['thing_id']) ? $this->_postData['thing_id'] : '';
         $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
         $content = isset($this->_postData['content']) ? $this->_postData['content'] : '';
@@ -430,6 +429,25 @@ class thesisController extends \Core\BaseControllers {
         }else{
             $data['code'] = 1;
             $data['msg'] = '评论趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //回复评论
+    public function replyCommentAction(){
+        $param['reply_user'] = isset($this->_postData['reply_user']) ? $this->_postData['reply_user'] : '';
+        $param['replied_user'] = isset($this->_postData['replied_user']) ? $this->_postData['replied_user'] : '';
+        $param['reply_content'] = isset($this->_postData['reply_content']) ? $this->_postData['reply_content'] : '';
+        $param['comment_id'] = isset($this->_postData['comment_id']) ? $this->_postData['comment_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->replyComment($param);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '回复评论成功！'; 
+            $data['data'] = $data['data'];
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '回复评论失败，请重试'; 
         }
         echo json_encode($data);
     }

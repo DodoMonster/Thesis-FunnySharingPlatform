@@ -538,41 +538,12 @@ class ThesisModel extends \Core\BaseModels {
         if(empty($comments)){
             return $this->returnResult(201);
         }
-        // print_r($comments);die;
-        // $options1['table'] = 'comment_user';
-        // // $options1['field'] = 'user_id,user_name,user_photo';
-        // $options1['where'] = array('thing_id'=>'?');
-        // $options1['param'] = array($thing_id);
-        // $comment_users = $this->db->find($options1);
-        // if(empty($comment_users)){
-        //     return $this->returnResult(201);
-        // }
-
-        // $options2['table'] = 'user';
-        // $options2['field'] = 'user_id,user_name,user_photo';       
-        // $users = $this->db->select($options2);
-        // if(empty($users)){
-        //     return $this->returnResult(201);
-        // }
-
-        // $comments.foreach ($comment as $c_key => $v_value) {
-        //     $users.foreach ($user as $u_key => $u_value) {
-        //         if($comment[$c_key]['user_id'] ===  $user[$u_key]['user_id']){}
-        //     }
-        //     $users.foreach ($user as $u_key => $u_value) {
-        //         if($comment[$c_key]['user_id'] ===  $user[$u_key]['user_id']){}
-        //     }
-        // }
         $data = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$comments);
         return $this->returnResult(200,$data);
     }
 
     //评论趣事
     public function comment($things_id,$user_id,$content){
-        // $options['table'] = 'user';
-        // $tmpData = array('user_id'=>'?');
-        // $options['param'] = array($user_id);
-        // $user = $this->db->find($options);
 
         $options1['table'] = 'comment_user';
         $tmpData1 = array('user_id'=>'?','things_id'=>'?');
@@ -592,5 +563,23 @@ class ThesisModel extends \Core\BaseModels {
         }else{
             return $this->returnResult(4000);            
         }    
-    }    
+    }  
+
+    //回复评论
+    public function replyComment($param){
+        $reply_user = $param['reply_user'];
+        $replied_user = $param['replied_user'];
+        $reply_content = $param['reply_content'];
+        $comment_id = $param['comment_id'];
+
+        $options['table'] = 'reply';
+        $tmpData = array('reply_user'=>'?','replied_user'=>'?','reply_content'=>'?','comment_id'=>'?','reply_time'=>'?');
+        $options['param'] = array($reply_user,$replied_user,$reply_content,$comment_id,time());
+        $res = $this->db->add($tmpData,$options);
+        if($res !== FALSE){           
+            return $this->returnResult(200,$res);            
+        }else{
+            return $this->returnResult(4000);            
+        }
+    }
 }

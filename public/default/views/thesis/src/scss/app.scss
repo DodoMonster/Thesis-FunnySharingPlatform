@@ -12,7 +12,9 @@ header {
     height: 82px;
     width: 100%;
 }
-
+button{
+    font-family: 'Microsoft Yahei';
+}
 #header,
 #content-block {
     width: 70%;
@@ -354,12 +356,47 @@ footer {
     height: 35px;
     border-radius: 35px;
 }
-
-.comment-block .replay {
-    width: 90%;
-    float: left;
+.comment-block .comment-time{
+    font-size: 12px;
+    margin-top: 2px;
+    color:#ccc;
 }
-
+.comment-block .replay {
+    width: 95%;
+    float: left;
+    margin-top: 10px;
+}
+.comment-block .reply-btn{
+    background-color:#d66112;
+    padding:5px 10px;
+    color: #fff;
+    font-size: 13px;
+}
+.comment-block .body{
+    margin-left: 45px;
+    width: 100%;
+}
+.comment-block .reply-input .reply-user{
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+.reply-input .reply-user img{
+    width:30px;
+}
+.comment-block .reply-input input{
+    height:30px;
+    line-height: 30px;
+    padding:0 3px;
+    width: 80%;
+    border:1px solid #ddd;
+    border-radius: 3px;
+}
 .comment-block .user-login {
     color: #9B8878;
 }

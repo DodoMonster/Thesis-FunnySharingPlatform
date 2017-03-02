@@ -25,6 +25,7 @@
 					totalNum:0
 				},
 				reply:{
+					comment_id:'',
 					content:'',
 					replied_id:'',
 				},
@@ -75,8 +76,13 @@
 				let self = this;		
 				if(!self.commentContent){
 					alert('评论不能为空！');
+					return false;
 				}
-				service.comment(self.thing_id,self.commentContent).done(function(res){
+				if(!self.userInfo.user_id){
+					alert('请先登录');
+					return false;
+				}
+				service.comment(self.thing_id,self.commentContent,self.userInfo.user_id).done(function(res){
 					self.getCommentsList(true);
 				}).fail(function(res){
 					alert(res.msg);
@@ -142,12 +148,45 @@
 				}
 			},	
 			//显示回复评论的输入框
-			showReplyBox:function(){
-
+			showReplyBox:function(e,id,comment_id){
+				let self = this,
+					$this = $(e.currentTarget);
+				self.reply = {
+					comment:'',
+					replied_id:id,
+					comment_id:comment_id
+				};
+				if(!$this.hasClass('show')){
+					$this.addClass('show').text('关闭').parents('.comment-content').next().removeClass('hide');
+				}else{
+					$this.removeClass('show').text('回复').parents('.comment-content').next().addClass('hide');
+				}
+				
+			},
+			//回复评论
+			replyComment:function(e) {
+				let self = this,
+					$this = $(e.currentTarget);
+				self.reply.content = $this.prev('input').val();
+				if(!content){
+					alert('回复内容不能为空！');
+					return false;
+				}
+				service.replyComment(self.userInfo.user_id,self.reply).done(function(res){
+					$this.parent().addClass('hide');
+					self.getCommentsList(true);
+				}).fail(function(res){
+					alert(res.msg);
+				});
 			}						
 		},
 		components:{
 			pagination:pagination
+		},
+		wartch:{
+			'page.cur':function(){
+				this.getCommentsList();
+			}
 		}
 	};
 
