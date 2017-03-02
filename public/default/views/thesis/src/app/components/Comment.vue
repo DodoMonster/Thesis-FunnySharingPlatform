@@ -24,6 +24,10 @@
 					totalPage:0,
 					totalNum:0
 				},
+				reply:{
+					content:'',
+					replied_id:'',
+				},
 				userInfo:store.userInfo,
 				commentContent:'',
 				commentsList:[],
@@ -38,7 +42,6 @@
 	        self.is_favorite = this.$route.query.is_favorite;	    
 			this.getThingInfo();
 			this.getCommentsList(true);
-			console.log(this.thing_id);
 		},
 
 		methods:{
@@ -137,7 +140,11 @@
 						alert(res.msg);
 					});					
 				}
-			},							
+			},	
+			//显示回复评论的输入框
+			showReplyBox:function(){
+
+			}						
 		},
 		components:{
 			pagination:pagination
