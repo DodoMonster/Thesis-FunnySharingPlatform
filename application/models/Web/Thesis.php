@@ -526,7 +526,7 @@ class ThesisModel extends \Core\BaseModels {
     //获取评论列表
     public function getCommentsList($page,$thing_id,$count){
         $options['table'] = 'comment as A';
-        $options['join'] = 'user as B on A.user_id = B.user_id';
+        $options['join'] = ['user as B on A.user_id = B.user_id'];
         $options['where'] = array('A.things_id'=>'?');
         $options['param'] = array($thing_id);
         $options['limit'] = ($page-1)*$count.','.$count;
@@ -538,10 +538,40 @@ class ThesisModel extends \Core\BaseModels {
         if(empty($comments)){
             return $this->returnResult(201);
         }
+        $cid = [];
+        foreach ($comments as $c_key => $c_val) {
+            $cid[$c_key] = $c_val['comment_id'];            
+        }
+        $reply = $this->getReplyList($cid);
+        foreach ($comments as $c_key => $c_val) {
+            $comments[$c_key]['comment_time'] = date('Y-m-d H:i:s',$comments[$c_key]['comment_time']);
+            $comments[$c_key]['reply'] = array();
+            foreach ($reply as $r_key => $r_val) {
+                if($c_val['comment_id'] === $r_val['comment_id']){
+                    array_push($comments[$c_key]['reply'],$r_val);
+                }
+            }          
+        }
         $data = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$comments);
         return $this->returnResult(200,$data);
     }
 
+    //获取回复
+    public function getReplyList($cid){
+        $options['table'] = 'reply';
+
+        $options['where'] = array('comment_id'=>array('IN',$cid)); 
+        $options['param'] = $cid;           
+
+        
+        // $options['limit'] = ($page-1)*$count.','.$count;
+        // $totalNum = $this->db->count($options);
+        // $totalPage = ceil($totalNum/$count);   
+        $options['order'] = 'reply_time asc';
+        $reply = $this->db->select($options); 
+        // $data = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$reply);
+        return $reply;
+    }
     //评论趣事
     public function comment($things_id,$user_id,$content){
 
@@ -568,13 +598,15 @@ class ThesisModel extends \Core\BaseModels {
     //回复评论
     public function replyComment($param){
         $reply_user = $param['reply_user'];
+        $reply_user_name = $param['reply_user_name'];
         $replied_user = $param['replied_user'];
+        $replied_user_name = $param['replied_user_name'];
         $reply_content = $param['reply_content'];
         $comment_id = $param['comment_id'];
 
         $options['table'] = 'reply';
-        $tmpData = array('reply_user'=>'?','replied_user'=>'?','reply_content'=>'?','comment_id'=>'?','reply_time'=>'?');
-        $options['param'] = array($reply_user,$replied_user,$reply_content,$comment_id,time());
+        $tmpData = array('reply_user'=>'?','reply_user_name'=>'?','replied_user'=>'?','replied_user_name'=>'?','reply_content'=>'?','comment_id'=>'?','reply_time'=>'?');
+        $options['param'] = array($reply_user,$reply_user_name,$replied_user,$replied_user_name,$reply_content,$comment_id,time());
         $res = $this->db->add($tmpData,$options);
         if($res !== FALSE){           
             return $this->returnResult(200,$res);            

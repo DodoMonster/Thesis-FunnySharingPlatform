@@ -148,12 +148,13 @@
 				}
 			},	
 			//显示回复评论的输入框
-			showReplyBox:function(e,id,comment_id){
+			showReplyBox:function(e,id,name,comment_id){
 				let self = this,
 					$this = $(e.currentTarget);
 				self.reply = {
 					comment:'',
 					replied_id:id,
+					replied_name:name,
 					comment_id:comment_id
 				};
 				if(!$this.hasClass('show')){
@@ -172,7 +173,7 @@
 					alert('回复内容不能为空！');
 					return false;
 				}
-				service.replyComment(self.userInfo.user_id,self.reply).done(function(res){
+				service.replyComment(self.userInfo,self.reply).done(function(res){
 					$this.parent().addClass('hide');
 					self.getCommentsList(true);
 				}).fail(function(res){

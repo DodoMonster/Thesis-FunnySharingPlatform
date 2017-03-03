@@ -44,17 +44,8 @@
                     <li class="down">
                         <a href="javascript:;" class="voting" :class="[is_tramp == 1? 'voted' : '']" @click="trampDown($event)"><i></i></a>
                     </li>
-                    <!--                     <li class="comments">
-                        <a v-link="{name:'comment',params:{things_id:things.things_id}}" class="voting"><i></i></a>
-                    </li> -->
                 </ul>
             </div>
-<!--             <div class="single-share">
-                <a href="" class="share-wechat" title="分享到微信"></a>
-                <a href="" class="share-qq" title="分享到QQ"></a>
-                <a href="" class="share-qzone" title="分享到空间"></a>
-                <a href="" class="share-weibo" title="分享到微博"></a>
-            </div> -->
         </div>
         <div class="comments-wrap">
             <h3 class="comments-title fs-m">评论（<em id="comments-num">{{thingInfo.comment_num}}</em>）</h3>
@@ -82,7 +73,7 @@
                                     <span class="comment-time">2017-03-02 17:32:40</span>                                    
                                 </li>
                                 <li class="pull-right" v-if="userInfo.user_id">
-                                    <button class="reply-btn" @click="showReplyBox($event,comment.user_id,comment.comment_id)">回复</button>
+                                    <button class="reply-btn" @click="showReplyBox($event,comment.user_id,comment.user_name,comment.comment_id)">回复</button>
                                 </li>
                             </ul>
                             <p class="body pull-left">{{comment.content}}</p>

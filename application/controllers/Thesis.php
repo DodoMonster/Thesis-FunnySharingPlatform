@@ -436,7 +436,9 @@ class thesisController extends \Core\BaseControllers {
     //回复评论
     public function replyCommentAction(){
         $param['reply_user'] = isset($this->_postData['reply_user']) ? $this->_postData['reply_user'] : '';
+        $param['reply_user_name'] = isset($this->_postData['reply_user_name']) ? $this->_postData['reply_user_name'] : '';
         $param['replied_user'] = isset($this->_postData['replied_user']) ? $this->_postData['replied_user'] : '';
+         $param['replied_user_name'] = isset($this->_postData['replied_user_name']) ? $this->_postData['replied_user_name'] : '';
         $param['reply_content'] = isset($this->_postData['reply_content']) ? $this->_postData['reply_content'] : '';
         $param['comment_id'] = isset($this->_postData['comment_id']) ? $this->_postData['comment_id'] : '';
         $model = new \Web\ThesisModel();

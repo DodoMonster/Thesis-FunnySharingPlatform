@@ -326,14 +326,16 @@ service.comment = (id,content,user_id) => {
 /**
  * 回复评论
  */
- service.replyComment = (id,data) => {    
+ service.replyComment = (user,data) => {    
     return util.ajax({
         url: '/thesis/replyComment',
         type:'POST',
         data: {
             comment_id:data.comment_id,
-            reply_user:id,
+            reply_user:user.user_id,
+            reply_user_name:user.user_name,
             replied_user:data.replied_id,
+            replied_user_name:data.replied_name,
             reply_content:data.content
         }
     });
