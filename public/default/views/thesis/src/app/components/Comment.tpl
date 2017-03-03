@@ -70,13 +70,30 @@
                                     <a v-link="{name:'userHome',params:{'user_id':comment.user_id}}" class="user-login" title="{{comment.user_name}}">{{comment.user_name}}</a>
                                 </li>
                                 <li class="pull-left">
-                                    <span class="comment-time">2017-03-02 17:32:40</span>                                    
+                                    <span class="comment-time">{{comment.comment_time}}</span>                                    
                                 </li>
                                 <li class="pull-right" v-if="userInfo.user_id">
                                     <button class="reply-btn" @click="showReplyBox($event,comment.user_id,comment.user_name,comment.comment_id)">回复</button>
                                 </li>
                             </ul>
                             <p class="body pull-left">{{comment.content}}</p>
+                        </div>
+                        <div class="reply-content-wrap">
+                            <div class="reply-content" v-for="reply in comment.reply">
+                                <ul class="replay">
+                                    <li class="pull-left">
+                                        <a v-link="{name:'userHome',params:{'user_id':reply.reply_user}}" class="user-login">{{reply.reply_user_name}}</a> 回复
+                                        <a v-link="{name:'userHome',params:{'user_id':reply.replied_user}}" class="user-login" style="margin-left: 10px;">{{reply.replied_user_name}}</a>
+                                    </li>
+                                    <li class="pull-left">
+                                        <span class="reply-time">{{reply.reply_time}}</span>                                    
+                                    </li>
+                                    <li class="pull-right">
+                                        <a class="reply-btn" @click="showReplyBox($event,reply.reply_user,reply.reply_user_name,comment.comment_id,true)">回复</a>
+                                    </li>
+                                </ul>
+                                <p class="body pull-left">{{reply.reply_content}}</p>
+                            </div>                            
                         </div>
                         <div class="reply-input hide">
                             <span class="reply-user">

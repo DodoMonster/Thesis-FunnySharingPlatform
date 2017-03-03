@@ -192,8 +192,9 @@ class thesisController extends \Core\BaseControllers {
     //获取用户信息
     public function getUserInfoAction(){
         $uid = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
+        $register_time = isset($this->_getData['time']) ? $this->_getData['time'] : '';
         $model = new \Web\ThesisModel();
-        $data = $model->getUserInfo($uid);
+        $data = $model->getUserInfo($uid,$register_time);
 
         if($data['code'] == 200){ 
             $data['code'] = 0;

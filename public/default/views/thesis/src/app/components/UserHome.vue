@@ -17,7 +17,7 @@
         	return{
         		userId:'',
         		userData:{},
-        		pageType:1,
+        		pageType:2,
         		pwdData:{
         			originPwd:'',
         			newPwd:'',
@@ -58,7 +58,7 @@
             self.userId = self.$route.params.user_id;
             self.userInfo = store.userInfo;
             // console.log(self.userInfo);
-        	self.getUserInfo(self.userId);
+        	self.getUserInfo(self.userId,self.userInfo.register_time);
             if(self.userInfo && self.userInfo.user_id && self.userInfo.user_id == this.userId){
                 self.isSelf = true;
             }            
@@ -68,9 +68,9 @@
         },
 
         methods:{
-        	getUserInfo:function(id){
+        	getUserInfo:function(id,time){
         		let self = this;
-        		service.getUserInfo(id).done(function(res){
+        		service.getUserInfo(id,time).done(function(res){
         			self.userData = res.data || {};
                     self.newUname = self.userData.user_name;
                     self.getUserThing();
@@ -261,19 +261,6 @@
                     });                 
                 }
             },
-            //取消收藏
-            // cancelFavorite:function(id,e){
-            //     let self = this,
-            //         $this = $(e.currentTarget).find('i'),
-            //         $num = $(e.currentTarget).parents('.author').siblings('.stats').find('.stats-favorite .number');                   
-            //     service.cancelFavorite(id,self.userInfo.user_id).done(function(res){
-            //         $this.attr('class','fa fa-heart-o orange-color');
-            //         $num.text(Number($num.text()) + 1);
-                    
-            //     }).fail(function(res){
-            //         alert(res.msg);
-            //     });                 
-            // },
         	logout:function(){
 				let self = this;
 				service.logout().done(function(res){

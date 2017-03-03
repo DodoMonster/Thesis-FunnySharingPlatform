@@ -356,7 +356,8 @@ footer {
     height: 35px;
     border-radius: 35px;
 }
-.comment-block .comment-time{
+.comment-block .comment-time,
+.reply-content .reply-time{
     font-size: 12px;
     margin-top: 2px;
     color:#ccc;
@@ -366,7 +367,7 @@ footer {
     float: left;
     margin-top: 10px;
 }
-.comment-block .reply-btn{
+.comment-content .reply-btn{
     background-color:#d66112;
     padding:5px 10px;
     color: #fff;
@@ -408,7 +409,23 @@ footer {
     margin: 0 10px 0 0;
     display: block;
 }
-
+.comment-content{
+    padding-bottom: 20px;
+    border-bottom: 1px dotted #ddd;
+}
+.reply-content,
+.reply-content .replay{
+    overflow: hidden;
+    width: 95%;
+    margin-left: 22px;
+}
+.reply-content-wrap  .body{
+    margin-left: 20px !important;
+    padding: 10px 0;
+}
+.reply-content .user-login{
+    display: inline-block;
+}
 .comment-block .replay .body {
     color: #404040;
     line-height: 1.6;

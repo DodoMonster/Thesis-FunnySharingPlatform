@@ -124,7 +124,7 @@ class ThesisModel extends \Core\BaseModels {
     }
 
     //获取用户信息
-    public function getUserInfo($user_id){
+    public function getUserInfo($user_id,$time){
         $options['table'] = 'user';
         $options['where'] = array('user_id'=>'?');
         $options['param'] = array($user_id);
@@ -133,26 +133,32 @@ class ThesisModel extends \Core\BaseModels {
 
         $options1['table'] = 'things';
         $options1['where'] = array('user_id'=>'?');
-        $options1['field'] = array('comment_num','funny_num');
+        $options1['field'] = array('comment_num','funny_num','favorite_num');
         $options1['param'] = array($user_id);
         $num = $this->db->select($options1);
+
+        
         $funny_num = 0;
         $comment_num = 0;
-
+        $favorite_num = 0;
+        $now_time = (time() - $time ) / 86400;
         if(!empty($num)){
             foreach ($num as $key => $value) {
                 $funny_num = $value['funny_num'] + $funny_num;
                 $comment_num = $value['comment_num'] + $comment_num;
+                $favorite_num = $value['favorite_num'] + $favorite_num;
             }
         }
         
-        if(empty($info)){
-            return $this->returnResult(201);
-        }else{
+        // if(empty($info)){
+        //     return $this->returnResult(201,$now_time);
+        // }else{
             $info['funny_num'] = $funny_num;
             $info['comment_num'] = $comment_num;
+            $info['favorite_num'] = $favorite_num;
+            $info['old'] = $now_time;
             return $this->returnResult(200,$info);
-        }
+        // }
         
     }
 
@@ -200,7 +206,7 @@ class ThesisModel extends \Core\BaseModels {
     //获取单个用户发表的评论
     public function getUserComment($user_id,$page,$count){
         $options['table'] = 'comment as A';
-        $options['join'] = 'things as B on A.things_id = B.things_id';
+        $options['join'] = ['things as B on A.things_id = B.things_id','user as C on C.user_id = B.user_id'];
         $options['where'] = array('A.is_delete'=>'?','A.user_id'=>'?');
         $options['param'] =  array(0,$user_id);    
         $options['limit'] = ($page-1)*$count.','.$count; 
@@ -548,6 +554,7 @@ class ThesisModel extends \Core\BaseModels {
             $comments[$c_key]['reply'] = array();
             foreach ($reply as $r_key => $r_val) {
                 if($c_val['comment_id'] === $r_val['comment_id']){
+                    $r_val['reply_time'] = date('Y-m-d H:i:s',$r_val['reply_time']);
                     array_push($comments[$c_key]['reply'],$r_val);
                 }
             }          

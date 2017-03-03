@@ -161,11 +161,12 @@ service.getFunnyThingsDetail = (data) => {
 /**
  * 获取个人详细信息
  */
-service.getUserInfo = (id) => {
+service.getUserInfo = (id,time) => {
     return util.ajax({
         url: '/thesis/getUserInfo',
         data: {
             user_id: id,
+            time:time
         }
     });
 }

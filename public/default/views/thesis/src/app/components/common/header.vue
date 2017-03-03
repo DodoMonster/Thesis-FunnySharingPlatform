@@ -4,6 +4,7 @@
 	import store from '../../../store/index.js';
 	import service from '../../../service/service.js';	
 	import $ from 'jquery';
+	import Router from 'vue-router';
 	import util from '../../../libs/js/util.js';
 	export default {
 
@@ -49,9 +50,12 @@
 					self.isLogin = false;
 					store.isLogin = false;
 					store.clearUserInfo();	
-					window.history.pushState({},0,util.changeURLArg('is_tramp',0));
-					window.history.pushState({},0,util.changeURLArg('is_favorite',0));
-					window.history.pushState({},0,util.changeURLArg('is_praise',0));
+					// window.history.pushState({},0,util.changeURLArg('is_tramp',0));
+					// window.history.pushState({},0,util.changeURLArg('is_favorite',0));
+					// window.history.pushState({},0,util.changeURLArg('is_praise',0));
+					// history.go(0);
+					let router = new Router;
+					router.go('/index/hot');
 					history.go(0);
 				}).fail(function(res){
 					alert(res.msg);

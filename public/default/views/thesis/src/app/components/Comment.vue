@@ -148,7 +148,7 @@
 				}
 			},	
 			//显示回复评论的输入框
-			showReplyBox:function(e,id,name,comment_id){
+			showReplyBox:function(e,id,name,comment_id,flag){
 				let self = this,
 					$this = $(e.currentTarget);
 				self.reply = {
@@ -157,12 +157,24 @@
 					replied_name:name,
 					comment_id:comment_id
 				};
+				console.log(self.reply);
 				if(!$this.hasClass('show')){
-					$this.addClass('show').text('关闭').parents('.comment-content').next().removeClass('hide');
+					if(!flag){
+						var $input = $this.addClass('show').text('关闭').parents('.comment-content').siblings('.reply-input');
+					}else{
+						var $input = $this.parents('.reply-content-wrap').siblings('.reply-input');
+					}
+					$input.removeClass('hide');
+					
 				}else{
-					$this.removeClass('show').text('回复').parents('.comment-content').next().addClass('hide');
+					if(!flag){
+						var $input = $this.removeClass('show').text('回复').parents('.comment-content').siblings('.reply-input');
+					}else{
+						var $input = $this.parents('.reply-content-wrap').siblings('.reply-input');
+					}
+					$input.addClass('hide');
 				}
-				
+				$input.find('input').focus();
 			},
 			//回复评论
 			replyComment:function(e) {
