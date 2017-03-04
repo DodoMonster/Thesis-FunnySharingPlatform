@@ -11,13 +11,13 @@
 				<a v-link="{name:'userHome',params:{user_id:things.user_id}}" target="_blank" class="author-name"><h2>{{things.user_name}}</h2></a>
 				<p class="publish-time pull-left">{{things.publish_time}}</p>				
 			</div>
-			<a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp,is_favorite:things.is_favorite}}" class="contentHerf">
+			<a v-link="{name:'comment',query:{thing_id:things.things_id}}" class="contentHerf">
 				<div class="funny-content">
 					<p>{{things.things_content}}</p>
 				</div>
 			</a>
 			<div class="thumb" v-if="things.things_image">
-				<a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp,is_favorite:things.is_favorite}}" target="_blank">
+				<a v-link="{name:'comment',query:{thing_id:things.things_id}}" target="_blank">
 				<img :src="things.things_image" alt="{{things.things_content}}" style="width: 40%;">
 				</a>
 			</div>
@@ -28,7 +28,7 @@
 				</span>
 				<span class="stats-comments">
 					<i class="dash">·</i>
-					<a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp,is_favorite:things.is_favorite}}">
+					<a v-link="{name:'comment',query:{thing_id:things.things_id}}">
 						<i class="number">{{things.comment_num}}</i>
 						评论
 					</a>
@@ -48,7 +48,7 @@
 						<a href="javascript:;" class="voting" :class="[things.is_tramp == 1? 'voted' : '']"  @click="trampDown(things.things_id,$event)"><i></i></a>
 					</li>
 					<li class="comments">
-						<a v-link="{name:'comment',query:{thing_id:things.things_id,is_praise:things.is_praise,is_tramp:things.is_tramp,is_favorite:things.is_favorite}}" class="voting"><i></i></a>
+						<a v-link="{name:'comment',query:{thing_id:things.things_id}}" class="voting"><i></i></a>
 					</li>
 				</ul>
 			</div>

@@ -241,6 +241,23 @@ class thesisController extends \Core\BaseControllers {
         echo json_encode($data);
     }
 
+    //获取回复我的评论
+    public function getUserReplyAction(){
+        $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
+        $page = isset($this->_getData['page']) ? $this->_getData['page'] : $this->page;
+        $model = new \Web\ThesisModel();
+        $data = $model->getUserReply($user_id,$page,$this->_count);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取单个用户评论成功！'; 
+            $data['data'] = $data['data'];
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取用户评论失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
     //获取单个用户收藏的趣事
     public function getUserFavoriteAction(){
         $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
@@ -262,23 +279,86 @@ class thesisController extends \Core\BaseControllers {
         echo json_encode($data);
     }
 
-    //获取首页趣事
-    public function getFunnyThingsListAction(){
+    //获取热门趣事
+    public function getHotThingsListAction(){
         $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
         $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
         $model = new \Web\ThesisModel();
-        $data = $model->getFunnyThingsList($page,$this->_count,$user_id);
+        $data = $model->getHotThingsList($page,$this->_count,$user_id);
         if($data['code'] == 200){ 
             $data['code'] = 0;
-            $data['msg'] = '获取趣事成功！'; 
+            $data['msg'] = '获取热门趣事成功！'; 
             $data['data'] = $data['data'];
         }elseif($data['code'] == 201){ 
             $data['code'] = 0;
-            $data['msg'] = '获取趣事成功！'; 
+            $data['msg'] = '热门趣事列表为空！'; 
             $data['data'] = array();
         }else{
             $data['code'] = 1;
-            $data['msg'] = '获取趣事失败，请重试'; 
+            $data['msg'] = '获取热门趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //获取新鲜趣事
+    public function getFreshThingsListAction(){
+        $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
+        $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->getFreshThingsList($page,$this->_count,$user_id);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取新鲜趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 0;
+            $data['msg'] = '新鲜趣事列表为空！'; 
+            $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取新鲜趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //获取纯文趣事
+    public function getWordThingsListAction(){
+        $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
+        $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->getWordThingsList($page,$this->_count,$user_id);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取纯文趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 0;
+            $data['msg'] = '纯文趣事列表为空！'; 
+            $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取纯文趣事失败，请重试'; 
+        }
+        echo json_encode($data);
+    }
+
+    //获取带图趣事
+    public function getImageThingsListAction(){
+        $page = isset($this->_getData['page']) ? $this->_getData['page'] : '';
+        $user_id = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
+        $model = new \Web\ThesisModel();
+        $data = $model->getImageThingsList($page,$this->_count,$user_id);
+        if($data['code'] == 200){ 
+            $data['code'] = 0;
+            $data['msg'] = '获取带图趣事成功！'; 
+            $data['data'] = $data['data'];
+        }elseif($data['code'] == 201){ 
+            $data['code'] = 0;
+            $data['msg'] = '带图趣事列表为空！'; 
+            $data['data'] = array();
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '获取带图趣事失败，请重试'; 
         }
         echo json_encode($data);
     }
@@ -373,8 +453,9 @@ class thesisController extends \Core\BaseControllers {
     //获取单条趣事信息
     public function getThingInfoAction(){
         $thing_id = isset($this->_getData['thing_id']) ? $this->_getData['thing_id'] : '';
+        $uid = isset($this->_getData['uid']) ? $this->_getData['uid'] : '';
         $model = new \Web\ThesisModel();
-        $data = $model->getThingInfo($thing_id);
+        $data = $model->getThingInfo($thing_id,$uid);
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '获取单条趣事成功！'; 
@@ -414,12 +495,19 @@ class thesisController extends \Core\BaseControllers {
     //评论趣事
     public function commentAction(){
         $things_id = isset($this->_postData['thing_id']) ? $this->_postData['thing_id'] : '';
-        $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : $this->_uid;
+        $uid = isset($this->_postData['user_id']) ? $this->_postData['user_id'] : '';
         $content = isset($this->_postData['content']) ? $this->_postData['content'] : '';
         if(empty($content)){
             $data['code'] = 1;
             $data['msg'] = '评论内容不能为空！'; 
             $data['data'] = $data['data'];
+            echo json_encode($data);
+        }
+        if(empty($uid)){
+            $data['code'] = 1;
+            $data['msg'] = '用户id不能为空！'; 
+            $data['data'] = $data['data'];
+            echo json_encode($data);
         }
         $model = new \Web\ThesisModel();
         $data = $model->comment($things_id,$uid,$content);
@@ -442,6 +530,8 @@ class thesisController extends \Core\BaseControllers {
          $param['replied_user_name'] = isset($this->_postData['replied_user_name']) ? $this->_postData['replied_user_name'] : '';
         $param['reply_content'] = isset($this->_postData['reply_content']) ? $this->_postData['reply_content'] : '';
         $param['comment_id'] = isset($this->_postData['comment_id']) ? $this->_postData['comment_id'] : '';
+        $param['things_id'] = isset($this->_postData['things_id']) ? $this->_postData['things_id'] : '';
+
         $model = new \Web\ThesisModel();
         $data = $model->replyComment($param);
         if($data['code'] == 200){ 

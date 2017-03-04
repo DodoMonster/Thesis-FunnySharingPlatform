@@ -16,9 +16,6 @@
 			return{
 				thingInfo:{},
 				thing_id:'',
-				is_praise:0,
-				is_tramp:0,
-				is_favorite:0,
 				page:{
 					cur:1,
 					totalPage:0,
@@ -28,6 +25,7 @@
 					comment_id:'',
 					content:'',
 					replied_id:'',
+					things_id:''
 				},
 				userInfo:store.userInfo,
 				commentContent:'',
@@ -37,10 +35,7 @@
 
 		ready(){			
 			let self = this;
-			self.thing_id = this.$route.query.thing_id;
-			self.is_praise = this.$route.query.is_praise;
-	        self.is_tramp = this.$route.query.is_tramp;	
-	        self.is_favorite = this.$route.query.is_favorite;	    
+			self.thing_id = this.$route.query.thing_id;   
 			this.getThingInfo();
 			this.getCommentsList(true);
 		},
@@ -48,8 +43,13 @@
 		methods:{
 			//获取趣事信息
 			getThingInfo:function(){
-				let self = this;				
-				service.getThingInfo(self.thing_id).done(function(res){
+				let self = this;		
+				if(self.userInfo && self.userInfo.user_id){
+					var user_id = self.userInfo.user_id
+				}else{
+					var user_id = '';
+				}
+				service.getThingInfo(self.thing_id,user_id).done(function(res){
 					self.thingInfo = res.data;
 				}).fail(function(res){
 					alert(res.msg);
@@ -62,6 +62,7 @@
 				if(flag){
 					self.page.cur = 1;
 				}
+				self.commentsList = [];
 				service.getCommentsList(self.page.cur,self.thing_id).done(function(res){
 					self.commentsList = res.data.list || [];
 					self.page.totalPage = res.data.totalPage;
@@ -83,6 +84,8 @@
 					return false;
 				}
 				service.comment(self.thing_id,self.commentContent,self.userInfo.user_id).done(function(res){
+					alert('评论成功！');
+					self.commentContent = '';
 					self.getCommentsList(true);
 				}).fail(function(res){
 					alert(res.msg);
@@ -99,8 +102,6 @@
 				}else{
 					service.praiseUp(self.thing_id,self.userInfo.user_id).done(function(res){
 				    	$this.addClass('voted');			
-				    	window.history.pushState({},0,util.changeURLArg('is_favorite',1));
-
 					}).fail(function(res){
 						alert(res.msg);
 					});
@@ -117,7 +118,6 @@
 				}else{									
 					service.trampDown(self.thing_id,self.userInfo.user_id).done(function(res){
 						$this.addClass('voted');
-						window.history.pushState({},0,self.changeURLArg('is_tramp',1));
 					}).fail(function(res){
 						alert(res.msg);
 					});
@@ -133,14 +133,12 @@
 					service.favorite(id,self.userInfo.user_id).done(function(res){
 						$this.attr('class','fa fa-heart deep-orange-color');
 						$num.text(Number($num.text()) + 1);	
-						window.history.pushState({},0,self.changeURLArg('is_favorite',1));				
 					}).fail(function(res){
 						alert(res.msg);
 					});			
 				}else{//已收藏
 					service.cancelFavorite(id,self.userInfo.user_id).done(function(res){
 						$this.attr('class','fa fa-heart-o orange-color');
-						window.history.pushState({},0,self.changeURLArg('is_favorite',0));
 						$num.text(Number($num.text()) - 1);
 					}).fail(function(res){
 						alert(res.msg);
@@ -148,16 +146,16 @@
 				}
 			},	
 			//显示回复评论的输入框
-			showReplyBox:function(e,id,name,comment_id,flag){
+			showReplyBox:function(e,id,name,comment_id,things_id,flag){
 				let self = this,
 					$this = $(e.currentTarget);
 				self.reply = {
 					comment:'',
 					replied_id:id,
 					replied_name:name,
-					comment_id:comment_id
+					comment_id:comment_id,
+					things_id:things_id
 				};
-				console.log(self.reply);
 				if(!$this.hasClass('show')){
 					if(!flag){
 						var $input = $this.addClass('show').text('关闭').parents('.comment-content').siblings('.reply-input');
@@ -181,7 +179,7 @@
 				let self = this,
 					$this = $(e.currentTarget);
 				self.reply.content = $this.prev('input').val();
-				if(!content){
+				if(!self.reply.content){
 					alert('回复内容不能为空！');
 					return false;
 				}

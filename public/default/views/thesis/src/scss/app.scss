@@ -377,7 +377,8 @@ footer {
     margin-left: 45px;
     width: 100%;
 }
-.comment-block .reply-input .reply-user{
+.reply-input .reply-user
+{
     height: 40px;
     width: 40px;
     text-align: center;
@@ -386,6 +387,7 @@ footer {
     display: inline-block;
     border: 1px solid #ddd;
     vertical-align: middle;
+    overflow: hidden;
 }
 .reply-input .reply-user img{
     width:30px;

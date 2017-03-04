@@ -17,7 +17,7 @@
         	return{
         		userId:'',
         		userData:{},
-        		pageType:2,
+        		pageType:3,
         		pwdData:{
         			originPwd:'',
         			newPwd:'',
@@ -42,6 +42,12 @@
                     cur:1,
                     totalPage:0,
                     totalNum:0,
+                },
+                reply:{
+                    comment_id:'',
+                    content:'',
+                    replied_id:'',
+                    things_id:''
                 },
                 userInfo:{},
                 userThing:[],
@@ -68,22 +74,27 @@
         },
 
         methods:{
+            //获取用户信息
         	getUserInfo:function(id,time){
         		let self = this;
         		service.getUserInfo(id,time).done(function(res){
         			self.userData = res.data || {};
                     self.newUname = self.userData.user_name;
-                    self.getUserThing();
-                    self.getUserComment();
-                    self.getUserFavorite();
-                    // store.setUserInfo(self.userData);   
-                    // store.userInfo = store.getUserInfo();
+                    if(!self.isSelf){
+                        self.getUserComment();                            
+                    }else{
+                        self.getUserReply();
+                    }
         		}).fail(function(res){
         			alert(res.msg);
         		})
         	},
-            getUserThing:function(){
+            //获取用户发表的趣事
+            getUserThing:function(flag){
                 let self = this;
+                if(flag){
+                    self.thingPage.cur = 1;
+                }
                 service.getUserThing(self.userId,self.thingPage.cur,self.userInfo.user_id).done(function(res){
                     self.userThing = res.data.list || {};
                     self.thingPage.totalPage = res.data.totalPage;
@@ -92,8 +103,12 @@
                     alert(res.msg);
                 });
             },
-            getUserComment:function(){
+            //获取用户评论
+            getUserComment:function(flag){
                 let self = this;
+                if(flag){
+                    self.commentPage.cur = 1;
+                }
                 service.getUserComment(self.userId,self.commentPage.cur).done(function(res){
                     self.userComment = res.data.list || {};
                     self.commentPage.totalPage = res.data.totalPage;
@@ -102,6 +117,21 @@
                     alert(res.msg);
                 });
             },
+            //获取回复
+            getUserReply:function(flag){
+                let self = this;
+                if(flag){
+                    self.commentPage.cur = 1;
+                }
+                service.getUserReply(self.userId,self.commentPage.cur).done(function(res){
+                    self.userComment = res.data.list || {};
+                    self.commentPage.totalPage = res.data.totalPage;
+                    self.commentPage.totalNum = res.data.totalNum;
+                }).fail(function(res){
+                    alert(res.msg);
+                });
+            },
+            //获取用户收藏
             getUserFavorite:function(flag){
                 let self = this;
                 if(flag){
@@ -115,10 +145,27 @@
                     alert(res.msg);
                 });
             },
+            //改变导航
         	changeType:function(type){
         		let self = this;
-        		self.pageType = type;
+                self.pageType = type;
+        		switch(type) {
+                    case 2:
+                        self.getUserThing(true);
+                        break;
+                    case 3:
+                        if(!self.isSelf){
+                            self.getUserComment(true);                            
+                        }else{
+                            self.getUserReply(true);
+                        }
+                        break;                    
+                    case 4:
+                        self.getUserFavorite(true);
+                        break;
+                }
         	},
+            //修改头像
         	changePhoto:function(){
         		let self = this;
         		var file = document.querySelector('#user_avatar').files[0];
@@ -154,7 +201,7 @@
 		        xhr.send(fd);
 		        return false;
         	},
-
+            //修改密码
         	changePwd:function(){
         		let self = this;
         		if(!self.pwdData.originPwd){
@@ -175,6 +222,11 @@
         		}
         		service.changePwd(self.userData.user_id,self.pwdData).done(function(res){
         			alert('修改密码成功！');
+                    self.pwdData = {
+                        originPwd:'',
+                        newPwd:'',
+                        againPwd:''
+                    };
         			self.getUserInfo(self.userData.user_id);
         		}).fail(function(res){
         			if(res.msg){
@@ -184,6 +236,7 @@
         			}
         		});
         	},
+            //修改用户名
             changeUname:function(){
                 let self = this;
                 if(!self.newUname){
@@ -201,7 +254,7 @@
                     }
                 })
             },
-            //好笑
+            //点赞
             praiseUp:function(id,event){
                 let self = this,
                     $this = $(event.currentTarget),
@@ -219,8 +272,7 @@
                 }                       
                 
             },
-
-            //不好笑
+            //踩
             trampDown:function(id,event){
                 let self = this,
                     $this = $(event.currentTarget);
@@ -261,10 +313,40 @@
                     });                 
                 }
             },
+            //回复评论
+            replyComment:function(e,id,name,comment_id,things_id) {
+                let self = this,
+                    $this = $(e.currentTarget);
+                self.reply = {
+                    content:$this.prev('input').val(),
+                    replied_id:id,
+                    replied_name:name,
+                    comment_id:comment_id,
+                    things_id:things_id
+                };
+                if(!self.reply.content){
+                    alert('回复内容不能为空！');
+                    return false;
+                }
+                console.log(self.reply);
+                service.replyComment(self.userInfo,self.reply).done(function(res){
+                    $this.parent().addClass('hide');
+                    self.getUserReply(true);
+                    self.reply = {
+                        comment:'',
+                        replied_id:'',
+                        replied_name:'',
+                        comment_id:'',
+                        things_id:''
+                    };
+                }).fail(function(res){
+                    alert(res.msg);
+                });
+            },               
+            //退出登录
         	logout:function(){
 				let self = this;
 				service.logout().done(function(res){
-					alert(res.msg);	
 					self.isLogin = false;
 					store.isLogin = false;
 					store.clearUserInfo();	
@@ -275,6 +357,27 @@
 				});
         	}
         },
+
+        watch:{
+            'thingPage.cur':function(){
+                this.getUserThing();
+            },
+            'commentPage.cur':function(){
+                let self = this;
+                if(!self.isSelf){
+                    self.getUserComment(true);                            
+                }else{
+                    self.getUserReply(true);
+                }
+            },
+            'favoritePage.cur':function(){
+                this.getUserFavorite();
+            },
+        },
+
+        components:{
+            pagination:pagination
+        }
 	};
 
 </script>

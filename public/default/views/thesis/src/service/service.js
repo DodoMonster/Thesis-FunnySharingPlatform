@@ -65,9 +65,26 @@ service.logout = () => {
 /**
  * 获取趣事列表
  */
-service.getFunnyThingsList = (page,user_id) => {
+service.getFunnyThingsList = (page,user_id,type) => {
+    switch(type) {
+     case 'hot':
+         var url = '/thesis/getHotThingsList';
+         break;
+     case 'fresh':
+         var url = '/thesis/getFreshThingsList';
+         break;
+     case 'pic':
+         var url =  '/thesis/getImageThingsList';
+         break;
+     case 'word':
+         var url =  '/thesis/getWordThingsList';
+         break;
+     default:
+         var url = '/thesis/getHotThingsList';
+         break;
+    }            
     return util.ajax({
-        url: '/thesis/getFunnyThingsList',
+        url: url,
         data: {
             page:page,
             user_id:user_id
@@ -240,7 +257,18 @@ service.getUserComment = (uid,page) => {
     });
 }
 
-
+/*
+ * 获取回复我的评论
+ */
+service.getUserReply = (uid,page) => {
+    return util.ajax({
+        url: '/thesis/getUserReply',
+        data: {
+            user_id: uid,
+            page:page
+        }
+    });
+}
 /**
  * 获取我的收藏
  */
@@ -287,11 +315,12 @@ service.sendThings = (data) => {
 /**
  * 获取趣事信息
  */
-service.getThingInfo = (id) => {    
+service.getThingInfo = (id,user_id) => {    
     return util.ajax({
         url: '/thesis/getThingInfo',
         data: {
-            thing_id: id
+            thing_id: id,
+            uid:user_id
         }
     });
 }
@@ -302,12 +331,14 @@ service.getThingInfo = (id) => {
 service.getCommentsList = (page,id) => {    
     return util.ajax({
         url: '/thesis/getCommentsList',
+        type:'GET',
         data: {
             page: page,
             thing_id:id
         }
     });
 }
+
 
 /**
  * 评论趣事
@@ -337,7 +368,8 @@ service.comment = (id,content,user_id) => {
             reply_user_name:user.user_name,
             replied_user:data.replied_id,
             replied_user_name:data.replied_name,
-            reply_content:data.content
+            reply_content:data.content,
+            things_id:data.things_id
         }
     });
 }

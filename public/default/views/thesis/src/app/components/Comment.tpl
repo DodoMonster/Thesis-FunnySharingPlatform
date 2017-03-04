@@ -3,11 +3,11 @@
         <div class="funny-things clearfix">
             <div class="author clearfix">
                 <a class="favorite-btn pull-right" @click="favorite(thingInfo.things_id,$event)">
-                    <i class="fa" :class="[is_favorite == 1 ? 'fa-heart deep-orange-color' : 'fa-heart-o orange-color']"></i>
+                    <i class="fa" :class="[thingInfo.is_favorite == 1 ? 'fa-heart deep-orange-color' : 'fa-heart-o orange-color']"></i>
                 </a>
-                <a v-link="{name:'userHome',params:{user_id:thingInfo.user_id}}" target="_blank"><img :src="thingInfo.userInfo.user_photo" alt="用户头像"></a>
+                <a v-link="{name:'userHome',params:{user_id:thingInfo.user_id}}" target="_blank"><img :src="thingInfo.user_photo" alt="用户头像"></a>
                 <a class="author-name" v-link="{name:'userHome',params:{user_id:thingInfo.user_id}}" target="_blank">
-                    <h2>{{thingInfo.userInfo.user_name}}</h2>
+                    <h2>{{thingInfo.user_name}}</h2>
                 </a>
                 <p class="publish-time pull-left">{{thingInfo.publish_time}}</p>
             </div>
@@ -39,10 +39,10 @@
             <div class="stats-buttons clearfix">
                 <ul class="clearfix">
                     <li class="up">
-                        <a href="javascript:;" class="voting" :class="[is_praise == 1? 'voted' : '']" @click="praiseUp($event)"><i></i></a>
+                        <a href="javascript:;" class="voting" :class="[thingInfo.is_praise == 1? 'voted' : '']" @click="praiseUp($event)"><i></i></a>
                     </li>
                     <li class="down">
-                        <a href="javascript:;" class="voting" :class="[is_tramp == 1? 'voted' : '']" @click="trampDown($event)"><i></i></a>
+                        <a href="javascript:;" class="voting" :class="[thingInfo.is_tramp == 1? 'voted' : '']" @click="trampDown($event)"><i></i></a>
                     </li>
                 </ul>
             </div>
@@ -73,7 +73,7 @@
                                     <span class="comment-time">{{comment.comment_time}}</span>                                    
                                 </li>
                                 <li class="pull-right" v-if="userInfo.user_id">
-                                    <button class="reply-btn" @click="showReplyBox($event,comment.user_id,comment.user_name,comment.comment_id)">回复</button>
+                                    <button class="reply-btn" @click="showReplyBox($event,comment.user_id,comment.user_name,comment.comment_id,comment.things_id)">回复</button>
                                 </li>
                             </ul>
                             <p class="body pull-left">{{comment.content}}</p>
@@ -89,7 +89,7 @@
                                         <span class="reply-time">{{reply.reply_time}}</span>                                    
                                     </li>
                                     <li class="pull-right">
-                                        <a class="reply-btn" @click="showReplyBox($event,reply.reply_user,reply.reply_user_name,comment.comment_id,true)">回复</a>
+                                        <a class="reply-btn" @click="showReplyBox($event,reply.reply_user,reply.reply_user_name,comment.comment_id,comment.things_id,true)">回复</a>
                                     </li>
                                 </ul>
                                 <p class="body pull-left">{{reply.reply_content}}</p>

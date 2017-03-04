@@ -40,47 +40,33 @@
 		},
 
 		methods:{
-			// showLoginBox:function(){
-			// 	store.showLoginForm = true;
-			// },
-			getFunnyThingsList:function(){
-				let self = this;
+			//获取趣事
+			getFunnyThingsList:function(flag,type){
+				let self = this,
+					_type = type || self.type;
 				if(!self.userInfo){
 					var user_id = '';
 				}else{
 					var user_id = self.userInfo.user_id;
 				}
-				service.getFunnyThingsList(self.page.cur,user_id).done(function(res){
-					self.thingsData = res.data;
-					switch(self.type) {
-						case 'hot':
-							self.funnyThings = self.thingsData.hot_things;
-							break;
-						case 'fresh':
-							self.funnyThings = self.thingsData.fresh_things;
-							break;
-						case 'pic':
-							self.funnyThings = self.thingsData.img_things;
-							break;
-						case 'word':
-							self.funnyThings = self.thingsData.word_things;
-							break;
-						default:
-							self.funnyThings = self.thingsData.hot_things;
-							break;
-					}
-					self.funnyThingsList = self.funnyThings.list;				
-					self.page.totalNum = self.funnyThings.totalNum;
-					self.page.totalPage = self.funnyThings.totalPage;
+				if(flag){
+					self.page.cur = 1;
+				}
+				service.getFunnyThingsList(self.page.cur,user_id,_type).done(function(res){
+					self.funnyThingsList = res.data.list;				
+					self.page.totalNum = res.data.totalNum;
+					self.page.totalPage = res.data.totalPage;
 				}).fail(function(res){
-					util.dialog.alert({
-						msg:[res.msg],
-					});
+					alert(res.msg);
 				});
 			},
-
+		
 			//好笑
 			praiseUp:function(id,event){
+				if(!this.userInfo || !this.userInfo.user_id){
+					alert('请先登录！');
+					return false;
+				}
 				let self = this,
 					$this = $(event.currentTarget),
 					$num = $this.parents('.stats-buttons').siblings('.stats').find('.stats-vote .number');
@@ -100,6 +86,10 @@
 
 			//不好笑
 			trampDown:function(id,event){
+				if(!this.userInfo || !this.userInfo.user_id){
+					alert('请先登录！');
+					return false;
+				}
 				let self = this,
 					$this = $(event.currentTarget);
 				if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
@@ -115,6 +105,10 @@
 
 			//收藏和取消收藏
 			favorite:function(id,e){
+				if(!this.userInfo || !this.userInfo.user_id){
+					alert('请先登录！');
+					return false;
+				}
 				let self = this,
 					$this = $(e.currentTarget).find('i'),
 					className = $this.attr('class'),
@@ -146,33 +140,10 @@
 				}
 			},
 			'page.cur':function(newVal,oldVal){
-				this.getFunnyThingsList();
+				this.getFunnyThingsList(false,this.type);
 			},
 			'type':function(newVal,oldVal){
-				let self = this;
-				if(self.thingsData.hot_things){
-					switch(newVal) {
-						case 'hot':
-							self.funnyThings = self.thingsData.hot_things;
-							break;
-						case 'fresh':
-							self.funnyThings = self.thingsData.fresh_things;
-							break;
-						case 'pic':
-							self.funnyThings = self.thingsData.img_things;
-							break;
-						case 'word':
-							self.funnyThings = self.thingsData.word_things;
-							break;
-						default:
-							self.funnyThings = self.thingsData.hot_things;
-							break;
-					}					
-					self.funnyThingsList = self.funnyThings.list;
-					self.page.totalNum = self.funnyThings.totalNum;
-					self.page.totalPage = self.funnyThings.totalPage;
-				}
-				
+				this.getFunnyThingsList(true,newVal);									
 			}
 
 		},
