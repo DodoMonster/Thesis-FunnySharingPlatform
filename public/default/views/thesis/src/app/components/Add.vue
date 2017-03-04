@@ -14,7 +14,6 @@
 				publishData:{
 					content:'',
 					img:'',
-					// is_anonymous:'0'
 				},
 				userInfo:store.userInfo,
 			}			
@@ -27,11 +26,6 @@
 					alert('请先登录！');
 					return false;
 				}
-				if(self.publishData.is_anonymous){
-					self.publishData.is_anonymous = 1;//1为匿名
-				}else{
-					self.publishData.is_anonymous = 0;//0为不匿名
-				}
 				var file = document.querySelector('#article_picture').files[0];
 		        var fd = new FormData();
 				if(!self.publishData.content){
@@ -42,7 +36,6 @@
 		        fd.append("things_img", file);
 		        fd.append("things_content",self.publishData.content);
 		        fd.append("user_id",self.userInfo.user_id);
-		        fd.append("is_anonymous",self.publishData.is_anonymous);
 		      	        
 		        var xhr = new XMLHttpRequest();
 

@@ -25290,11 +25290,6 @@
 					alert('请先登录！');
 					return false;
 				}
-				if (self.publishData.is_anonymous) {
-					self.publishData.is_anonymous = 1;
-				} else {
-					self.publishData.is_anonymous = 0;
-				}
 				var file = document.querySelector('#article_picture').files[0];
 				var fd = new FormData();
 				if (!self.publishData.content) {
@@ -25305,7 +25300,6 @@
 				fd.append("things_img", file);
 				fd.append("things_content", self.publishData.content);
 				fd.append("user_id", self.userInfo.user_id);
-				fd.append("is_anonymous", self.publishData.is_anonymous);
 	
 				var xhr = new XMLHttpRequest();
 	
@@ -25340,7 +25334,7 @@
 /* 45 */
 /***/ function(module, exports) {
 
-	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\r\n\t\t<div class=\"clearfix mt-l mb-l p-xl b-w bs-l\">\r\n\t\t<!-- 返回信息 -->\r\n\r\n\t\t\t<!-- 发表表单 -->\r\n\t\t\t<div class=\"post-readme wx250 f-r\">\r\n\t\t\t\t<h3>投稿须知</h3>\r\n\t\t\t\t<ol>\r\n\t\t\t\t\t<li>自己的或朋友的糗事，真实有笑点，不含政治、色情、广告、诽谤、歧视等内容。</li>\r\n\t\t\t\t\t<li>糗事经过审核后发表。</li>\r\n\t\t\t\t\t<li>转载请注明出处。</li>\r\n\t\t\t\t\t<li>我已阅读并同意糗事百科的《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/agreement.html\" target=\"_blank\" rel=\"external nofollow\">用户协议</a>\r\n\t\t\t\t\t\t》以及《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/policy.html\" target=\"_blank\" rel=\"external nofollow\">隐私政策</a>\r\n\t\t\t\t\t\t》\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ol>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"wx600 f-l\">\r\n\t\t\t\t<form enctype=\"multipart/form-data\" id=\"new_article\" method=\"post\">\r\n\t\t\t\t\t<textarea id=\"qiushi_text\" class=\"wx600 p-m fs-s b-f-g b-lg bsi-l\" name=\"article[content]\" placeholder=\"分享一件新鲜事...\" rows=\"15\" required=\"required\" v-model=\"publishData.content\"></textarea>\r\n\t\t\t\t\t<div class=\"clearfix mt-r3 mb-m p-m c-lg b-f-g b-lg\">\r\n\t\t\t\t\t\t<div class=\"f-r\">\r\n\t\t\t\t\t\t\t<input  type=\"checkbox\" v-model=\"publishData.is_anonymous\" >\r\n\t\t\t\t\t\t\t匿名投稿\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"f-l\">\r\n\t\t\t\t\t\t\t<label>照片:</label>\r\n\t\t\t\t\t\t\t<input type=\"file\" id=\"article_picture\" v-model=\"publishData.img\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div id=\"length\" class=\"f-r\"></div><!--字数统计-->\r\n\t\t\t\t\t<button type=\"button\" class=\"p-xl ptb-m b-g fs-s c-w br-s bs-l\" id=\"article_submit\" name=\"commit\" @click=\"publishThings()\">\r\n\t\t\t\t\t投递\r\n\t\t\t\t\t</button>\r\n\t\t\t\t</form>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
+	module.exports = "<div id=\"content\" class=\"main\">\r\n\t<div id=\"content-block\" class=\"clearfix\">\r\n\r\n\t\t<div class=\"clearfix mt-l mb-l p-xl b-w bs-l\">\r\n\t\t<!-- 返回信息 -->\r\n\r\n\t\t\t<!-- 发表表单 -->\r\n\t\t\t<div class=\"post-readme wx250 f-r\">\r\n\t\t\t\t<h3>投稿须知</h3>\r\n\t\t\t\t<ol>\r\n\t\t\t\t\t<li>自己的或朋友的糗事，真实有笑点，不含政治、色情、广告、诽谤、歧视等内容。</li>\r\n\t\t\t\t\t<li>糗事经过审核后发表。</li>\r\n\t\t\t\t\t<li>转载请注明出处。</li>\r\n\t\t\t\t\t<li>我已阅读并同意糗事百科的《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/agreement.html\" target=\"_blank\" rel=\"external nofollow\">用户协议</a>\r\n\t\t\t\t\t\t》以及《\r\n\t\t\t\t\t\t<a href=\"http://about.qiushibaike.com/policy.html\" target=\"_blank\" rel=\"external nofollow\">隐私政策</a>\r\n\t\t\t\t\t\t》\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ol>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"wx600 f-l\">\r\n\t\t\t\t<form enctype=\"multipart/form-data\" id=\"new_article\" method=\"post\">\r\n\t\t\t\t\t<textarea id=\"qiushi_text\" class=\"wx600 p-m fs-s b-f-g b-lg bsi-l\" name=\"article[content]\" placeholder=\"分享一件新鲜事...\" rows=\"15\" required=\"required\" v-model=\"publishData.content\"></textarea>\r\n\t\t\t\t\t<div class=\"clearfix mt-r3 mb-m p-m c-lg b-f-g b-lg\">\r\n<!-- \t\t\t\t\t\t<div class=\"f-r\">\r\n\t\t\t\t\t\t\t<input  type=\"checkbox\" v-model=\"publishData.is_anonymous\" >\r\n\t\t\t\t\t\t\t匿名投稿\r\n\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t<div class=\"f-l\">\r\n\t\t\t\t\t\t\t<label>照片:</label>\r\n\t\t\t\t\t\t\t<input type=\"file\" id=\"article_picture\" v-model=\"publishData.img\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div id=\"length\" class=\"f-r\"></div><!--字数统计-->\r\n\t\t\t\t\t<button type=\"button\" class=\"p-xl ptb-m b-g fs-s c-w br-s bs-l\" id=\"article_submit\" name=\"commit\" @click=\"publishThings()\">\r\n\t\t\t\t\t投递\r\n\t\t\t\t\t</button>\r\n\t\t\t\t</form>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n";
 
 /***/ },
 /* 46 */

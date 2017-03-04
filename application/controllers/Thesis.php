@@ -96,8 +96,7 @@ class thesisController extends \Core\BaseControllers {
             }
         }else{
             $param['things_img'] = '';
-        }
-        $param['is_anonymous'] = isset($this->_postData['is_anonymous']) ? $this->_postData['is_anonymous']: '';
+        }       
         
         // print_r($param);die;
         $model = new \Web\ThesisModel();

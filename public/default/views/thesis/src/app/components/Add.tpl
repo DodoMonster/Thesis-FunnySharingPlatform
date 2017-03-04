@@ -23,10 +23,10 @@
 				<form enctype="multipart/form-data" id="new_article" method="post">
 					<textarea id="qiushi_text" class="wx600 p-m fs-s b-f-g b-lg bsi-l" name="article[content]" placeholder="分享一件新鲜事..." rows="15" required="required" v-model="publishData.content"></textarea>
 					<div class="clearfix mt-r3 mb-m p-m c-lg b-f-g b-lg">
-						<div class="f-r">
+<!-- 						<div class="f-r">
 							<input  type="checkbox" v-model="publishData.is_anonymous" >
 							匿名投稿
-						</div>
+						</div> -->
 						<div class="f-l">
 							<label>照片:</label>
 							<input type="file" id="article_picture" v-model="publishData.img">

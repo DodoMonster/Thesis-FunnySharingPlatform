@@ -111,9 +111,9 @@ class ThesisModel extends \Core\BaseModels {
         }else{
             $has_img = 0;
         }
-        $tmpData = array('things_content'=>'?','things_image'=>'?','is_anonymous'=>'?','publish_time'=>'?','user_id'=>'?','has_img'=>'?');
+        $tmpData = array('things_content'=>'?','things_image'=>'?','publish_time'=>'?','user_id'=>'?','has_img'=>'?');
         $options1['table'] = 'things';        
-        $options1['param'] = array($param['things_content'],$param['things_img'],$param['is_anonymous'],time(),$user_id,$has_img);
+        $options1['param'] = array($param['things_content'],$param['things_img'],time(),$user_id,$has_img);
         $info = $this->db->add($tmpData,$options1);
 
         if($info!=FALSE){
