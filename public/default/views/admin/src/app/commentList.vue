@@ -37,7 +37,7 @@
 
 
 		methods:{
-			//获取趣事列表
+			//获取评论列表
 			getCommentList:function(flag){
 				var self = this;
 				if(flag){
@@ -62,6 +62,7 @@
 					}
 				});
 			},
+			//审核评论
 			approvalComment:function(id){
 				var self = this;
 				util.dialog.show({
@@ -82,6 +83,7 @@
 					});
 				});		
 			},
+			//删除评论
 			deleteComment:function(id){
 				var self = this;
 				util.dialog.show({

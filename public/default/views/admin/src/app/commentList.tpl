@@ -15,7 +15,7 @@
 			<div class="form-inline m-b-1 pull-right">
 				<div class="form-group">
 					<label for="content">评论内容：</label>
-					<input type="text" class="form-control" placeholder="趣事内容"
+					<input type="text" class="form-control" placeholder="评论内容"
 					v-model="searchParam.content">
 				</div>
 			</div>					
