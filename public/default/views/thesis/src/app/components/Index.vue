@@ -27,8 +27,8 @@
 				type:'hot',
 				page:{
 					cur:1,
-					totalNum:20,
-					totalPage:5,
+					totalNum:0,
+					totalPage:0,
 				},
 				userInfo:store.userInfo
 			}

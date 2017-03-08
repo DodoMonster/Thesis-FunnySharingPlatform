@@ -35,7 +35,7 @@
                         收藏
                     </a>
                 </span>
-            </div>
+            </div> 
             <div class="stats-buttons clearfix">
                 <ul class="clearfix">
                     <li class="up">

@@ -113,8 +113,14 @@
 				if(!self.registerData.username){
 					alert('请先输入用户名！');
 					return false;
+				}else if(self.registerData.username.length<4){
+					alert('用户名不能少于4个字符！');
+					return false;
 				}else if(!self.registerData.password){
 					alert('请先输入密码！');
+					return false;
+				}else if(self.registerData.password.length<6){
+					alert('密码不能少于6个字符！');
 					return false;
 				}else if(!self.registerData.passwordAgain){
 					alert('请先输入密码！');

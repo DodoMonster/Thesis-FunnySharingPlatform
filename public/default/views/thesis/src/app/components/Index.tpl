@@ -52,12 +52,12 @@
 					</li>
 				</ul>
 			</div>
-			<div class="single-share">
-				<a href="" class="share-wechat" title="分享到微信"></a>
-				<a href="" class="share-qq" title="分享到QQ"></a>
-				<a href="" class="share-qzone" title="分享到空间"></a>
-				<a href="" class="share-weibo" title="分享到微博"></a>
-			</div>
+<!-- 			<div class="single-share jiathis_style_32x32">
+				<a class="share-wechat jiathis_button_weixin" title="分享到微信"></a>
+				<a class="share-qq jiathis_button_tqq" title="分享到QQ"></a>
+				<a class="share-qzone jiathis_button_qzone" title="分享到空间"></a>
+				<a class="share-weibo jiathis_button_tsina" title="分享到微博"></a>
+			</div> -->
 		</div>
 		<pagination :page="page"></pagination>
 	</div>
