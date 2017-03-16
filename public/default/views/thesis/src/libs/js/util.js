@@ -32,7 +32,7 @@ util.ajax = (opt, other) => {
         if (other && other.loading) {
             $('.preloader').css('display', 'none');
         }
-    });;
+    });
 
     return defer.promise();
 }
