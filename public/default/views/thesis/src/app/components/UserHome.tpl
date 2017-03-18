@@ -11,16 +11,16 @@
                 <a  class="active" @click="changeType(1)">主页</a>
             </li> -->
             <li>
-                <a class="active" @click="changeType(3)">评论</a>
+                <a class="active" @click="changeType(3,$event)">评论</a>
             </li>
             <li>
-                <a @click="changeType(2)">糗事</a>
+                <a @click="changeType(2,$event)">糗事</a>
             </li>            
             <li>
-                <a @click="changeType(4)">收藏</a>
+                <a @click="changeType(4,$event)">收藏</a>
             </li>
             <li v-if="isSelf">
-                <a @click="changeType(5)">设置</a>
+                <a @click="changeType(5,$event)">设置</a>
             </li>
         </ul>
     </div>
@@ -374,7 +374,7 @@
                         <img alt="{{userData.user_name}}" class="user-setting-avatar" v-bind:src="userData.user_photo">
                     </li>
                     <li>
-                        <input id="user_avatar"  size="30" type="file">
+                        <input id="user_avatar"  size="30" type="file" accept="image/*">
                         <input id="user_submit"  type="button" value="确定上传" @click="changePhoto()">
                     </li>
                     <li>

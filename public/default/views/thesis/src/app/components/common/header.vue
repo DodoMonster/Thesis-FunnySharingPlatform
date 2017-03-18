@@ -66,6 +66,11 @@
 		watch:{
 			'store.isLogin':function(newVal,oldVal){
 				this.isLogin = newVal;
+			},
+			'$route.name':function(newVal,oldVal){
+				if(newVal !== 'index' && newVal !== 'add'){
+					$('.menu-bar li').removeClass('highlight');
+				}
 			}
 		}
 	}

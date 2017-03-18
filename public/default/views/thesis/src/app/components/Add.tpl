@@ -29,7 +29,8 @@
 						</div> -->
 						<div class="f-l">
 							<label>照片:</label>
-							<input type="file" id="article_picture" v-model="publishData.img">
+							<input type="file" id="article_picture" v-model="publishData.img" accept="image/*">
+							<!-- <input type="file" id="article_picture" v-model="publishData.img"> -->
 						</div>
 					</div>
 					<div id="length" class="f-r"></div><!--字数统计-->

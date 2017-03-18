@@ -17,7 +17,7 @@
             <li :class="thingsType == 'pic' ? 'highlight' : ''">
                 <a v-link="{name:'index',params:{thingsType:'pic'}}">图片</a>
             </li>         
-            <li>
+            <li :class="$route.name == 'add' ? 'highlight' : ''">
                 <a v-link="{name:'add'}">投稿</a>
             </li>
         </ul>

@@ -53,7 +53,7 @@
 				<td>{{thing.favorite_num || '--'}}</td>
 				<td>{{thing.thing_num || '--'}}</td>
 				<td>
-					<a @click="deletethings(thing.things_id)"
+					<a @click="deleteThings(thing.things_id)"
 							href="javascript:;" title="删除趣事">
 						<i class="fa-lg ti-trash text-danger"></i> 
 					</a>

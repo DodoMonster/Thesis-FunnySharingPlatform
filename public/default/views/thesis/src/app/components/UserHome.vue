@@ -67,10 +67,7 @@
         	self.getUserInfo(self.userId,self.userInfo.register_time);
             if(self.userInfo && self.userInfo.user_id && self.userInfo.user_id == this.userId){
                 self.isSelf = true;
-            }            
-        	$('.user-header-menu a').click(function(){
-        		$(this).addClass('active').parent('li').siblings().find('.active').removeClass('active');
-        	})
+            }                    	
         },
 
         methods:{
@@ -146,7 +143,7 @@
                 });
             },
             //改变导航
-        	changeType:function(type){
+        	changeType:function(type,e){
         		let self = this;
                 self.pageType = type;
         		switch(type) {
@@ -164,6 +161,7 @@
                         self.getUserFavorite(true);
                         break;
                 }
+                $(e.currentTarget).addClass('active').parent('li').siblings().find('.active').removeClass('active');
         	},
             //修改头像
         	changePhoto:function(){

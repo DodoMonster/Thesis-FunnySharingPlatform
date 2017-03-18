@@ -84,15 +84,33 @@ class thesisController extends \Core\BaseControllers {
             echo json_encode($data);
         }
         if($_FILES && $_FILES['things_img']['tmp_name']){
+            
+            $uptypes = array(  // 图片类型
+                'image/jpg', 
+                'image/jpeg', 
+                'image/png', 
+                'image/pjpeg', 
+                'image/gif', 
+                'image/bmp', 
+                'image/x-png' 
+            );
+            if(!in_array($_FILES['things_img']["type"],$uptypes)){ 
+                $data['code'] = 1;
+                $data['msg'] = '只能上传图片';
+                echo json_encode($data);die;            
+            }
             $tmp_name = $_FILES['things_img']['tmp_name'];
             $template = $_FILES['things_img']['name'];
-            $res = move_uploaded_file($tmp_name, 'uploads/things_img/'.$template);//将上传的文件移动到新位置
+            $photo = explode('.',$template);
+            $photo_name = $photo[0] . '_' . time() . '.' . $photo[1];
+            $res = move_uploaded_file($tmp_name, 'uploads/things_img/'.$photo_name);//将上传的文件移动到新位置
             if(!$res){
                 $data['code'] = 1;
                 $data['msg'] = '图片上传失败，请重试！';
-                echo json_encode($data);
+                echo json_encode($data);die;
             }else{
-                $param['things_img'] = '/uploads/things_img/' . $template;
+
+                $param['things_img'] = '/uploads/things_img/' . $photo_name;
             }
         }else{
             $param['things_img'] = '';
@@ -118,15 +136,30 @@ class thesisController extends \Core\BaseControllers {
     //修改头像
     public function changeAvatarAction(){
         if($_FILES && $_FILES['photo']['tmp_name']){
-            $tmp_name = $_FILES['photo']['tmp_name'];
-            $photo = $_FILES['photo']['name'];
-            $res = move_uploaded_file($tmp_name, 'uploads/avatar/' . $photo);//将上传的文件移动到新位置
+            $uptypes = array(  // 图片类型
+                'image/jpg', 
+                'image/jpeg', 
+                'image/png', 
+                'image/pjpeg', 
+                'image/gif', 
+                'image/bmp', 
+                'image/x-png' 
+            );
+            if(!in_array($_FILES['things_img']["type"],$uptypes)){ 
+                $data['code'] = 1;
+                $data['msg'] = '只能上传图片';
+                echo json_encode($data);die;            
+            }
+            $tmp_name = $_FILES['photo']['tmp_name'];            
+            $photo = explode('.',$_FILES['photo']['name']);
+            $photo_name = $photo[0].'_'.time().'.'.$photo[1];
+            $res = move_uploaded_file($tmp_name, 'uploads/avatar/' . $photo_name);//将上传的文件移动到新位置
             if(!$res){
                 $data['code'] = 1;
                 $data['msg'] = '图片上传失败，请重试！';
                 echo json_encode($data);die;
             }else{
-                $photo = '/uploads/avatar/' . $photo;
+                $photo = '/uploads/avatar/' . $photo_name;
             }
         }else{
             $data['code'] = 1;
