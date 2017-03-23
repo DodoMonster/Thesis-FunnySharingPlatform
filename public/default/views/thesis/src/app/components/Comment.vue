@@ -65,8 +65,8 @@
 				self.commentsList = [];
 				service.getCommentsList(self.page.cur,self.thing_id).done(function(res){
 					self.commentsList = res.data.list || [];
-					self.page.totalPage = res.data.totalPage;
-					self.page.totalNum = res.data.totalNum;
+					self.page.totalPage = res.data.totalPage || 0;
+					self.page.totalNum = res.data.totalNum || 0;
 				}).fail(function(res){
 					alert(res.msg);
 				})
@@ -79,7 +79,7 @@
 					alert('评论不能为空！');
 					return false;
 				}
-				if(!self.userInfo.user_id){
+				if(!self.userInfo || !self.userInfo.user_id){
 					alert('请先登录');
 					return false;
 				}

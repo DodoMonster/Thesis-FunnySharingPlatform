@@ -25471,8 +25471,8 @@
 				self.commentsList = [];
 				_service2.default.getCommentsList(self.page.cur, self.thing_id).done(function (res) {
 					self.commentsList = res.data.list || [];
-					self.page.totalPage = res.data.totalPage;
-					self.page.totalNum = res.data.totalNum;
+					self.page.totalPage = res.data.totalPage || 0;
+					self.page.totalNum = res.data.totalNum || 0;
 				}).fail(function (res) {
 					alert(res.msg);
 				});
@@ -25484,7 +25484,7 @@
 					alert('评论不能为空！');
 					return false;
 				}
-				if (!self.userInfo.user_id) {
+				if (!self.userInfo || !self.userInfo.user_id) {
 					alert('请先登录');
 					return false;
 				}
@@ -25804,6 +25804,13 @@
 	                if (!self.isSelf) {
 	                    self.getUserComment();
 	                } else {
+	                    var storeData = {
+	                        user_id: self.userData.user_id,
+	                        user_name: self.userData.user_name,
+	                        user_photo: self.userData.user_photo,
+	                        register_time: self.userData.register_time
+	                    };
+	                    _index2.default.setUserInfo(storeData);
 	                    self.getUserReply();
 	                }
 	            }).fail(function (res) {
@@ -25912,6 +25919,7 @@
 	                    if (res.code == 0) {
 	                        alert('修改头像成功');
 	                        self.getUserInfo(self.userData.user_id);
+	                        history.go(0);
 	                    } else {
 	                        alert(res.msg);
 	                    }
@@ -25967,6 +25975,7 @@
 	            _service2.default.changeUname(self.userData.user_id, self.newUname).done(function (res) {
 	                alert('修改用户名成功！');
 	                self.getUserInfo(self.userData.user_id);
+	                history.go(0);
 	            }).fail(function (res) {
 	                if (res.msg) {
 	                    alert(res.msg);

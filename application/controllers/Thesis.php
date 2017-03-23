@@ -215,6 +215,9 @@ class thesisController extends \Core\BaseControllers {
         if($data['code'] == 200){ 
             $data['code'] = 0;
             $data['msg'] = '修改用户名成功！';            
+        }elseif($data['code'] == 401){
+            $data['code'] = 1;
+            $data['msg'] = '该用户名已被使用！';
         }else{
             $data['code'] = 1;
             $data['msg'] = '修改用户名失败，请重试'; 

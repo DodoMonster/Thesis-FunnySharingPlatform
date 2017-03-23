@@ -80,6 +80,13 @@
                     if(!self.isSelf){
                         self.getUserComment();                            
                     }else{
+                        var storeData = {
+                            user_id : self.userData.user_id,
+                            user_name:self.userData.user_name,
+                            user_photo:self.userData.user_photo,
+                            register_time:self.userData.register_time
+                        };
+                        store.setUserInfo(storeData);
                         self.getUserReply();
                     }
         		}).fail(function(res){
@@ -188,6 +195,7 @@
 		               	if(res.code == 0){
 			            	alert('修改头像成功');
 							self.getUserInfo(self.userData.user_id);
+                            history.go(0);
 			            }else{
 							alert(res.msg);
 			            }
@@ -244,6 +252,7 @@
                 service.changeUname(self.userData.user_id,self.newUname).done(function(res){
                     alert('修改用户名成功！');
                     self.getUserInfo(self.userData.user_id);
+                    history.go(0);                    
                 }).fail(function(res){
                     if(res.msg){
                         alert(res.msg);

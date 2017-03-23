@@ -64,6 +64,7 @@ class ThesisModel extends \Core\BaseModels {
     public function login($param){
         $options['table'] = 'user';
         $options['where'] = array('user_name'=>'?','user_password'=>'?','is_delete'=>'?');
+        $options['field'] = array('user_id','user_name','user_photo','register_time');
         $options['param'] = array($param['username'],md5($param['password']),0);
         // print_r($options);exit;
         $info = $this->db->find($options);
@@ -127,6 +128,7 @@ class ThesisModel extends \Core\BaseModels {
     public function getUserInfo($user_id,$time){
         $options['table'] = 'user';
         $options['where'] = array('user_id'=>'?');
+        $options['field'] = array('user_id','user_name','user_photo','register_time');
         $options['param'] = array($user_id);
         $info = $this->db->find($options);
         // print_r($info);exit;
@@ -326,17 +328,33 @@ class ThesisModel extends \Core\BaseModels {
     //修改用户名
     public function changeUname($param){
         $options['table'] = 'user';
+        $options['where'] = array('user_name'=>'?');
+        $options['param'] = array($param['uname']);
+        $res = $this->db->find($options);
+        if(!empty($res)){
+            return $this->returnResult(401,$res);    
+        }
+
+        $options1['table'] = 'user';
         $tmpData = array('user_name'=>'?');
-        $options['where'] = array('user_id'=>'?');
-        $options['param'] = array($param['uname'],$param['user_id']);
-        $info = $this->db->save($tmpData,$options);
+        $options1['where'] = array('user_id'=>'?');
+        $options1['param'] = array($param['uname'],$param['user_id']);
+        $info = $this->db->save($tmpData,$options1);
+
+        
+        // $updateSql1 = 'update reply set reply_user_name = '.$param['uname'].' where reply_user = '.$param['user_id'];
+        // // print_r($updateSql1);
+        // $res1 = $this->db->create($updateSql1);
+        // $updateSql2 = 'update reply set replied_user_name = '.$param['uname'].' where replied_user = '.$param['user_id'];
+        // // print_r($updateSql2);
+        // $res2 = $this->db->create($updateSql2);
         if($info != FALSE){
             return $this->returnResult(200,$info);            
         }else{
             return $this->returnResult(201);            
         }
     }
-   
+
     //获取热门趣事
     public function getHotThingsList($page,$count,$uid){       
         $funny_list = [];
@@ -355,6 +373,7 @@ class ThesisModel extends \Core\BaseModels {
         $options['join'] = 'user as B on A.user_id = B.user_id';
         $options['param'] =  array(1);    
         $options['limit'] = ($page-1)*$count.','.$count; 
+        // print_r($options);
         $totalNum = $this->db->count($options);
         $totalPage = ceil($totalNum/$count);   
         $options['order'] = 'comment_num desc';
@@ -682,12 +701,15 @@ class ThesisModel extends \Core\BaseModels {
         foreach ($comments as $c_key => $c_val) {
             $comments[$c_key]['comment_time'] = date('Y-m-d H:i:s',$comments[$c_key]['comment_time']);
             $comments[$c_key]['reply'] = array();
-            foreach ($reply as $r_key => $r_val) {
-                if($c_val['comment_id'] === $r_val['comment_id']){
-                    $r_val['reply_time'] = date('Y-m-d H:i:s',$r_val['reply_time']);
-                    array_push($comments[$c_key]['reply'],$r_val);
-                }
-            }          
+            if(!empty($reply)){
+                foreach ($reply as $r_key => $r_val) {
+                    if($c_val['comment_id'] === $r_val['comment_id']){
+                        $r_val['reply_time'] = date('Y-m-d H:i:s',$r_val['reply_time']);
+                        array_push($comments[$c_key]['reply'],$r_val);
+                    }
+                } 
+            }
+                     
         }
         $data = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$comments);
         return $this->returnResult(200,$data);
@@ -705,6 +727,7 @@ class ThesisModel extends \Core\BaseModels {
         // $totalNum = $this->db->count($options);
         // $totalPage = ceil($totalNum/$count);   
         $options['order'] = 'reply_time asc';
+
         $reply = $this->db->select($options); 
         // $data = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$reply);
         return $reply;
