@@ -52,19 +52,29 @@
                 userInfo:{},
                 userThing:[],
                 userComment:[], 
+                userReply:[],
                 userFavorite:[],
                 newUname:'',
-                store:store,
+                userInfo:store.userInfo,
                 isSelf:false,
+                isLogin:false
         	}
         },
 
         ready(){
             let self = this;
             self.userId = self.$route.params.user_id;
-            self.userInfo = store.userInfo;
+            try{
+                self.userInfo = store.getUserInfo();
+            }catch(e){}
+            if(!self.userInfo.register_time){
+                self.isLogin = false;
+            }else{
+                self.isLogin = true;
+            }
             // console.log(self.userInfo);
-        	self.getUserInfo(self.userId,self.userInfo.register_time);
+            self.getUserInfo(self.userId);
+        	
             if(self.userInfo && self.userInfo.user_id && self.userInfo.user_id == this.userId){
                 self.isSelf = true;
             }                    	
@@ -77,6 +87,9 @@
         		service.getUserInfo(id,time).done(function(res){
         			self.userData = res.data || {};
                     self.newUname = self.userData.user_name;
+                    if(!self.isLogin){
+                        self.userInfo = res.data;
+                    }
                     if(!self.isSelf){
                         self.getUserComment();                            
                     }else{
@@ -101,8 +114,8 @@
                 }
                 service.getUserThing(self.userId,self.thingPage.cur,self.userInfo.user_id).done(function(res){
                     self.userThing = res.data.list || {};
-                    self.thingPage.totalPage = res.data.totalPage;
-                    self.thingPage.totalNum = res.data.totalNum;
+                    self.thingPage.totalPage = res.data.totalPage || 0;
+                    self.thingPage.totalNum = res.data.totalNum || 0;
                 }).fail(function(res){
                     alert(res.msg);
                 });
@@ -115,8 +128,8 @@
                 }
                 service.getUserComment(self.userId,self.commentPage.cur).done(function(res){
                     self.userComment = res.data.list || {};
-                    self.commentPage.totalPage = res.data.totalPage;
-                    self.commentPage.totalNum = res.data.totalNum;
+                    self.commentPage.totalPage = res.data.totalPage || 0;
+                    self.commentPage.totalNum = res.data.totalNum || 0;
                 }).fail(function(res){
                     alert(res.msg);
                 });
@@ -128,9 +141,10 @@
                     self.commentPage.cur = 1;
                 }
                 service.getUserReply(self.userId,self.commentPage.cur).done(function(res){
-                    self.userComment = res.data.list || {};
-                    self.commentPage.totalPage = res.data.totalPage;
-                    self.commentPage.totalNum = res.data.totalNum;
+                    self.userComment = res.data.comment || [];
+                    self.userReply = res.data.reply || [];
+                    self.commentPage.totalPage = res.data.totalPage || 0
+                    self.commentPage.totalNum = res.data.totalNum || 0;
                 }).fail(function(res){
                     alert(res.msg);
                 });
@@ -143,8 +157,8 @@
                 }
                 service.getUserFavorite(self.userId,self.favoritePage.cur,self.userInfo.user_id).done(function(res){
                     self.userFavorite = res.data.list || [];
-                    self.favoritePage.totalPage = res.data.totalPage;
-                    self.favoritePage.totalNum = res.data.totalNum;
+                    self.favoritePage.totalPage = res.data.totalPage || 0;
+                    self.favoritePage.totalNum = res.data.totalNum || 0;
                 }).fail(function(res){
                     alert(res.msg);
                 });
@@ -263,6 +277,10 @@
             },
             //点赞
             praiseUp:function(id,event){
+                if(!this.isLogin){
+                    alert('请先登录！');
+                    return false;
+                }
                 let self = this,
                     $this = $(event.currentTarget),
                     $num = $(event.currentTarget).parents('.stats-buttons').siblings('.stats').find('.stats-vote .number');
@@ -283,7 +301,10 @@
             trampDown:function(id,event){
                 let self = this,
                     $this = $(event.currentTarget);
-
+                if(!this.isLogin){
+                    alert('请先登录！');
+                    return false;
+                }
                 if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
                     return false;
                 }else{                                  
@@ -296,6 +317,10 @@
             },
             //收藏和取消收藏
             favorite:function(flag,id,e){
+                if(!this.isLogin){
+                    alert('请先登录！');
+                    return false;
+                }
                 let self = this,
                     $this = $(e.currentTarget).find('i'),
                     className = $this.attr('class'),

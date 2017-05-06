@@ -14,7 +14,7 @@
                 <a class="active" @click="changeType(3,$event)">评论</a>
             </li>
             <li>
-                <a @click="changeType(2,$event)">糗事</a>
+                <a @click="changeType(2,$event)">趣事</a>
             </li>            
             <li>
                 <a @click="changeType(4,$event)">收藏</a>
@@ -42,7 +42,7 @@
                     <strong>这个名没有注册过</strong>
                     评论了
                     <strong>这个名没有注册过</strong>
-                    发表的糗事
+                    发表的趣事
                 </li>
                 <li class="user-comment-text">
                     回复 70楼：我都有盒子装回去的，有自己的房间的
@@ -87,7 +87,7 @@
                 <strong>
                 这个名没有注册过
                 </strong>
-                发表了糗事
+                发表了趣事
                 </li>
                 <li class="user-article-text">
                 <a href="/article/117741876" target="_blank">
@@ -123,7 +123,7 @@
                     <strong>这个名没有注册过</strong>
                     评论了
                     <strong>这个名没有注册过</strong>
-                    发表的糗事
+                    发表的趣事
                 </li>
                 <li class="user-comment-text">
                     回复 70楼：我都有盒子装回去的，有自己的房间的
@@ -235,7 +235,7 @@
                     <strong>{{userInfo.user_name}}</strong>
                     评论了
                     <strong>{{comment.user_name}}</strong>
-                    发表的糗事
+                    发表的趣事
                 </li>
                 <li class="user-comment-text">
                     {{comment.content}}
@@ -269,10 +269,11 @@
             </ul>
             <ul class="user-indent" v-if="isSelf">
                 <li class="user-comment-info">
-                    <a v-link="{name:'userHome',params:{'user_id':comment.reply_user}}"><strong>{{comment.reply_user_name}}</strong></a> 回复了你
+                    <span v-if="isSelf">你</span><span v-else>Ta</span>评论了
+                    <a v-link="{name:'userHome',params:{'user_id':comment.reply_user}}"><strong>{{comment.user_name}}</strong></a> 
                 </li>
                 <li class="user-comment-text">
-                    {{comment.reply_content}}
+                    {{comment.content}}
                 </li>
                 <li class="user-comment-quote">
                     <ul>
@@ -306,6 +307,97 @@
                     </span>
                     <input class="form-control pull-left" type="text" placeholder="请输入您的回复内容..." style="width: 80%;margin-left: 10px;">
                     <button class="confirm-reply-btn pull-right btn btn-primary btn-sm" @click="replyComment($event,comment.reply_user,comment.reply_user_name,comment.comment_id,comment.things_id)">回复</button>
+                </li>
+            </ul>
+        </div>
+        <div class="user-block user-feed" v-for="reply in userReply">
+            <div class="user-date">
+                <span class="user-date-month">
+                {{reply.month}}
+                </span>
+                <span class="user-date-break">
+                /
+                </span>
+                <span class="user-date-day">
+                {{reply.date}}
+                </span>
+            </div>
+            <ul class="user-indent" v-if="!isSelf">
+                <li class="user-reply-info">
+                    <strong>{{userInfo.user_name}}</strong>
+                    评论了
+                    <strong>{{reply.user_name}}</strong>
+                    发表的趣事
+                </li>
+                <li class="user-comment-text">
+                    {{reply.content}}
+                </li>
+                <li class="user-comment-quote">
+                    <ul>
+                        <li class="user-article-avatar">
+                            <a v-link="{name:'userHome',params:{'user_id':reply.user_id}}"  rel="nofollow" target="_blank">
+                            <img :src="reply.user_photo" alt="{{reply.user_name}}">
+                            </a>
+                            <a v-link="{name:'userHome',params:{'user_id':reply.user_id}}" target="_blank">
+                            {{reply.user_name}}
+                            </a>
+                        </li>
+                        <li class="user-article-text">
+                            <a v-link="{name:'reply',query:{thing_id:reply.things_id}}" target="_blank">
+                            {{reply.things_content}}
+                            </a>
+                        </li>
+
+                        <li class="user-article-stat">
+                            {{reply.funny_num}} 好笑 ⋅
+                            {{reply.comment_num}} 评论 ⋅
+                            发表于
+                            <a>
+                            {{reply.publish_time}}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="user-indent" v-if="isSelf">
+                <li class="user-comment-info">
+                    <a v-link="{name:'userHome',params:{'user_id':reply.reply_user}}"><strong>{{reply.reply_user_name}}</strong></a> 回复了你
+                </li>
+                <li class="user-comment-text">
+                    {{reply.reply_content}}
+                </li>
+                <li class="user-comment-quote">
+                    <ul>
+                        <li class="user-article-avatar">
+                            <a v-link="{name:'userHome',params:{'user_id':reply.user_id}}"  rel="nofollow" target="_blank">
+                            <img :src="reply.user_photo" alt="{{reply.user_name}}">
+                            </a>
+                            <a v-link="{name:'userHome',params:{'user_id':reply.user_id}}" target="_blank">
+                            {{reply.user_name}}
+                            </a>
+                        </li>
+                        <li class="user-article-text">
+                            <a v-link="{name:'comment',query:{thing_id:reply.things_id}}" target="_blank">
+                            {{reply.things_content}}
+                            </a>
+                        </li>
+
+                        <li class="user-article-stat">
+                            {{reply.funny_num}} 好笑 ⋅
+                            {{reply.comment_num}} 评论 ⋅
+                            发表于
+                            <a>
+                            {{reply.publish_time}}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="reply-input clearfix">
+                    <span class="reply-user pull-left" style="margin-top: -3px;">
+                        <img :src="userInfo.user_photo">
+                    </span>
+                    <input class="form-control pull-left" type="text" placeholder="请输入您的回复内容..." style="width: 80%;margin-left: 10px;">
+                    <button class="confirm-reply-btn pull-right btn btn-primary btn-sm" @click="replyComment($event,reply.reply_user,reply.reply_user_name,reply.comment_id,reply.things_id)">回复</button>
                 </li>
             </ul>
         </div>
@@ -440,7 +532,7 @@
         <div class="user-statis user-block">
             <h3>农趣指数</h3>
             <ul>
-                <li><span>糗事:</span>{{thingPage.totalNum || 0}}</li>
+                <li><span>趣事:</span>{{thingPage.totalNum || 0}}</li>
                 <li><span>评论:</span>{{userData.comment_num || 0}}</li>
                 <li><span>笑脸:</span>{{userData.funny_num || 0}}</li>
                 <li><span>收藏:</span>{{userData.favorite_num || 0}}</li>

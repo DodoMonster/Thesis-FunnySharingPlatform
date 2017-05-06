@@ -18,11 +18,10 @@
 			}
 		},
 
-		ready(){			
-			if(store.getUserInfo()){
-				if(store.userInfo.user_id){
-					store.isLogin = true;										
-				}
+		ready(){	
+			var userInfo = store.getUserInfo(); 		
+			if(userInfo && userInfo.user_id){
+				store.isLogin = true;										
 			}
 		},
 

@@ -96,6 +96,10 @@
 			praiseUp:function(event){
 				let self = this,
 					$this = $(event.currentTarget);
+				if(!self.userInfo){
+					alert('请先登录！');
+					return false;
+				}
 				if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
 					return false;
 
@@ -113,6 +117,10 @@
 			trampDown:function(event){
 				let self = this,
 					$this = $(event.currentTarget);
+				if(!self.userInfo){
+					alert('请先登录！');
+					return false;
+				}
 				if($this.parent('li').siblings('li').find('a').hasClass('voted') || $this.hasClass('voted')){
 					return false;
 				}else{									
@@ -129,6 +137,10 @@
 					$this = $(e.currentTarget).find('i'),
 					className = $this.attr('class'),
 					$num = $(e.currentTarget).parents('.stats-buttons').siblings('.stats').find('.stats-favorite .number');
+				if(!self.userInfo){
+					alert('请先登录！');
+					return false;
+				}
 				if(className.indexOf('fa-heart-o') !== -1){//未收藏
 					service.favorite(id,self.userInfo.user_id).done(function(res){
 						$this.attr('class','fa fa-heart deep-orange-color');

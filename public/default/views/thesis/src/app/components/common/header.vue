@@ -14,9 +14,8 @@
 
         data(){
 			return{
-				userInfo:store.userInfo,
 				store:store,
-				thingsType:'hot',
+				thingsType:'hot'
 			}
 		},
 
@@ -27,7 +26,6 @@
 			}else{
 				self.thingsType = '';
 			}
-			self.userInfo = store.userInfo;
 			$('#nav li').click(function(){
 				$(this).addClass('highlight').siblings('li').removeClass('highlight');
 			});

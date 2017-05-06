@@ -46,7 +46,14 @@ store.getUserInfo = () => {
         var userInfo = JSON.parse(localStorage.getItem('userInfo'));
         store.userInfo = userInfo;
     }catch(e){
-        var userInfo = JSON.parse('{}');
+
+    }
+    if(!userInfo){
+        var userInfo = {
+            user_id:'',
+            user_name:'',
+            user_photo:''
+        };
     }
     return userInfo;   
 }

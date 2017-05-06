@@ -136,23 +136,24 @@ class thesisController extends \Core\BaseControllers {
     //修改头像
     public function changeAvatarAction(){
         if($_FILES && $_FILES['photo']['tmp_name']){
-            $uptypes = array(  // 图片类型
-                'image/jpg', 
-                'image/jpeg', 
-                'image/png', 
-                'image/pjpeg', 
-                'image/gif', 
-                'image/bmp', 
-                'image/x-png' 
-            );
-            if(!in_array($_FILES['things_img']["type"],$uptypes)){ 
-                $data['code'] = 1;
-                $data['msg'] = '只能上传图片';
-                echo json_encode($data);die;            
-            }
-            $tmp_name = $_FILES['photo']['tmp_name'];            
+            // $uptypes = array(  // 图片类型
+            //     'image/jpg', 
+            //     'image/jpeg', 
+            //     'image/png', 
+            //     'image/pjpeg', 
+            //     'image/gif', 
+            //     'image/bmp', 
+            //     'image/x-png' 
+            // );
+            // if(!in_array($_FILES['things_img']["type"],$uptypes)){ 
+            //     $data['code'] = 1;
+            //     $data['msg'] = '只能上传图片';
+            //     echo json_encode($data);die;            
+            // }
+            $tmp_name = $_FILES['photo']['tmp_name'];       
             $photo = explode('.',$_FILES['photo']['name']);
             $photo_name = $photo[0].'_'.time().'.'.$photo[1];
+
             $res = move_uploaded_file($tmp_name, 'uploads/avatar/' . $photo_name);//将上传的文件移动到新位置
             if(!$res){
                 $data['code'] = 1;
@@ -227,9 +228,8 @@ class thesisController extends \Core\BaseControllers {
     //获取用户信息
     public function getUserInfoAction(){
         $uid = isset($this->_getData['user_id']) ? $this->_getData['user_id'] : '';
-        $register_time = isset($this->_getData['time']) ? $this->_getData['time'] : '';
         $model = new \Web\ThesisModel();
-        $data = $model->getUserInfo($uid,$register_time);
+        $data = $model->getUserInfo($uid);
 
         if($data['code'] == 200){ 
             $data['code'] = 0;
@@ -582,7 +582,7 @@ class thesisController extends \Core\BaseControllers {
 
     //平台登出
     public function opLogoutAction(){
-        $this->unsetWebSession();
+        // $this->unsetWebSession();
         $data['code'] = 0;
         $data['msg'] = '退出成功！'; 
         echo json_encode($data);           

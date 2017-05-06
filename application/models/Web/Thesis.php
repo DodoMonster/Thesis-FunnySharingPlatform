@@ -125,7 +125,7 @@ class ThesisModel extends \Core\BaseModels {
     }
 
     //获取用户信息
-    public function getUserInfo($user_id,$time){
+    public function getUserInfo($user_id){
         $options['table'] = 'user';
         $options['where'] = array('user_id'=>'?');
         $options['field'] = array('user_id','user_name','user_photo','register_time');
@@ -139,11 +139,10 @@ class ThesisModel extends \Core\BaseModels {
         $options1['param'] = array($user_id);
         $num = $this->db->select($options1);
 
-        
         $funny_num = 0;
         $comment_num = 0;
         $favorite_num = 0;
-        $now_time = (time() - $time ) / 86400;
+        $now_time = (time() - $info['register_time'] ) / 86400;
         if(!empty($num)){
             foreach ($num as $key => $value) {
                 $funny_num = $value['funny_num'] + $funny_num;
@@ -208,9 +207,9 @@ class ThesisModel extends \Core\BaseModels {
     //获取单个用户发表的评论
     public function getUserComment($user_id,$page,$count){
         $options['table'] = 'comment as A';
-        $options['join'] = ['things as B on A.things_id = B.things_id','user as C on C.user_id = B.user_id'];
-        $options['where'] = array('A.is_delete'=>'?','A.user_id'=>'?');
-        $options['param'] =  array(0,$user_id);    
+        $options['join'] = ['things as B on A.things_id = B.things_id','user as C on B.user_id = C.user_id'];
+        $options['where'] = array('A.user_id'=>'?');
+        $options['param'] =  array($user_id);    
         $options['limit'] = ($page-1)*$count.','.$count; 
         $totalNum = $this->db->count($options);
         $totalPage = ceil($totalNum/$count);   
@@ -251,7 +250,24 @@ class ThesisModel extends \Core\BaseModels {
                 $reply[$key]['date'] = date('d',$value['reply_time']);                
             }
         }
-        $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum,'page'=>$page,'list'=>$reply);
+        $options1['table'] = 'comment as A';
+        $options1['join'] = ['things as B on A.things_id = B.things_id','user as C on C.user_id = B.user_id'];
+        $options1['where'] = array('A.user_id'=>'?');
+        $options1['param'] =  array($user_id);    
+        $options1['limit'] = ($page-1)*$count.','.$count; 
+        $totalNum1 = $this->db->count($options1);
+        $totalPage1 = ceil($totalNum1/$count);   
+        $options1['order'] = 'A.comment_time desc';
+        $comment = $this->db->select($options1);
+        if(!empty($comment)){
+            foreach ($comment as $key => $value) {
+                $comment[$key]['comment_time'] = date('Y-m-d H:i:s',$value['comment_time']);
+                $comment[$key]['publish_time'] = date('Y-m-d H:i:s',$value['publish_time']);
+                $comment[$key]['month'] = date('m',$value['comment_time']);
+                $comment[$key]['date'] = date('d',$value['comment_time']);                
+            }
+        }
+        $list = array('totalPage'=>$totalPage,'totalNum'=>$totalNum + $totalNum1,'page'=>$page,'reply'=>$reply,'comment'=>$comment);
         return $this->returnResult(200,$list); 
     }
 
